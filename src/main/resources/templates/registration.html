@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <title>Get started</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+  </head>
+  <body>
+    <div class="auth">
+      <div class="content">
+        <form class="form" th:action="@{/get-started}" th:object="${registrationDto}" method="post">
+          <h1>Get Started</h1>
+          <input type="text" th:field="*{username}" placeholder="username" th:style="${#fields.hasErrors('username')}? 'margin-bottom: 6px': ''">
+          <div class="errors" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+          <input type="text" th:field="*{email}" placeholder="email" th:style="${#fields.hasErrors('email')}? 'margin-bottom: 6px': ''">
+          <div class="errors" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+          <input type="password" th:field="*{password}" placeholder="password" th:style="${#fields.hasErrors('password')}? 'margin-bottom: 6px': ''">
+          <div class="errors" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+          <input type="password" th:field="*{confirmpassword}" placeholder="confirm password" th:style="${#fields.hasErrors('global')}? 'margin-bottom: 6px': ''">
+          <div id="global-errors" class="errors" th:if="${#fields.hasErrors('global')}" th:errors="*{global}"></div>
+          <div class="account">
+            Already have an account? <a class="link" id="login" th:href="@{/login}">Login</a>
+          </div>
+          <input type="submit" value="Get Started">
+          <p class="terms">Clicking "Get Started" above to accept  <a href="#">Terms of Service</a> & <a href="#">Privacy Policy.</a></p>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

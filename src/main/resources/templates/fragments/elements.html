@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="@{/css/fragments.css}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="header" th:fragment="header">
+        <a href="#" class="logo">Topics</a>
+        <form class="search-input" action="index.html" method="post">
+            <div class="search">
+                <input class="text" type="text" name="" placeholder="Search">
+                <button type="button" name="button"><i class="fa fa-search"></i></button>
+            </div>
+        </form>
+        <div class="auth" sec:authorize="isAnonymous()">
+            <a class="login-trigger" id="login-btn" th:href="@{/login}">Login</a>
+            <a class="get-started-trigger" id="get-started-btn" th:href="@{/get-started}">Get Started</a>
+        </div>
+        <div class="auth" sec:authorize="isAuthenticated()">
+            <div class="image">
+
+            </div>
+            <div class="user-option">
+                <a href="#" sec:authentication="name" class="user"></a>
+                <a th:href="@{/logout}" class="logout">logout <i class="fa">&#xf08b;</i></a>
+            </div>
+        </div>
+    </div>
+    <div id="help" th:fragment="footer-help">
+        <div class="help-content">
+            <button class="close">&times;</button>
+            <form id="help-form" th:action="@{/help}" th:object="${helpMessage}" method="post">
+                <h1>Help</h1>
+                <p>Have a problem? Report it, type subject and describe. Our help service will try fix it as fast as is it possible.</p>
+                <input type="text" th:field="*{subject}" placeholder="subject">
+                <div class="errors" th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}"></div>
+                <textarea placeholder="What's your problem?" name="name" rows="8" cols="80" th:field="*{description}"></textarea>
+                <div class="errors" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                <input type="submit" name="" value="Send">
+            </form>
+        </div>
+    </div>
+    <div class="footer" th:fragment="footer">
+        <a href="#" class="logo">Topics</a>
+        <div class="info">
+            <a href="#">about</a>
+            <a id="help-btn">help</a>
+            <a href="#">privacy</a>
+        </div>
+    </div>
+</body>
+</html>

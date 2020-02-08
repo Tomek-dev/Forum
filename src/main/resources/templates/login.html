@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+    <title>Login</title>
+  </head>
+  <body>
+    <div class="auth">
+      <div class="content">
+        <form class="form" th:action="@{/login}" method="post">
+          <h1>Login</h1>
+          <input type="text" name="username" placeholder="username">
+          <input type="password" name="password" placeholder="password" th:style="${param.error}? 'margin-bottom: 6px': ''">
+          <div class="errors" id="global-errors" th:if="${param.error}">
+            Invalid username or password
+          </div>
+          <div class="account">
+            Don't have an account? <a class="link" id="get-started" th:href="@{/get-started}">Create account</a>
+            or forgot password ? <a class="link" th:href="@{/forgot}">Reset password</a>
+          </div>
+          <input type="submit" name="" value="Login">
+          <p class="terms">Clicking "Login" above to accept  <a href="#">Terms of Service</a> & <a href="#">Privacy Policy.</a></p>
+        </form>
+    </div>
+    </div>
+  </body>
+</html>

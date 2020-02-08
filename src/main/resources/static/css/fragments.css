@@ -1,0 +1,245 @@
+.header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+  padding: 0 20px;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+.logo{
+  font-family: 'Times New Roman', sans-serif;
+  background-color: #222;
+  color: white;
+  font-weight: bold;
+  padding: 10px 6px;
+  font-size: 27px;
+  margin: 10px 20px;
+}
+
+.auth{
+  margin-right: 30px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.get-started-trigger{
+  background-color: transparent;
+  padding: 10px 8px;
+  border-radius: 10px;
+  border: 1px solid #1c9963;
+  color: #1c9963;
+  text-decoration: none;
+  margin-left: 16px;
+  cursor: pointer;
+}
+.get-started-trigger:hover{
+  border-color: #0a6641;
+  color: #0a6641;
+}
+.login-trigger{
+  color: #1c9963;
+  text-decoration: none;
+  cursor: pointer;
+}
+.login-trigger:hover{
+  color: #0a6641;
+}
+
+.search{
+  display: flex;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.search:hover{
+  border-color: #1c9963;
+}
+
+.text{
+  box-sizing: border-box;
+  height: 35px;
+  border: none;
+  background-color: transparent;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  width: 280px;
+  color: #777;
+  padding: 2px 8px;
+  outline: none;
+}
+
+.search button{
+  padding: 8px;
+  margin: 0;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: #777;
+}
+
+.search button:hover{
+  color: #444;
+}
+
+.image{
+  width: 40px;
+  height: 40px;
+  background-color: #000;
+  border-radius: 40px;
+}
+
+.user-option{
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.user, .logout{
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.user{
+  color: #222;
+}
+
+.logout{
+  color: #777;
+}
+
+.footer{
+    background-color: #222;
+    color: white;
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.info a{
+  margin-right: 60px;
+  text-decoration: none;
+  color: white;
+}
+
+.info a:hover{
+  color: #1c9963;
+}
+
+#help{
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.help-content{
+  position: absolute;
+  box-sizing: border-box;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  transform: translate(-50%,-50%);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+  padding: 0 30px;
+  background-color: #fff;
+  animation-name: showhelp;
+  animation-duration: 0.4s;
+}
+
+@keyframes showhelp {
+  from{top: 0; opacity: 0;}
+  to{top: 50%; opacity: 1;}
+}
+
+#help-form{
+  padding: 5px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#help-form input{
+  margin: 20px 0;
+  font-size: 16px;
+  transition: 0.4s;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+#help-form input[type="text"]{
+  width: 100%;
+  border-bottom: 0.4px solid #000;
+  padding: 6px 8px 2px 10px;
+  color: #000;
+}
+
+#help-form textarea{
+  width: 100%;
+  padding: 6px 8px 2px 10px;
+  font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+  resize: none;
+  border: none;
+  border-bottom: 0.4px solid #000;
+  border-left: 0.4px solid #000;
+  outline: none;
+}
+
+
+#help-form h1{
+  font-family: 'Times New Roman', sans-serif;
+  font-weight: bold;
+}
+
+#help-form input[type="submit"]{
+  border-radius: 24px;
+  background-color: #000;
+  color: #fff;
+  padding: 16px 24px;
+  cursor: pointer;
+  margin-top: 30px;
+}
+
+#help-form input[type="submit"]:hover{
+  background-color: #111;
+}
+
+#help-form p{
+  color: #777;
+}
+
+.close{
+  margin-top: 30px;
+  color: #333;
+  transform: scale(1.8);
+  background-color: transparent;
+  border: none;
+  outline: none;
+  justify-content: flex-end;
+  float: right;
+  cursor: pointer;
+}
+.close:hover{
+  color: black;
+}

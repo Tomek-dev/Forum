@@ -1,0 +1,96 @@
+body{
+  font-family: 'Roboto', sans-serif;
+}
+
+.auth{
+  display: block;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.content{
+  position: absolute;
+  box-sizing: border-box;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  transform: translate(-50%,-50%);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+  padding: 0 30px;
+  background-color: #fff;
+}
+
+.form{
+  padding: 40px 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.form input{
+  margin: 20px 0;
+  font-size: 16px;
+  transition: 0.4s;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.form input[type="text"], input[type="password"]{
+  width: 80%;
+  border-bottom: 0.4px solid #000000;
+  padding: 6px 8px 2px 10px;
+  color: black;
+}
+
+.account{
+  text-align: center;
+  font-size: 15px;
+  color: #333;
+  font-weight: 400;
+}
+
+.link{
+  color: #1c9963;
+  font-weight: bolder;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.form h1{
+  font-family: 'Times New Roman', sans-serif;
+  font-weight: bold;
+}
+
+.form input[type="submit"]{
+  border-radius: 24px;
+  background-color: black;
+  color: white;
+  padding: 16px 24px;
+  cursor: pointer;
+}
+
+.form input[type="submit"]:hover{
+  background-color: #111;
+}
+
+.terms, .terms a{
+  color: #999;
+  text-align: center;
+}
+
+.errors{
+font-size: 14px;
+color: #bd000d;
+}
+
+#global-errors{
+margin-bottom: 12px;
+}
