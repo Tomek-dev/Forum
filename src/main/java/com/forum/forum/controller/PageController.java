@@ -6,11 +6,9 @@ import com.forum.forum.model.HelpMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -23,17 +21,18 @@ public class PageController {
         this.helpMessageDao = helpMessageDao;
     }
 
-    @GetMapping("/home")
-    public String getHome(){
+    @GetMapping("/")
+    public String getHome(Model model){
+        model.addAttribute("helpMessage", new HelpMessage());
         return "index";
     }
 
     @PostMapping("/help")
-    public String help(@Valid @ModelAttribute HelpMessage helpMessage, BindingResult bindingResult, Model model){
+    public String help(@Valid @ModelAttribute HelpMessage helpMessage, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return "fragments/elements :: footer-help";
         }
         helpMessageDao.save(helpMessage);
-        return "/";
+        return "redirect:/";
     }
 }

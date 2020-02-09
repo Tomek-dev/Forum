@@ -4,6 +4,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Calendar;
+import java.util.Date;
 
 @Entity
 public class HelpMessage {
@@ -22,9 +24,21 @@ public class HelpMessage {
     @Column(columnDefinition = "VARCHAR", length = 510)
     private String description;
 
+    private Date createdAt;
+
     public HelpMessage(@NotEmpty @NotNull String subject, @NotEmpty @NotNull @Size(max = 510) String description) {
         this.subject = subject;
         this.description = description;
+        createdAt = createdAtDate();
+    }
+
+    private Date createdAtDate(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(new Date().getTime());
+        return new Date(calendar.getTime().getTime());
+    }
+
+    public HelpMessage() {
     }
 
     public Long getId() {
@@ -49,5 +63,13 @@ public class HelpMessage {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 }
