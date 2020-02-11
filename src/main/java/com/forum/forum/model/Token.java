@@ -28,13 +28,14 @@ public class Token {
     public Token(UUID token, User user) {
         this.token = token;
         this.user = user;
-        this.expiryDate = calculateExpiryDate(expiry);
+        expiryDate = calculateExpiryDate(expiry);
     }
 
     public Token() {
+        expiryDate = calculateExpiryDate(expiry);
     }
 
-    private Date calculateExpiryDate(int expiry){
+    private Date calculateExpiryDate(final int expiry){
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(new Date().getTime());
         calendar.add(Calendar.MINUTE, expiry);

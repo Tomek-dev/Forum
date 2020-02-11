@@ -39,6 +39,7 @@ public class HelpMessage {
     }
 
     public HelpMessage() {
+        createdAt = createdAtDate();
     }
 
     public Long getId() {

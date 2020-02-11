@@ -6,10 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
+import java.util.*;
 
 @Entity
 @Table(name = "usermodel")
@@ -30,6 +27,9 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "user")
     private Token token;
 
+    @OneToMany(mappedBy = "user")
+    private Set<Topic> topics;
+
     private Date createdAt;
 
     public User(String username, String email, String password, String role) {
@@ -41,6 +41,7 @@ public class User implements UserDetails {
     }
 
     public User() {
+        createdAt = createdAtDate();
     }
 
     public Long getId() {
@@ -99,6 +100,14 @@ public class User implements UserDetails {
 
     public void setToken(Token token) {
         this.token = token;
+    }
+
+    public Set<Topic> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(Set<Topic> topics) {
+        this.topics = topics;
     }
 
     private Date createdAtDate(){

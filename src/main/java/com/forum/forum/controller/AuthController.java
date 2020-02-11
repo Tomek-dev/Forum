@@ -19,13 +19,11 @@ import java.util.UUID;
 @Controller
 public class AuthController {
 
-    private UserDao userDao;
     private ResetService resetService;
     private UserService userService;
 
     @Autowired
     public AuthController(UserDao userDao, ResetService resetService, UserService userService) {
-        this.userDao = userDao;
         this.resetService = resetService;
         this.userService = userService;
     }
