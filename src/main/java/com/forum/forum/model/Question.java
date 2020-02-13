@@ -3,16 +3,14 @@ package com.forum.forum.model;
 import com.forum.forum.Type;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 @Entity
-public class Topic {
+public class Question {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,12 +21,10 @@ public class Topic {
     @NotEmpty
     private String title;
 
-    @NotNull
-    @NotEmpty
     @Column(columnDefinition = "TEXT")
+    @NotEmpty
+    @NotNull
     private String description;
-
-    private String videoUrl;
 
     @ManyToOne
     private User user;
@@ -37,13 +33,13 @@ public class Topic {
 
     private Type type;
 
-    public Topic(@Size(max = 96) @NotNull @NotEmpty String title, @NotNull @NotEmpty String description) {
+    public Question(@Size(max = 96) @NotEmpty @NotNull String title, @NotEmpty @NotNull String description) {
         this.title = title;
         this.description = description;
         createdAt = createdAtDate();
     }
 
-    public Topic() {
+    public Question() {
         createdAt = createdAtDate();
     }
 
@@ -77,14 +73,6 @@ public class Topic {
         this.description = description;
     }
 
-    public String getVideoUrl() {
-        return videoUrl;
-    }
-
-    public void setVideoUrl(String videoUrl) {
-        this.videoUrl = videoUrl;
-    }
-
     public User getUser() {
         return user;
     }
@@ -93,12 +81,12 @@ public class Topic {
         this.user = user;
     }
 
-    public Date getCreateAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreateAt(Date createAt) {
-        this.createdAt = createAt;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Type getType() {

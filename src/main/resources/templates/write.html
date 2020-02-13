@@ -12,7 +12,7 @@
 <body>
 <div th:replace="fragments/elements :: header"></div>
 <div class="container">
-    <form class="write-content" id="question" th:action="@{/write/question}" method="post">
+    <form class="write-content" id="question" th:action="@{/write/question}" th:object="${question}" method="post">
         <p class="write">Write</p>
         <div class="write-option">
             <div class="write-element">
@@ -26,16 +26,16 @@
             <div class="write-element">
                 <p class="tag-paragraph">Tags:</p>
                 <div class="tags-list">
-                    <!--<div th:each="typeelement: ${T(com.forum.forum.Type).values()}" class="type-element">
+                    <div th:each="typeelement: ${T(com.forum.forum.Type).values()}" class="type-element">
                         <input type="checkbox" th:field="*{type}" th:value="${typeelement}" class="visually-hidden" onclick="chooseOne(this)">
                         <label th:for="${#ids.prev('type')}" class="tag" th:text="${typeelement.displayName}"></label>
-                    </div>-->
+                    </div>
                 </div>
             </div>
         </div>
         <p class="type">Question</p>
-        <input type="text" name="" placeholder="What's your programming question">
-        <textarea name="name" rows="8" cols="80" placeholder="Describe your problem"></textarea>
+        <input type="text" name="" th:field="*{title}" value="0" placeholder="What's your programming question">
+        <textarea name="name" th:field="*{description}" rows="8" cols="80" placeholder="Describe your problem"></textarea>
         <input type="submit" name="" value="Post Your Question">
     </form>
 

@@ -3,8 +3,10 @@ package com.forum.forum.controller;
 import com.forum.forum.Type;
 import com.forum.forum.dao.HelpMessageDao;
 import com.forum.forum.model.HelpMessage;
+import com.forum.forum.model.Question;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
+import com.forum.forum.service.QuestionService;
 import com.forum.forum.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,11 +25,13 @@ import java.util.List;
 public class PageController {
     private HelpMessageDao helpMessageDao;
     private TopicService topicService;
+    private QuestionService questionService;
 
     @Autowired
-    public PageController(HelpMessageDao helpMessageDao, TopicService topicService) {
+    public PageController(HelpMessageDao helpMessageDao, TopicService topicService, QuestionService questionService) {
         this.helpMessageDao = helpMessageDao;
         this.topicService = topicService;
+        this.questionService = questionService;
     }
 
     @GetMapping("/")
@@ -47,19 +51,30 @@ public class PageController {
 
     @GetMapping("/write")
     public String getWrite(Model model){
+        model.addAttribute("question", new Question());
         model.addAttribute("topic", new Topic());
         model.addAttribute("helpMessage", new HelpMessage());
         return "write";
     }
 
     @PostMapping("/write/topic")
-    public String write(@Valid Topic topic, BindingResult bindingResult){
+    public String writeTopic(@Valid Topic topic, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return "";
             //TODO
         }
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         topicService.addTopic(topic, ((User) principal).getUsername());
+        return "redirect:/";
+    }
+
+    @PostMapping("/write/question")
+    public String writeQuestion(@Valid Question question, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "";
+        }
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        questionService.addQuestion(question, ((User) principal).getUsername());
         return "redirect:/";
     }
 }
