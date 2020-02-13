@@ -5,16 +5,15 @@
     <title>Topics</title>
     <link rel="stylesheet" th:href="@{/css/index.css}">
     <link rel="stylesheet" th:href="@{/css/fragments.css}">
+    <link rel="stylesheet" th:href="@{/css/write.css}">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 <div th:replace="fragments/elements :: header"></div>
 <div class="container">
-    <div class="write">
-        <p>Write</p>
-    </div>
-    <form class="write-content" id="question" action="index.html" method="post">
+    <form class="write-content" id="question" th:action="@{/write/question}" method="post">
+        <p class="write">Write</p>
         <div class="write-option">
             <div class="write-element">
                 <p>Can't solve a problem or do you want share your knowledge and help somebody?
@@ -27,30 +26,10 @@
             <div class="write-element">
                 <p class="tag-paragraph">Tags:</p>
                 <div class="tags-list">
-                    <input type="checkbox" id="cq" name="cq" class="visually-hidden">
-                    <label for="cq" class="tag">C</label>
-                    <input type="checkbox" id="javaq" name="javaq" class="visually-hidden">
-                    <label for="javaq" class="tag">Java</label>
-                    <input type="checkbox" id="pythonq" name="pythonq" class="visually-hidden">
-                    <label for="pythonq" class="tag">Python</label>
-                    <input type="checkbox" id="javaScriptq" name="javaScriptq" class="visually-hidden">
-                    <label for="javaScriptq" class="tag">JavaScript</label>
-                    <input type="checkbox" id="rubyq" name="rubyq" class="visually-hidden">
-                    <label for="rubyq" class="tag">Ruby</label>
-                    <input type="checkbox" id="c#q" name="c#q" class="visually-hidden">
-                    <label for="c#q" class="tag">C#</label>
-                    <input type="checkbox" id="sqlq" name="sqlq" class="visually-hidden">
-                    <label for="sqlq" class="tag">SQL</label>
-                    <input type="checkbox" id="phpq" name="phpq" class="visually-hidden">
-                    <label for="phpq" class="tag">PHP</label>
-                    <input type="checkbox" id="swiftq" name="swiftq" class="visually-hidden">
-                    <label for="swiftq" class="tag">Swift</label>
-                    <input type="checkbox" id="c++q" name="c++q" class="visually-hidden">
-                    <label for="c++q" class="tag">C++</label>
-                    <input type="checkbox" id="htmlcssq" name="htmlcssq" class="visually-hidden">
-                    <label for="htmlcssq" class="tag">HTML & CSS</label>
-                    <input type="checkbox" id="otherq" name="otherq" class="visually-hidden">
-                    <label for="otherq" class="tag">Other</label>
+                    <!--<div th:each="typeelement: ${T(com.forum.forum.Type).values()}" class="type-element">
+                        <input type="checkbox" th:field="*{type}" th:value="${typeelement}" class="visually-hidden" onclick="chooseOne(this)">
+                        <label th:for="${#ids.prev('type')}" class="tag" th:text="${typeelement.displayName}"></label>
+                    </div>-->
                 </div>
             </div>
         </div>
@@ -61,7 +40,8 @@
     </form>
 
 
-    <form class="write-content" id="topic" action="index.html" method="post">
+    <form class="write-content" id="topic" th:action="@{/write/topic}" th:object="${topic}" method="post">
+        <p class="write">Write</p>
         <div class="write-option">
             <div class="write-element">
                 <p>Can't solve a problem or do you want share your knowledge and help somebody?
@@ -74,36 +54,16 @@
             <div class="write-element">
                 <p class="tag-paragraph">Tags:</p>
                 <div class="tags-list">
-                    <input type="checkbox" id="ct" name="ct" class="visually-hidden">
-                    <label for="ct" class="tag">C</label>
-                    <input type="checkbox" id="javat" name="javat" class="visually-hidden">
-                    <label for="javat" class="tag">Java</label>
-                    <input type="checkbox" id="pythont" name="pythont" class="visually-hidden">
-                    <label for="pythont" class="tag">Python</label>
-                    <input type="checkbox" id="javaScriptt" name="javaScriptt" class="visually-hidden">
-                    <label for="javaScriptt" class="tag">JavaScript</label>
-                    <input type="checkbox" id="rubyt" name="rubyt" class="visually-hidden">
-                    <label for="rubyt" class="tag">Ruby</label>
-                    <input type="checkbox" id="c#t" name="c#t" class="visually-hidden">
-                    <label for="c#t" class="tag">C#</label>
-                    <input type="checkbox" id="sqlt" name="sqlt" class="visually-hidden">
-                    <label for="sqlt" class="tag">SQL</label>
-                    <input type="checkbox" id="phpt" name="phpt" class="visually-hidden">
-                    <label for="phpt" class="tag">PHP</label>
-                    <input type="checkbox" id="swiftt" name="swiftt" class="visually-hidden">
-                    <label for="swiftt" class="tag">Swift</label>
-                    <input type="checkbox" id="c++t" name="c++t" class="visually-hidden">
-                    <label for="c++t" class="tag">C++</label>
-                    <input type="checkbox" id="htmlcsst" name="htmlcsst" class="visually-hidden">
-                    <label for="htmlcsst" class="tag">HTML & CSS</label>
-                    <input type="checkbox" id="othert" name="othert" class="visually-hidden">
-                    <label for="othert" class="tag">Other</label>
+                    <div th:each="typeelement: ${T(com.forum.forum.Type).values()}" class="type-element">
+                        <input type="checkbox" th:field="*{type}" th:value="${typeelement}" class="visually-hidden" onclick="chooseOne(this)">
+                        <label th:for="${#ids.prev('type')}" class="tag" th:text="${typeelement.displayName}"></label>
+                    </div>
                 </div>
             </div>
         </div>
         <p class="type">Topic</p>
-        <input type="text" name="" placeholder="Title">
-        <textarea name="name" rows="8" cols="80" placeholder="Description"></textarea>
+        <input type="text" name="" th:field="*{title}" placeholder="Title">
+        <textarea name="name" rows="8" cols="80" th:field="*{description}" placeholder="Description"></textarea>
         <div id="add-video">
             <button type="button" id="addbutton" name="button" class="add">&plus; Add Video</button>
         </div>

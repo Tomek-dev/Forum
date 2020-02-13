@@ -1,5 +1,6 @@
 package com.forum.forum.model;
 
+import com.forum.forum.Type;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Topic {
@@ -31,6 +33,8 @@ public class Topic {
     private User user;
 
     private Date createAt;
+
+    private Type type;
 
     public Topic(@Size(max = 96) @NotEmpty String title, @NotEmpty String description) {
         this.title = title;
@@ -94,5 +98,13 @@ public class Topic {
 
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 }

@@ -1,5 +1,6 @@
 package com.forum.forum.controller;
 
+import com.forum.forum.Type;
 import com.forum.forum.dao.HelpMessageDao;
 import com.forum.forum.model.HelpMessage;
 import com.forum.forum.model.Topic;
@@ -10,9 +11,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Controller
 public class PageController {
@@ -42,6 +47,8 @@ public class PageController {
 
     @GetMapping("/write")
     public String getWrite(Model model){
+        model.addAttribute("topic", new Topic());
+        model.addAttribute("helpMessage", new HelpMessage());
         return "write";
     }
 
@@ -49,10 +56,10 @@ public class PageController {
     public String write(@Valid Topic topic, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return "";
+            //TODO
         }
-        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        topic.setUser(user);
-        topicService.addTopic(topic);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        topicService.addTopic(topic, ((User) principal).getUsername());
         return "redirect:/";
     }
 }

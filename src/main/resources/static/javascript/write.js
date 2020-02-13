@@ -16,3 +16,12 @@ for (let i = 0; i < questionbutton.length; i++) {
     question.style.display = "block";
   }
 }
+
+function chooseOne(checkbox){
+    let checkboxes = document.getElementsByName('type');
+    checkboxes.forEach((item) => {
+        if(item != checkboxes){
+            item.checked = false;
+        }
+    });
+}

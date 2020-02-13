@@ -19,10 +19,11 @@ public class TopicService {
         this.userDao = userDao;
     }
 
-    public void addTopic(Topic topic){
-        topicDao.save(topic);
-        User user = topic.getUser();
+    public void addTopic(Topic topic, String username){
+        User user = userDao.findByUsername(username);
+        topic.setUser(user);
         user.getTopics().add(topic);
+        topicDao.save(topic);
         userDao.save(user);
     }
 }

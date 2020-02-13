@@ -28,7 +28,7 @@ public class User implements UserDetails {
     private Token token;
 
     @OneToMany(mappedBy = "user")
-    private Set<Topic> topics;
+    private Set<Topic> topics = new HashSet<>();
 
     private Date createdAt;
 
