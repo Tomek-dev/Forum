@@ -44,7 +44,7 @@ public class UserServiceTests {
     UserService userService;
 
     @Test
-    public void addUser(){
+    public void shouldAddUser(){
         RegistrationDto registrationDto = new RegistrationDto("user", "email", "password", "password");
         userService.addUser(registrationDto);
         verify(userDao).save(any());
