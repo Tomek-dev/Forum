@@ -94,11 +94,11 @@ public class Topic implements Post{
         this.user = user;
     }
 
-    public Date getCreateAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreateAt(Date createAt) {
+    public void setCreatedAt(Date createAt) {
         this.createdAt = createAt;
     }
 

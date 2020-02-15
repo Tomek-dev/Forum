@@ -5,6 +5,7 @@ import com.forum.forum.dto.EmailDto;
 import com.forum.forum.dto.RegistrationDto;
 import com.forum.forum.dto.ResetDto;
 import com.forum.forum.service.ResetService;
+import com.forum.forum.service.TopicService;
 import com.forum.forum.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,17 +22,13 @@ public class AuthController {
 
     private ResetService resetService;
     private UserService userService;
+    private TopicService topicService;
 
     @Autowired
-    public AuthController(UserDao userDao, ResetService resetService, UserService userService) {
+    public AuthController(TopicService topicService, ResetService resetService, UserService userService) {
         this.resetService = resetService;
         this.userService = userService;
-    }
-
-    @ResponseBody
-    @GetMapping("/test")
-    public String getTest(){
-        return "test";
+        this.topicService = topicService;
     }
 
     @GetMapping("/get-started")

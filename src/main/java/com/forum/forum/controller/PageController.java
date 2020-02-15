@@ -2,6 +2,7 @@ package com.forum.forum.controller;
 
 import com.forum.forum.Type;
 import com.forum.forum.dao.HelpMessageDao;
+import com.forum.forum.dto.TopicDto;
 import com.forum.forum.model.HelpMessage;
 import com.forum.forum.model.Question;
 import com.forum.forum.model.Topic;
@@ -36,6 +37,8 @@ public class PageController {
 
     @GetMapping("/")
     public String getHome(Model model){
+        List<TopicDto> topics = topicService.getLastTopics();
+        model.addAttribute("topics", topics);
         model.addAttribute("helpMessage", new HelpMessage());
         return "index";
     }
@@ -77,4 +80,5 @@ public class PageController {
         questionService.addPost(question, ((User) principal).getUsername());
         return "redirect:/";
     }
+
 }

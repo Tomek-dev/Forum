@@ -8,10 +8,12 @@ import com.forum.forum.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
-@Component
-public abstract class AbstarctPostService {
+import java.util.Date;
 
-    protected JpaRepository repository;
+@Component
+public abstract class AbstarctPostService{
+
+    private JpaRepository repository;
     protected UserDao userDao;
 
     public AbstarctPostService(JpaRepository repository, UserDao userDao) {
@@ -29,5 +31,27 @@ public abstract class AbstarctPostService {
         }
         repository.save(post);
         userDao.save(user);
+    }
+
+    protected String posted(Date postedDate){
+        long actualDate = new Date().getTime();
+        long remain = (actualDate - postedDate.getTime())/1000;
+        if(remain < 60){
+            return remain + " secs";
+        }
+        remain /= 60;
+        if(remain < 60){
+            return remain + " mins";
+        }
+        remain /= 60;
+        if(remain < 60){
+            return remain + " hours";
+        }
+        remain /= 24;
+        if(remain < 365){
+            return remain + " days";
+        }
+        remain /= 365;
+        return remain + " years";
     }
 }

@@ -10,6 +10,88 @@
 </head>
 <body>
     <div th:replace="fragments/elements :: header"></div>
+    <div class="container">
+        <div class="content">
+            <div class="newest">
+                <a href="#">Topics</a>
+                <a href="#">Questions</a>
+            </div>
+            <div class="topics-list">
+                <div th:each="topic : ${topics}" class="topic">
+                    <div class="topic-info">
+                        <div class="topic-user">
+                            <div class="topic-image">
+
+                            </div>
+                            <div class="topic-element" style="left: 50px;">
+                                <div class="user-info">
+                                    <a class="author-username" th:text="${topic.getUsername()}" href="#"></a>
+                                    <a class="follow" href="#">Follow</a>
+                                </div>
+                                <p class="post-at">Posted <span th:text="${topic.getPosted()}"></span> ago</p>
+                            </div>
+                        </div>
+                        <div class="topic-info">
+                            <button class="button-option" type="button" name="like"><i class="fa fa-thumbs-up icon"></i>618</button>
+                            <button class="button-option" type="button" name="unlike"><i class="fa fa-thumbs-down icon"></i>8</button>
+                        </div>
+                    </div>
+
+                    <div class="topic-content" th:text="${topic.getDescription()}">
+
+                    </div>
+                    <div class="topic-option">
+                        <button class="button-option" type="button" name="share"><i class="fa fa-share-alt icon"></i>share</button>
+                        <button class="button-option" type="button" name="comment"><i class="fa fa-comments-o icon"></i>comment</button>
+                        <button class="button-option" type="button" name="save"><i class="fa fa-paperclip icon"></i>save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar">
+            <div class="community">
+                <h1>Programming Categories</h1>
+                <div class="community-list">
+                    <a href="#"><span class="sharp">#</span>C</a>
+                    <a href="#"><span class="sharp">#</span>Java</a>
+                    <a href="#"><span class="sharp">#</span>Python</a>
+                    <a href="#"><span class="sharp">#</span>JavaScript</a>
+                    <a href="#"><span class="sharp">#</span>Ruby</a>
+                    <a href="#"><span class="sharp">#</span>C#</a>
+                    <a href="#"><span class="sharp">#</span>SQL</a>
+                    <a href="#"><span class="sharp">#</span>PHP</a>
+                    <a href="#"><span class="sharp">#</span>Swift</a>
+                    <a href="#"><span class="sharp">#</span>C++</a>
+                    <a href="#"><span class="sharp">#</span>HTML & CSS</a>
+                    <a href="#"><span class="sharp">#</span>Other</a>
+                </div>
+            </div>
+            <div class="write">
+                <h1>Questions</h1>
+                <p>Can't solve a problem?
+                    Ask and get solution from other users.</p>
+                <a href="#">Ask Question</a>
+            </div>
+            <div class="popular">
+                <h1>Popular Questions</h1>
+                <div class="popular-list">
+                    <!--<div class="popular-ask" th:each="question : ${popularQuestions}">
+                        <p class="popular-ask-info">Posted by <span th:text="${question.getUser().getUsername()}"></span> &middot 3 hours ago<span th:text="${question.getCreatedAt()}"></span></p>
+                        <p class="ask-content" th:text="${question.getTitle()}"></p>
+                        <div class="popular-ask-info">
+                            <button type="button" class="vote" name="button">Vote</button>
+                            <p>18 votes</p>
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+            <div class="topics">
+                <h1>Topics</h1>
+                <p>Do you want share your knowledge and help somebody? Write your own tutorial</p>
+                <a href="#">Write Topic</a>
+            </div>
+        </div>
+    </div>
     <div th:replace="fragments/elements :: footer-help"></div>
     <div th:replace="fragments/elements :: footer"></div>
     <script th:src="@{/javascript/elements.js}"></script>
