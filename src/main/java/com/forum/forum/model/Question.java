@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 @Entity
-public class Question {
+public class Question implements Post{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -77,6 +77,7 @@ public class Question {
         return user;
     }
 
+    @Override
     public void setUser(User user) {
         this.user = user;
     }

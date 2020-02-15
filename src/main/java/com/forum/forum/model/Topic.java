@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-public class Topic {
+public class Topic implements Post{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -89,6 +89,7 @@ public class Topic {
         return user;
     }
 
+    @Override
     public void setUser(User user) {
         this.user = user;
     }

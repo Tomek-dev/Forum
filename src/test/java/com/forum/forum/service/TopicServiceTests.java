@@ -37,7 +37,7 @@ public class TopicServiceTests {
         given(topicDao.save(Mockito.any(Topic.class))).willAnswer(invocationOnMock -> invocationOnMock.getArguments()[0]);
 
         //when
-        topicService.addTopic(topic, "user");
+        topicService.addPost(topic, "user");
 
         //then
         verify(userDao).save(user);

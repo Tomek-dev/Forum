@@ -38,7 +38,7 @@ public class QuestionServiceTests {
         given(questionDao.save(Mockito.any(Question.class))).willAnswer(invocationOnMock -> invocationOnMock.getArguments()[0]);
 
         //when
-        questionService.addQuestion(question, "user");
+        questionService.addPost(question, "user");
 
         //then
         verify(userDao).save(user);

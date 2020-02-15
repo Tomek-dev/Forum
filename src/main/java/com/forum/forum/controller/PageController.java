@@ -64,7 +64,7 @@ public class PageController {
             //TODO
         }
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        topicService.addTopic(topic, ((User) principal).getUsername());
+        topicService.addPost(topic, ((User) principal).getUsername());
         return "redirect:/";
     }
 
@@ -74,7 +74,7 @@ public class PageController {
             return "";
         }
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        questionService.addQuestion(question, ((User) principal).getUsername());
+        questionService.addPost(question, ((User) principal).getUsername());
         return "redirect:/";
     }
 }
