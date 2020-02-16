@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface QuestionDao extends JpaRepository<Question, Long>{
-    List<Question> findTop10ByOrderByIdDesc();
+    List<Question> findTop4ByOrderByIdDesc();
 }

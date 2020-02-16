@@ -2,6 +2,7 @@ package com.forum.forum.service;
 
 import com.forum.forum.dao.QuestionDao;
 import com.forum.forum.dao.UserDao;
+import com.forum.forum.dto.QuestionDto;
 import com.forum.forum.dto.TopicDto;
 import com.forum.forum.model.Question;
 import com.forum.forum.model.User;
@@ -23,9 +24,9 @@ public class QuestionService extends AbstarctPostService{
         this.questionDao = questionDao;
     }
 
-    public List<TopicDto> getLastTopics(){
-        return questionDao.findTop10ByOrderByIdDesc().stream()
-                .map(question -> new TopicDto(posted(question.getCreatedAt()), question.getUser().getUsername(), question.getTitle(), question.getDescription()))
+    public List<QuestionDto> getLast4Topics(){
+        return questionDao.findTop4ByOrderByIdDesc().stream()
+                .map(question -> new QuestionDto(posted(question.getCreatedAt()), question.getUser().getUsername(), question.getTitle()))
                 .collect(Collectors.toList());
     }
 }

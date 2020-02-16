@@ -3,6 +3,7 @@ body{
   font-family: 'Roboto', sans-serif;
   padding: 0;
   margin: 0;
+  position: relative;
 }
 .container{
   width: 900px;
@@ -12,7 +13,6 @@ body{
   box-sizing: border-box;
   display: flex;
   padding-top: 72px;
-  padding-bottom: 60px;
   }
 
 .content{
@@ -73,7 +73,7 @@ body{
   background-color: #ddd;
 }
 
-.write, .topics{
+.write, .topics, .popular{
   font-size: 18px;
   text-align: center;
   color: #666;
@@ -83,7 +83,7 @@ body{
   margin-bottom: 20px;
 }
 
-.write a, .topics a{
+.write a, .topics a, .popular-more{
   padding: 5px 8px 6px 8px;
   text-decoration: none;
   background-color: transparent;
@@ -92,10 +92,11 @@ body{
   border-radius: 10px;
 }
 
-.write a:hover, .topics a{
+.write a:hover, .topics a:hover, .popular-more:hover{
   border-color: #0a6641;
   color: #0a6641;
 }
+
 .popular-ask{
   margin: 8px 0;
 }
@@ -104,13 +105,16 @@ body{
   font-size: 14px;
   color: #666;
   margin: 0;
-  justify-content: space-between;
   display: flex;
   align-items: center;
 }
 
 .popular-ask-info p{
   margin: 0;
+}
+
+.popular-list{
+  margin-bottom: 20px;
 }
 
 .popular-likes{
@@ -127,8 +131,10 @@ body{
 
 .ask-content{
   font-size: 16px;
+  color: #000;
   margin: 0;
   padding: 5px 0;
+  text-align: left;
 }
 
 .newest{
@@ -138,17 +144,10 @@ body{
   justify-content: flex-start;
   align-items: center;
   margin-bottom: 20px;
-}
-
-.newest a{
   margin-left: 20px;
-  text-decoration: none;
-  color: #222;
-  font-weight: bold;
-}
-
-.newest a:hover{
-  color: #0a6641;
+    text-decoration: none;
+    color: #222;
+    font-weight: bold;
 }
 
 .topics-list{
@@ -306,3 +305,10 @@ body{
   color: #555;
 }
 
+.vote-info{
+  justify-content: space-between;
+}
+
+.span-space{
+  margin: 0 3px;
+}

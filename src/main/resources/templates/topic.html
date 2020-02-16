@@ -12,43 +12,14 @@
 <body>
 <div th:replace="fragments/elements :: header"></div>
 <div class="container">
-    <form class="write-content" id="question" th:action="@{/write/question}" th:object="${question}" method="post">
-        <p class="write">Write</p>
+    <form class="write-content" th:action="@{/write/topic}" th:object="${topic}" method="post">
         <div class="write-option">
             <div class="write-element">
                 <p>Can't solve a problem or do you want share your knowledge and help somebody?
                     Choose one and ask question or write your own tutorial.</p>
                 <div class="choice-buttons">
-                    <button type="button" name="button" class="topicbutton">Topic</button>
-                    <button type="button" name="button" class="questionbutton">Question</button>
-                </div>
-            </div>
-            <div class="write-element">
-                <p class="tag-paragraph">Tags:</p>
-                <div class="tags-list">
-                    <div th:each="typeelement: ${T(com.forum.forum.Type).values()}" class="type-element">
-                        <input type="checkbox" th:field="*{type}" th:value="${typeelement}" class="visually-hidden" onclick="chooseOne(this)">
-                        <label th:for="${#ids.prev('type')}" class="tag" th:text="${typeelement.displayName}"></label>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <p class="type">Question</p>
-        <input type="text" name="" th:field="*{title}" value="0" placeholder="What's your programming question">
-        <textarea name="name" th:field="*{description}" rows="8" cols="80" placeholder="Describe your problem"></textarea>
-        <input type="submit" name="" value="Post Your Question">
-    </form>
-
-
-    <form class="write-content" id="topic" th:action="@{/write/topic}" th:object="${topic}" method="post">
-        <p class="write">Write</p>
-        <div class="write-option">
-            <div class="write-element">
-                <p>Can't solve a problem or do you want share your knowledge and help somebody?
-                    Choose one and ask question or write your own tutorial.</p>
-                <div class="choice-buttons">
-                    <button type="button" name="button" class="topicbutton">Topic</button>
-                    <button type="button" name="button" class="questionbutton">Question</button>
+                    <a th:href="@{/write/topic}" name="button" class="topicbutton">Topic</a>
+                    <a th:href="@{/write/question}" name="button" class="questionbutton">Question</a>
                 </div>
             </div>
             <div class="write-element">

@@ -20,7 +20,7 @@ public class TopicService extends AbstarctPostService{
         this.topicDao = topicDao;
     }
 
-    public List<TopicDto> getLastTopics(){
+    public List<TopicDto> getLast10Topics(){
         return topicDao.findTop10ByOrderByIdDesc().stream()
                 .map(topic -> new TopicDto(posted(topic.getCreatedAt()), topic.getUser().getUsername(), topic.getTitle(), topic.getDescription()))
                 .collect(Collectors.toList());

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Topics</title>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments.css}">
+    <link rel="stylesheet" th:href="@{/css/write.css}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div th:replace="fragments/elements :: header"></div>
+<div class="container">
+    <form class="write-content" th:action="@{/write/question}" th:object="${question}" method="post">
+        <div class="write-option">
+            <div class="write-element">
+                <p>Can't solve a problem or do you want share your knowledge and help somebody?
+                    Choose one and ask question or write your own tutorial.</p>
+                <div class="choice-buttons">
+                    <a th:href="@{/write/topic}" name="button" class="topicbutton">Topic</a>
+                    <a th:href="@{/write/question}" name="button" class="questionbutton">Question</a>
+                </div>
+            </div>
+            <div class="write-element">
+                <p class="tag-paragraph">Tags:</p>
+                <div class="tags-list">
+                    <div th:each="typeelement: ${T(com.forum.forum.Type).values()}" class="type-element">
+                        <input type="checkbox" th:field="*{type}" th:value="${typeelement}" class="visually-hidden" onclick="chooseOne(this)">
+                        <label th:for="${#ids.prev('type')}" class="tag" th:text="${typeelement.displayName}"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="type">Question</p>
+        <input type="text" name="" th:field="*{title}" value="0" placeholder="What's your programming question">
+        <textarea name="name" th:field="*{description}" rows="8" cols="80" placeholder="Describe your problem"></textarea>
+        <input type="submit" name="" value="Post Your Question">
+    </form>
+</div>
+<div th:replace="fragments/elements :: footer-help"></div>
+<div th:replace="fragments/elements :: footer"></div>
+<script th:src="@{/javascript/elements.js}"></script>
+<script th:src="@{/javascript/write.js}"></script>
+</body>
+</html>

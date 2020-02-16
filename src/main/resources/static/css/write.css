@@ -13,16 +13,6 @@ body{
   padding-top: 72px;
 }
 
-.write{
-  font-family: 'Times New Roman', sans-serif;
-  color: #222;
-  font-size: 36px;
-  font-weight: bold;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #ddd;
-  margin: 10px;
-}
-
 .tag{
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -62,10 +52,6 @@ body{
 @keyframes showwrite {
   from{transform: scale(0.8); opacity: 0}
   to{transform: scale(1); opacity: 1}
-}
-
-#topic{
-  display: none;
 }
 
 .write-content textarea{
@@ -132,7 +118,7 @@ body{
   justify-content: space-around;
 }
 
-.write-option button{
+.write-option a{
   border-radius: 24px;
   background-color: #1c9963;
   color: #fff;
@@ -140,9 +126,10 @@ body{
   cursor: pointer;
   border: none;
   outline: none;
+  text-decoration: none;
 }
 
-.write-option button:hover{
+.write-option a:hover{
   background-color: #0a6641;
 }
 
