@@ -34,10 +34,13 @@
         </div>
         <p class="type">Topic</p>
         <input type="text" name="" th:field="*{title}" placeholder="Title">
+        <div class="errors" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
         <textarea name="name" rows="8" cols="80" th:field="*{description}" placeholder="Description"></textarea>
+        <div class="errors" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
         <div id="add-video">
             <button type="button" id="addbutton" name="button" class="add">&plus; Add Video</button>
         </div>
+        <div class="errors" th:if="${#fields.hasErrors('global')}" th:errors="*{global}"></div>
         <input type="submit" name="" value="Post Your Topic">
     </form>
 </div>

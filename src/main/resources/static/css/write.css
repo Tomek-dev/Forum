@@ -155,3 +155,8 @@ body{
 .add:hover{
   background-color: #ddd;
 }
+
+.errors{
+font-size: 14px;
+color: #bd000d;
+}

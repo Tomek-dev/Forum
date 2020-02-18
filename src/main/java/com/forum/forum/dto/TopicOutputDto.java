@@ -1,25 +1,22 @@
 package com.forum.forum.dto;
 
-public class TopicDto {
+public class TopicOutputDto {
 
-    private String posted;
     private String username;
     private String title;
     private String description;
+    private String type;
+    private String postedAt;
 
-    public TopicDto(String posted, String username, String title, String description) {
-        this.posted = posted;
+    public TopicOutputDto(String username, String title, String description, String type, String postedAt) {
         this.username = username;
         this.title = title;
         this.description = description;
+        this.type = type;
+        this.postedAt = postedAt;
     }
 
-    public String getPosted() {
-        return posted;
-    }
-
-    public void setPosted(String posted) {
-        this.posted = posted;
+    public TopicOutputDto() {
     }
 
     public String getUsername() {
@@ -44,5 +41,21 @@ public class TopicDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getPostedAt() {
+        return postedAt;
+    }
+
+    public void setPostedAt(String postedAt) {
+        this.postedAt = postedAt;
     }
 }

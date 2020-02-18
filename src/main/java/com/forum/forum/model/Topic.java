@@ -12,19 +12,14 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-public class Topic implements Post{
+public class Topic{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(max = 96)
-    @NotNull
-    @NotEmpty
     private String title;
 
-    @NotNull
-    @NotEmpty
     @Column(columnDefinition = "TEXT")
     private String description;
 
@@ -37,7 +32,7 @@ public class Topic implements Post{
 
     private Type type;
 
-    public Topic(@Size(max = 96) @NotNull @NotEmpty String title, @NotNull @NotEmpty String description) {
+    public Topic(String title, String description) {
         this.title = title;
         this.description = description;
         createdAt = createdAtDate();
@@ -89,7 +84,6 @@ public class Topic implements Post{
         return user;
     }
 
-    @Override
     public void setUser(User user) {
         this.user = user;
     }

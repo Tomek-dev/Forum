@@ -5,6 +5,7 @@ body{
   margin: 0;
   position: relative;
 }
+
 .container{
   width: 900px;
   margin-left: auto;
@@ -41,7 +42,7 @@ body{
   padding: 10px 10px 20px 10px;
 }
 
-.community h1, .write h1, .popular h1, .topics h1{
+.community h1, .write h1, .popular h1, .get-start h1{
   color: #222;
   text-align: center;
 }
@@ -73,17 +74,18 @@ body{
   background-color: #ddd;
 }
 
-.write, .topics, .popular{
+.write, .get-start{
   font-size: 18px;
   text-align: center;
   color: #666;
 }
 
-.write p, .topics p{
+.write p, .get-start p{
+  margin-top: 0;
   margin-bottom: 20px;
 }
 
-.write a, .topics a, .popular-more{
+.write a, .get-start a{
   padding: 5px 8px 6px 8px;
   text-decoration: none;
   background-color: transparent;
@@ -92,11 +94,10 @@ body{
   border-radius: 10px;
 }
 
-.write a:hover, .topics a:hover, .popular-more:hover{
+.write a:hover{
   border-color: #0a6641;
   color: #0a6641;
 }
-
 .popular-ask{
   margin: 8px 0;
 }
@@ -105,16 +106,13 @@ body{
   font-size: 14px;
   color: #666;
   margin: 0;
+  justify-content: space-between;
   display: flex;
   align-items: center;
 }
 
 .popular-ask-info p{
   margin: 0;
-}
-
-.popular-list{
-  margin-bottom: 20px;
 }
 
 .popular-likes{
@@ -124,191 +122,182 @@ body{
 }
 
 .popular-ask-info button{
-  padding: 1px;
   font-size: 12px;
   color: #666;
+  background-color: transparent;
+  border: 1px solid #ddd;
+  padding: 2px 4px;
+  cursor: pointer;
 }
 
 .ask-content{
   font-size: 16px;
-  color: #000;
   margin: 0;
   padding: 5px 0;
-  text-align: left;
-}
-
-.newest{
-  font-family: 'Times New Roman', sans-serif;
-  font-size: 26px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-bottom: 20px;
-  margin-left: 20px;
-    text-decoration: none;
-    color: #222;
-    font-weight: bold;
 }
 
 .topics-list{
   width: 100%;
 }
 
-.topic-content{
-  font-size: 18px;
-  padding: 4px 18px;
-}
 
 .topic{
   border-bottom: 1px solid #ddd;
   width: 100%
 }
-.topic-info{
-  padding: 10px;
-  justify-content: space-between;
-  display: flex;
-  align-items: center
+
+.auth-user{
+  margin: 10px 30px;
 }
-.topic-element{
+
+.topic-content{
   display: flex;
   flex-direction: column;
-  text-align: left;
-  position: relative;
-  font-size: 14px;
+  padding: 1px 8px;
+  width: 100%;
+  font-size: 18px;
 }
 
-.user-info{
+.auth-info, .auth-user, .topic-info, .topic{
   display: flex;
   align-items: center;
-  margin: 0px;
-
 }
 
-.follow{
-  border: 1px solid #1c9963;
-  text-decoration: none;
-  color: #1c9963;
-  padding: 2px 5px;
-  border-radius: 5px;
+.auth-info{
+    justify-content: center;
 }
 
-.follow:hover{
-  color: #0a6641;
-  border-color: #0a6641;
-}
-
-.author-username{
-  text-decoration: none;
-  margin-right: 4px;
-  color: #111;
-  text-align: left;
-  font-weight: 500;
-}
-
-.topic-user{
+.auth-option{
+  margin-left: 10px;
   display: flex;
-  justify-content: flex-end;
-  position: relative;
+  flex-direction: column;
 }
 
-.topic-image{
-  width: 40px;
-  height: 40px;
+.auth-image{
+  width: 50px;
+  height: 50px;
   background-color: #000;
-  border-radius: 40px;
-  top: -3px;
-  left: 2px;
-  position: absolute;
+  border-radius: 50px;
 }
 
-.post-at{
-  margin: 0 4px;
-  margin: 0;
-  color: #777;
+.auth-option a{
+  cursor: pointer;
+  color: #666;
+  text-decoration: none;
 }
 
-.topic-option{
-  text-align: left;
-  margin: 4px 2px;
+.user-motto{
+  margin: 4px 0 8px 0;
+  color: #666;
+  text-align: center;
 }
 
-.topic-option button:hover{
-  color: #555;
+.auth-info a{
+  border: 1px solid #ddd;
+  text-decoration: none;
+  text-align: center;
+  padding: 3px 10px;
+  margin: 2px;
 }
 
-.question{
-  padding: 4px 18px;
+.topic-info{
+  padding: 4px;
   display: flex;
   flex-direction: column;
+  margin-right: 20px;
+  align-items: center;
 }
 
-.question-author{
+.topic-info button{
+  text-align: center;
+  border: 1px solid #ddd;
+  outline: none;
+  background-color: transparent;
+  width: 100px;
+  margin: 2px 0;
+}
+
+.auth-info a:hover{
+  border-color: #aaa;
+}
+
+.auth-info p, .topic-info p{
+  color: #666;
+  margin: 2px 0;
+}
+
+.topic-header{
   display: flex;
-  justify-content: space-between;
   align-items: center;
   color: #666;
   font-size: 14px;
-  padding: 0;
-}
-.question-author p,.question-author button{
-  margin: 4px 0;
 }
 
-.thema{
-  font-family: 'Times New Roman', sans-serif;
-  font-size: 24px;
-  padding-bottom: 8px;
-  font-weight: bold;
-  color: #222;
-}
-
-.question-info{
-  display: flex;
-  align-items: center;
-  color: #666;
-  font-size: 14px;
-  justify-content: space-between;
-}
-
-.info-elements{
-  display: flex;
-  align-items: center;
-}
-
-.question-content p{
+.topic-header p{
   margin: 0;
 }
 
-.vote{
-  background-color: transparent;
+.paragraph-topic-content{
+  color: #222;
+  margin: 4px 0;
+  text-decoration: none;
+}
+
+.topic-header a{
+  color: #666;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.topic-header a:hover{
+  text-decoration: underline;
+}
+
+.topic{
+  padding: 4px 0;
+}
+
+.topic-info button:hover{
+  border-color: #bbb;
+}
+
+.topic-user-image{
+  height: 20px;
+  width: 20px;
+  border-radius: 100%;
+  background-color: #000;
+  margin-right: 6px;
+}
+
+.page{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.page a{
+  padding: 1px 6px;
+  border: 1px solid #ddd;
   color: #777;
-  border: 1px solid #777;
-  border-radius: 2px;
+  text-decoration: none;
+  border-radius: 4px;
+  margin: 0 2px;
 }
 
-.vote:hover{
-  border-color: #555;
+.page a:hover{
+  border-color: #bbb;
 }
 
-.button-option{
-  background-color: transparent;
-  border: none;
+.page p{
   color: #777;
-  outline: none;
+  margin: 0 2px;
 }
 
-.icon{
-  margin-right: 5px;
+.authentication, .get-start{
+  padding: 10px 10px 20px 10px;
 }
 
-.icon:hover{
-  color: #555;
-}
-
-.vote-info{
-  justify-content: space-between;
-}
-
-.span-space{
-  margin: 0 3px;
+.get-start{
+  text-align: center;
 }

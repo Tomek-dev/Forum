@@ -17,8 +17,8 @@
             </div>
         </form>
         <div class="auth" sec:authorize="isAnonymous()">
-            <a class="login-trigger" id="login-btn" th:href="@{/login}">Login</a>
-            <a class="get-started-trigger" id="get-started-btn" th:href="@{/get-started}">Get Started</a>
+            <a class="login-trigger" th:href="@{/login}">Login</a>
+            <a class="get-started-trigger" th:href="@{/get-started}">Get Started</a>
         </div>
         <div class="auth" sec:authorize="isAuthenticated()">
             <div class="image">

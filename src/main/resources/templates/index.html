@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Topics</title>
@@ -12,39 +12,36 @@
     <div th:replace="fragments/elements :: header"></div>
     <div class="container">
         <div class="content">
-            <a class="newest">
-                Newest Topics
-            </a>
             <div class="topics-list">
                 <div th:each="topic : ${topics}" class="topic">
-                    <div class="topic-info">
-                        <div class="topic-user">
-                            <div class="topic-image">
-
-                            </div>
-                            <div class="topic-element" style="left: 50px;">
-                                <div class="user-info">
-                                    <a class="author-username" th:text="${topic.getUsername()}" href="#"></a>
-                                    <a class="follow" href="#">Follow</a>
-                                </div>
-                                <p class="post-at">Posted <span th:text="${topic.getPosted()}"></span> ago</p>
-                            </div>
+                        <form class="topic-info" action="index.html" method="post">
+                            <button type="submit" name="button">
+                                <p>Vote</p>
+                                <p>45</p>
+                            </button>
+                            <button type="submit" name="button">
+                                <p>Comment</p>
+                                <p>4</p>
+                            </button>
+                        </form>
+                    <div class="topic-content">
+                        <div class="topic-header">
+                            <div class="topic-user-image"></div>
+                            <p><a href="#" th:text="${topic.getUsername()}"></a> &middot Posted <span th:text="${topic.getPostedAt()}"></span> ago at <a href="#" th:text="${topic.getType()}"></a></p>
                         </div>
-                        <div class="topic-info">
-                            <button class="button-option" type="button" name="like"><i class="fa fa-thumbs-up icon"></i>618</button>
-                            <button class="button-option" type="button" name="unlike"><i class="fa fa-thumbs-down icon"></i>8</button>
-                        </div>
-                    </div>
-
-                    <div class="topic-content" th:text="${topic.getDescription()}">
-
-                    </div>
-                    <div class="topic-option">
-                        <button class="button-option" type="button" name="share"><i class="fa fa-share-alt icon"></i>share</button>
-                        <button class="button-option" type="button" name="comment"><i class="fa fa-comments-o icon"></i>comment</button>
-                        <button class="button-option" type="button" name="save"><i class="fa fa-paperclip icon"></i>save</button>
+                        <a href="" class="paragraph-topic-content" th:text="${topic.getTitle()}"></a>
                     </div>
                 </div>
+            </div>
+            <div class="page">
+                <a href="#">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+                <p>...</p>
+                <a href="#">134</a>
+
             </div>
         </div>
         <div class="sidebar">
@@ -66,29 +63,54 @@
                 </div>
             </div>
             <div class="write">
-                <h1>Questions</h1>
+                <h1>Write</h1>
                 <p>Can't solve a problem?
                     Ask and get solution from other users.</p>
-                <a th:href="@{/write/question}">Ask Question</a>
+                <a href="#">Write</a>
             </div>
             <div class="popular">
-                <h1>Newest Questions</h1>
+                <h1>Getting Popular</h1>
                 <div class="popular-list">
-                    <div class="popular-ask" th:each="question : ${questions}">
-                        <p class="popular-ask-info">Posted by <span class="span-space" th:text="${question.getUsername()}"></span> &middot <span class="span-space" th:text="${question.getPosted()}"></span> ago</p>
-                        <p class="ask-content" th:text="${question.getTitle()}"></p>
-                        <div class="popular-ask-info vote-info">
+                    <div class="popular-ask">
+                        <p class="popular-ask-info">Posted by Andrew Know &middot 3 hours ago</p>
+                        <p class="ask-content">How I can read an .arrow file using C++?</p>
+                        <div class="popular-ask-info">
                             <button type="button" class="vote" name="button">Vote</button>
                             <p>18 votes</p>
                         </div>
                     </div>
                 </div>
-                <a class="popular-more" href="#">See more</a>
             </div>
-            <div class="topics">
-                <h1>Topics</h1>
-                <p>Do you want share your knowledge and help somebody? Write your own tutorial</p>
-                <a th:href="@{/write/topic}">Write Topic</a>
+            <div class="get-start" sec:authorize="isAnonymous()">
+                <h1>Get Started</h1>
+                <p>Register and join to our community. Get answer for mind-boggling questions or help somebody</p>
+                <a th:href="@{/get-started}">Get Started</a>
+            </div>
+            <div class="authentication" sec:authorize="isAuthenticated()">
+                <div class="auth-user">
+                    <div class="auth-image">
+
+                    </div>
+                    <div class="auth-option">
+                        <a href="#" style="color: #222;">Tommy Andre</a>
+                        <a th:href="@{/logout}">logout <i class="fa">&#xf08b;</i></a>
+                    </div>
+                </div>
+                <p class = "user-motto">"coding" Makes you smartest, becouse all can't do it all</p>
+                <div class="auth-info">
+                    <a href="#">
+                        <p>Votes</p>
+                        <p>120</p>
+                    </a>
+                    <a href="#">
+                        <p>Comments</p>
+                        <p>120</p>
+                    </a>
+                    <a href="#">
+                        <p>Posts</p>
+                        <p>120</p>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
