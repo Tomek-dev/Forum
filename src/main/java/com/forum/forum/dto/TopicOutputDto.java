@@ -7,13 +7,15 @@ public class TopicOutputDto {
     private String description;
     private String type;
     private String postedAt;
+    private Long id;
 
-    public TopicOutputDto(String username, String title, String description, String type, String postedAt) {
+    public TopicOutputDto(String username, String title, String description, String type, String postedAt, Long id) {
         this.username = username;
         this.title = title;
         this.description = description;
         this.type = type;
         this.postedAt = postedAt;
+        this.id = id;
     }
 
     public TopicOutputDto() {
@@ -57,5 +59,13 @@ public class TopicOutputDto {
 
     public void setPostedAt(String postedAt) {
         this.postedAt = postedAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

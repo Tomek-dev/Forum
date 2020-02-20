@@ -16,7 +16,7 @@
         <div class="topic-user-info">
             <div class="user-left-side">
                 <div class="user-image"></div>
-                <div class="info">
+                <div class="information">
                     <div class="user-info">
                         <a href="#" th:text="${topic.getUsername()}"></a>
                         <form class="star-form" action="index.html" method="post">
@@ -56,7 +56,7 @@
             </div>
         </div>
     </div>
-    <form class="comment-form" id="comment-id" action="index.html" th:object="${commentInput}" method="post">
+    <form class="comment-form" id="comment-id" th:action="@{/topic/{tid}/comment(tid=${topic.getId()})}" th:object="${commentInput}" method="post">
         <h1>Know answer?</h1>
         <textarea rows="8" cols="80" th:field="*{comment}" placeholder="Your answer"></textarea>
         <input type="submit" name="" value="Answer">

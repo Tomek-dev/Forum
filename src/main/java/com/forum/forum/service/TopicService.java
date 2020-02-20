@@ -1,5 +1,6 @@
 package com.forum.forum.service;
 
+import com.forum.forum.Type;
 import com.forum.forum.dao.CommentDao;
 import com.forum.forum.dao.TopicDao;
 import com.forum.forum.dao.UserDao;
@@ -10,13 +11,11 @@ import com.forum.forum.dto.TopicOutputDto;
 import com.forum.forum.model.Comment;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
+import com.sun.istack.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,22 +43,35 @@ public class TopicService{
 
     }
 
+    public List<TopicOutputDto> getLast15TopicsByType(String type){
+        Optional<String> typeOptional = Arrays.stream(Type.values())
+                .map(Type::getDisplayName)
+                .filter(typeEnum -> typeEnum.equalsIgnoreCase(type))
+                .findFirst();
+        //TODO cast typeOptional to Enum
+        Type foundType = Type.valueOf(typeOptional.orElseThrow(() -> new RuntimeException("Type doesn't exist")));
+        return topicDao.findByType(foundType).stream()
+                .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), posted(topic.getCreatedAt()), topic.getId()))
+                .collect(Collectors.toList());
+    }
+
     public List<TopicOutputDto> getLast15Topics(){
         return topicDao.findTop15ByOrderByIdDesc().stream()
-                .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), posted(topic.getCreatedAt())))
+                .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), posted(topic.getCreatedAt()), topic.getId()))
                 .collect(Collectors.toList());
     }
 
     public TopicOutputDto getTopic(Long id){
         Optional<Topic> topicOptional = topicDao.findById(id);
         Topic foundTopic = topicOptional.orElseThrow(()-> new RuntimeException("Topic doesn't exist"));
-        return new TopicOutputDto(foundTopic.getUser().getUsername(), foundTopic.getTitle(), foundTopic.getDescription(), foundTopic.getType().getDisplayName(), posted(foundTopic.getCreatedAt()));
+        return new TopicOutputDto(foundTopic.getUser().getUsername(), foundTopic.getTitle(), foundTopic.getDescription(), foundTopic.getType().getDisplayName(), posted(foundTopic.getCreatedAt()), foundTopic.getId());
     }
 
     public List<CommentOutputDto> getComments(Long id){
         Optional<Topic> topicOptional = topicDao.findById(id);
         Topic topic = topicOptional.orElseThrow(()-> new RuntimeException("Topic doesn't exist"));
         return topic.getComments().stream()
+                .sorted(Comparator.comparing(Comment::getCreatedAt))
                 .map(comment -> new CommentOutputDto(comment.getComment(), comment.getUser().getUsername(), posted(comment.getCreatedAt())))
                 .collect(Collectors.toList());
     }

@@ -208,20 +208,22 @@ body{
   align-items: center;
 }
 
-.topic-info button{
+.topic-btn{
   text-align: center;
   border: 1px solid #ddd;
   outline: none;
   background-color: transparent;
   width: 100px;
   margin: 2px 0;
+  font-size: 13px;
+  text-decoration: none;
 }
 
 .auth-info a:hover{
   border-color: #aaa;
 }
 
-.auth-info p, .topic-info p{
+.auth-info p, .topic-btn p{
   color: #666;
   margin: 2px 0;
 }
@@ -257,7 +259,7 @@ body{
   padding: 4px 0;
 }
 
-.topic-info button:hover{
+.topic-btn:hover{
   border-color: #bbb;
 }
 

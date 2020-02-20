@@ -15,6 +15,7 @@ body{
   display: flex;
   flex-direction: column;
   color: #222;
+  padding-top: 72px;
 }
 
 .topic{
@@ -60,7 +61,7 @@ body{
   text-decoration: underline;
 }
 
-.info p{
+.information p{
   margin: 0;
 }
 

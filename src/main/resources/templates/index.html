@@ -15,21 +15,21 @@
             <div class="topics-list">
                 <div th:each="topic : ${topics}" class="topic">
                         <form class="topic-info" action="index.html" method="post">
-                            <button type="submit" name="button">
+                            <button class="topic-btn" type="submit" name="button">
                                 <p>Vote</p>
                                 <p>45</p>
                             </button>
-                            <button type="submit" name="button">
+                            <a th:href="@{/topic/{tid}#comment-id(tid=${topic.getId()})}" class="topic-btn">
                                 <p>Comment</p>
                                 <p>4</p>
-                            </button>
+                            </a>
                         </form>
                     <div class="topic-content">
                         <div class="topic-header">
                             <div class="topic-user-image"></div>
                             <p><a href="#" th:text="${topic.getUsername()}"></a> &middot Posted <span th:text="${topic.getPostedAt()}"></span> ago at <a href="#" th:text="${topic.getType()}"></a></p>
                         </div>
-                        <a href="" class="paragraph-topic-content" th:text="${topic.getTitle()}"></a>
+                        <a th:href="@{/topic/{tid}(tid=${topic.getId()})}" class="paragraph-topic-content" th:text="${topic.getTitle()}"></a>
                     </div>
                 </div>
             </div>
@@ -48,25 +48,14 @@
             <div class="community">
                 <h1>Programming Categories</h1>
                 <div class="community-list">
-                    <a href="#"><span class="sharp">#</span>C</a>
-                    <a href="#"><span class="sharp">#</span>Java</a>
-                    <a href="#"><span class="sharp">#</span>Python</a>
-                    <a href="#"><span class="sharp">#</span>JavaScript</a>
-                    <a href="#"><span class="sharp">#</span>Ruby</a>
-                    <a href="#"><span class="sharp">#</span>C#</a>
-                    <a href="#"><span class="sharp">#</span>SQL</a>
-                    <a href="#"><span class="sharp">#</span>PHP</a>
-                    <a href="#"><span class="sharp">#</span>Swift</a>
-                    <a href="#"><span class="sharp">#</span>C++</a>
-                    <a href="#"><span class="sharp">#</span>HTML & CSS</a>
-                    <a href="#"><span class="sharp">#</span>Other</a>
+                    <a th:each="type : ${T(com.forum.forum.Type).values()}"><span class="sharp">#</span><span th:text="${type.getDisplayName()}"></span></a>
                 </div>
             </div>
             <div class="write">
                 <h1>Write</h1>
                 <p>Can't solve a problem?
                     Ask and get solution from other users.</p>
-                <a href="#">Write</a>
+                <a th:href="@{/write}">Write</a>
             </div>
             <div class="popular">
                 <h1>Getting Popular</h1>
