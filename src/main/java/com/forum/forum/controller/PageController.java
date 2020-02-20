@@ -70,9 +70,9 @@ public class PageController {
 
     @GetMapping("/topic/{id}")
     public String getTopic(@PathVariable Long id, Model model){
-        TopicOutputDto topicOutputDto = topicService.getTopic(id);
-        model.addAttribute("topic", topicOutputDto);
-        model.addAttribute("comment", new CommentInputDto());
+        model.addAttribute("topic", topicService.getTopic(id));
+        model.addAttribute("comments", topicService.getComments(id));
+        model.addAttribute("commentInput", new CommentInputDto());
         model.addAttribute("helpMessage", new HelpMessage());
         return "topic";
     }

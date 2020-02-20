@@ -91,6 +91,14 @@ public class TopicServiceTests {
         assertTrue(topic.getComments().contains(savedComment[0]));
         assertEquals(user.getUsername(), savedComment[0].getUser().getUsername());
         assertEquals(topic, savedComment[0].getTopic());
+    }
 
+    @Test(expected = RuntimeException.class)
+    public void shouldThrowException(){
+        //given
+        given(topicDao.findById(Mockito.any())).willReturn(null);
+
+        //when
+        topicService.addComment(new CommentInputDto(), "username", 4l);
     }
 }

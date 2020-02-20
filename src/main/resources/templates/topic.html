@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Topics</title>
     <link rel="stylesheet" th:href="@{/css/fragments.css}">
-    <link rel="stylesheet" th:href="@{/css/write.css}">
+    <link rel="stylesheet" th:href="@{/css/topic.css}">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -12,54 +12,53 @@
 <div th:replace="fragments/elements :: header"></div>
 <div class="container">
     <div class="topic">
-        <h1>Spring Boot 2.0 — Project Structure and Best Practices (Part 2)</h1>
+        <h1 th:text="${topic.getTitle()}"></h1>
         <div class="topic-user-info">
             <div class="user-left-side">
                 <div class="user-image"></div>
                 <div class="info">
                     <div class="user-info">
-                        <a href="#">Andrew</a>
+                        <a href="#" th:text="${topic.getUsername()}"></a>
                         <form class="star-form" action="index.html" method="post">
                             <button type="submit" name="button">Star</button>
                         </form>
                     </div>
-                    <p>Posted 3 hours ago &middot <a class="topic-type" href="#">Java</a></p>
+                    <p>Posted <span th:text="${topic.getPostedAt()}"></span> ago &middot <a class="topic-type" href="#" th:text="${topic.getType()}"></a></p>
                 </div>
             </div>
             <form class="vote" action="index.html" method="post">
                 <button type="submit" class="votebtn" name="button">Vote</button>
             </form>
         </div>
-        <div class="topic-content">
-            In continuation to the first part of the series on Spring Boot v2.0, this is the second and concluding part where we will go through the application project structure along with some important snippets and best practices which should be considered while doing Spring Boot based development.
+        <div class="topic-content" th:text="${topic.getDescription()}">
         </div>
         <div class="topic-option">
-            <a class="comment" href="#"><i class="fa fa-comments-o icon"></i>Comment</a>
+            <a class="comment" href="#comment-id"><i class="fa fa-comments-o icon"></i>Comment</a>
             <a class="report" href="#"><i class="fa fa-exclamation"></i></a>
         </div>
     </div>
     <div class="comments-list">
-        <div class="comment-element">
+        <div class="comment-element" th:each="comment : ${comments}">
             <div class="comment-info">
                 <div class="comment-user">
                     <div class="comment-user-image"></div>
-                    <a href="#">Tommy</a>
+                    <a href="#" th:text="${comment.getUsername()}"></a>
                 </div>
-                <p class="stars">13<i class="fa fa-star"></i></p>
+                <p class="stars">Stars: 13<i class="fa fa-star"></i></p>
                 <form class="comment-likes" action="index.html" method="post">
                     <button class="button-option" type="button" name="like"><i class="fa fa-thumbs-up icon"></i>618</button>
                     <button class="button-option" type="button" name="unlike"><i class="fa fa-thumbs-down icon"></i>8</button>
                 </form>
             </div>
             <div class="comment-content">
-                <div class="comment-info-posted"><p class="posted">Posted 3 hours ago at <a href="#">Java</a></p></div>
-                <p>the main problem is that result of /= operator should be stored somewhere, result of sum1+sum2 does not provide such storage. To make this code work, you need to store sum1+sum2 into some temp variable, so replace the main problem is that result of /= operator should be stored somewhere, result of sum1+sum2 does not provide such storage. To make this code work, you need to store sum1+sum2 into some temp variable, so replace</p>
+                <p class="comment-info-posted">Posted <span th:text="${comment.getPostedAt()}"></span> ago</p>
+                <p th:text="${comment.getComment()}"></p>
             </div>
         </div>
     </div>
-    <form class="comment-form" action="index.html" method="post">
+    <form class="comment-form" id="comment-id" action="index.html" th:object="${commentInput}" method="post">
         <h1>Know answer?</h1>
-        <textarea rows="8" cols="80" placeholder="Your answer"></textarea>
+        <textarea rows="8" cols="80" th:field="*{comment}" placeholder="Your answer"></textarea>
         <input type="submit" name="" value="Answer">
     </form>
 </div>

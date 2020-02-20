@@ -254,10 +254,11 @@ body{
 .comment-info-posted{
   font-size: 14px;
   color: #666;
+  padding-top: 6px;
 }
 
 .stars{
-  padding: 2px 0;
+  padding: 4px 0 2px 0;
   color: #666;
   text-align: center;
   font-size: 13px;
@@ -277,11 +278,3 @@ body{
   padding-right: 20px;
 }
 
-.comment-info-posted a{
-  text-decoration: none;
-  color: #666;
-}
-
-.comment-info-posted a:hover{
-  text-decoration: underline;
-}

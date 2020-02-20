@@ -4,6 +4,7 @@ import com.forum.forum.dao.CommentDao;
 import com.forum.forum.dao.TopicDao;
 import com.forum.forum.dao.UserDao;
 import com.forum.forum.dto.CommentInputDto;
+import com.forum.forum.dto.CommentOutputDto;
 import com.forum.forum.dto.TopicInputDto;
 import com.forum.forum.dto.TopicOutputDto;
 import com.forum.forum.model.Comment;
@@ -50,22 +51,31 @@ public class TopicService{
     }
 
     public TopicOutputDto getTopic(Long id){
-        Optional<Topic> topic = topicDao.findById(id);
-        //TODO
-        return new TopicOutputDto(topic.get().getUser().getUsername(), topic.get().getTitle(), topic.get().getDescription(), topic.get().getType().getDisplayName(), posted(topic.get().getCreatedAt()));
+        Optional<Topic> topicOptional = topicDao.findById(id);
+        Topic foundTopic = topicOptional.orElseThrow(()-> new RuntimeException("Topic doesn't exist"));
+        return new TopicOutputDto(foundTopic.getUser().getUsername(), foundTopic.getTitle(), foundTopic.getDescription(), foundTopic.getType().getDisplayName(), posted(foundTopic.getCreatedAt()));
+    }
+
+    public List<CommentOutputDto> getComments(Long id){
+        Optional<Topic> topicOptional = topicDao.findById(id);
+        Topic topic = topicOptional.orElseThrow(()-> new RuntimeException("Topic doesn't exist"));
+        return topic.getComments().stream()
+                .map(comment -> new CommentOutputDto(comment.getComment(), comment.getUser().getUsername(), posted(comment.getCreatedAt())))
+                .collect(Collectors.toList());
     }
 
     public void addComment(CommentInputDto commentInputDto, String username, Long id){
         User user = userDao.findByUsername(username);
-        Optional<Topic> topic = topicDao.findById(id);
+        Optional<Topic> topicOptional = topicDao.findById(id);
+        Topic topic = topicOptional.orElseThrow(() -> new RuntimeException("Topic doesn't exist"));
         Comment comment = new Comment(commentInputDto.getComment());
-        comment.setTopic(topic.get());
+        comment.setTopic(topic);
         comment.setUser(user);
         user.getComments().add(comment);
-        topic.get().getComments().add(comment);
+        topic.getComments().add(comment);
         commentDao.save(comment);
         userDao.save(user);
-        topicDao.save(topic.get());
+        topicDao.save(topic);
     }
 
     private String posted(Date postedDate){
