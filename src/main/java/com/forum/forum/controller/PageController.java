@@ -1,8 +1,10 @@
 package com.forum.forum.controller;
 
 import com.forum.forum.dao.HelpMessageDao;
+import com.forum.forum.dto.CommentInputDto;
 import com.forum.forum.dto.TopicInputDto;
 import com.forum.forum.dto.TopicOutputDto;
+import com.forum.forum.model.Comment;
 import com.forum.forum.model.HelpMessage;
 import com.forum.forum.model.User;
 import com.forum.forum.service.TopicService;
@@ -13,10 +15,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class PageController {
@@ -51,16 +55,35 @@ public class PageController {
     public String getWriteTopic(Model model){
         model.addAttribute("topic", new TopicInputDto());
         model.addAttribute("helpMessage", new HelpMessage());
-        return "topic";
+        return "write";
     }
 
     @PostMapping("/write")
     public String writeTopic(@Valid TopicInputDto topicInputDto, @ModelAttribute("helpMessage") HelpMessage helpMessage, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return "topic";
+            return "write";
         }
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         topicService.addTopic(topicInputDto, ((User) principal).getUsername());
         return "redirect:/";
+    }
+
+    @GetMapping("/topic/{id}")
+    public String getTopic(@PathVariable Long id, Model model){
+        TopicOutputDto topicOutputDto = topicService.getTopic(id);
+        model.addAttribute("topic", topicOutputDto);
+        model.addAttribute("comment", new CommentInputDto());
+        model.addAttribute("helpMessage", new HelpMessage());
+        return "topic";
+    }
+
+    @PostMapping("/topic/{id}/comment")
+    public String addComment(@PathVariable Long id, @Valid CommentInputDto commentInputDto, @ModelAttribute("helpMessage") HelpMessage helpMessage, BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            return "topic";
+        }
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        topicService.addComment(commentInputDto, ((User) principal).getUsername(), id);
+        return "topic";
     }
 }

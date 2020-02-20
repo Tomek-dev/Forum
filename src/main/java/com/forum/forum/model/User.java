@@ -30,6 +30,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<Topic> topics = new HashSet<>();
 
+    @OneToMany(mappedBy = "user")
+    private Set<Comment> comments = new HashSet<>();
+
     private Date createdAt;
 
     public User(String username, String email, String password, String role) {
@@ -108,6 +111,14 @@ public class User implements UserDetails {
 
     public void setTopics(Set<Topic> topics) {
         this.topics = topics;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
     private Date createdAtDate(){

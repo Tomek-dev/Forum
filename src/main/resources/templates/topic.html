@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Topics</title>
-    <link rel="stylesheet" th:href="@{/css/index.css}">
     <link rel="stylesheet" th:href="@{/css/fragments.css}">
     <link rel="stylesheet" th:href="@{/css/write.css}">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
@@ -12,36 +11,56 @@
 <body>
 <div th:replace="fragments/elements :: header"></div>
 <div class="container">
-    <form class="write-content" th:action="@{/write/topic}" th:object="${topic}" method="post">
-        <div class="write-option">
-            <div class="write-element">
-                <p>Can't solve a problem or do you want share your knowledge and help somebody?
-                    Choose one and ask question or write your own tutorial.</p>
-                <div class="choice-buttons">
-                    <a th:href="@{/write/topic}" name="button" class="topicbutton">Topic</a>
-                    <a th:href="@{/write/question}" name="button" class="questionbutton">Question</a>
-                </div>
-            </div>
-            <div class="write-element">
-                <p class="tag-paragraph">Tags:</p>
-                <div class="tags-list">
-                    <div th:each="typeelement: ${T(com.forum.forum.Type).values()}" class="type-element">
-                        <input type="checkbox" th:field="*{type}" th:value="${typeelement}" class="visually-hidden" onclick="chooseOne(this)">
-                        <label th:for="${#ids.prev('type')}" class="tag" th:text="${typeelement.displayName}"></label>
+    <div class="topic">
+        <h1>Spring Boot 2.0 — Project Structure and Best Practices (Part 2)</h1>
+        <div class="topic-user-info">
+            <div class="user-left-side">
+                <div class="user-image"></div>
+                <div class="info">
+                    <div class="user-info">
+                        <a href="#">Andrew</a>
+                        <form class="star-form" action="index.html" method="post">
+                            <button type="submit" name="button">Star</button>
+                        </form>
                     </div>
+                    <p>Posted 3 hours ago &middot <a class="topic-type" href="#">Java</a></p>
                 </div>
             </div>
+            <form class="vote" action="index.html" method="post">
+                <button type="submit" class="votebtn" name="button">Vote</button>
+            </form>
         </div>
-        <p class="type">Topic</p>
-        <input type="text" name="" th:field="*{title}" placeholder="Title">
-        <div class="errors" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
-        <textarea name="name" rows="8" cols="80" th:field="*{description}" placeholder="Description"></textarea>
-        <div class="errors" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
-        <div id="add-video">
-            <button type="button" id="addbutton" name="button" class="add">&plus; Add Video</button>
+        <div class="topic-content">
+            In continuation to the first part of the series on Spring Boot v2.0, this is the second and concluding part where we will go through the application project structure along with some important snippets and best practices which should be considered while doing Spring Boot based development.
         </div>
-        <div class="errors" th:if="${#fields.hasErrors('global')}" th:errors="*{global}"></div>
-        <input type="submit" name="" value="Post Your Topic">
+        <div class="topic-option">
+            <a class="comment" href="#"><i class="fa fa-comments-o icon"></i>Comment</a>
+            <a class="report" href="#"><i class="fa fa-exclamation"></i></a>
+        </div>
+    </div>
+    <div class="comments-list">
+        <div class="comment-element">
+            <div class="comment-info">
+                <div class="comment-user">
+                    <div class="comment-user-image"></div>
+                    <a href="#">Tommy</a>
+                </div>
+                <p class="stars">13<i class="fa fa-star"></i></p>
+                <form class="comment-likes" action="index.html" method="post">
+                    <button class="button-option" type="button" name="like"><i class="fa fa-thumbs-up icon"></i>618</button>
+                    <button class="button-option" type="button" name="unlike"><i class="fa fa-thumbs-down icon"></i>8</button>
+                </form>
+            </div>
+            <div class="comment-content">
+                <div class="comment-info-posted"><p class="posted">Posted 3 hours ago at <a href="#">Java</a></p></div>
+                <p>the main problem is that result of /= operator should be stored somewhere, result of sum1+sum2 does not provide such storage. To make this code work, you need to store sum1+sum2 into some temp variable, so replace the main problem is that result of /= operator should be stored somewhere, result of sum1+sum2 does not provide such storage. To make this code work, you need to store sum1+sum2 into some temp variable, so replace</p>
+            </div>
+        </div>
+    </div>
+    <form class="comment-form" action="index.html" method="post">
+        <h1>Know answer?</h1>
+        <textarea rows="8" cols="80" placeholder="Your answer"></textarea>
+        <input type="submit" name="" value="Answer">
     </form>
 </div>
 <div th:replace="fragments/elements :: footer-help"></div>
