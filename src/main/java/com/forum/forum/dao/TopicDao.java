@@ -13,4 +13,5 @@ public interface TopicDao extends JpaRepository<Topic, Long>{
     List<Topic> findByIdBetweenOrderByIdDesc(long start, long end);
     List<Topic> findByTypeOrderByIdDesc(Type type);
     List<Topic> findByTypeAndIdBetweenOrderByIdDesc(Type type, long start, long end);
+    long countByType(Type type);
 }

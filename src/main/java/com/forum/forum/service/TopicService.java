@@ -75,6 +75,25 @@ public class TopicService{
                 .collect(Collectors.toList());
     }
 
+    public List<TopicOutputDto> getTopicByPageAndType(String type, long page){
+        Optional<Type> typeOptional = Arrays.stream(Type.values())
+                .filter(typeElement -> typeElement.toString().toLowerCase().equals(type))
+                .findFirst();
+        Type foundType = typeOptional.orElseThrow(() -> new RuntimeException("Type doesn't exist"));
+        final long count = topicDao.countByType(foundType);
+        if (page < 1 || page > Math.ceil((double) count/15)){
+            throw new IndexOutOfBoundsException("Page out of bounds");
+        }
+        if(count < 15){
+            return topicDao.findByTypeAndIdBetweenOrderByIdDesc(foundType, 1, count).stream()
+                    .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), posted(topic.getCreatedAt()), topic.getId()))
+                    .collect(Collectors.toList());
+        }
+        return topicDao.findByTypeAndIdBetweenOrderByIdDesc(foundType, (count-(page*15) > 0? count-(page*15) : 1), count-((page-1)*15)).stream()
+                .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), posted(topic.getCreatedAt()), topic.getId()))
+                .collect(Collectors.toList());
+    }
+
     public TopicOutputDto getTopic(Long id){
         Optional<Topic> topicOptional = topicDao.findById(id);
         Topic foundTopic = topicOptional.orElseThrow(()-> new RuntimeException("Topic doesn't exist"));
@@ -106,6 +125,14 @@ public class TopicService{
 
     public long getPageListSize(){
         return (long) Math.ceil((double) topicDao.count()/15);
+    }
+
+    public long getPageListSizeByType(String type){
+        Optional<Type> typeOptional = Arrays.stream(Type.values())
+                .filter(typeElement -> typeElement.toString().toLowerCase().equals(type))
+                .findFirst();
+        Type foundType = typeOptional.orElseThrow(() -> new RuntimeException("Type doesn't exist"));
+        return (long) Math.ceil((double) topicDao.countByType(foundType)/15);
     }
 
     private String posted(Date postedDate){

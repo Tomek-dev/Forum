@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,8 +34,7 @@ public class PageController {
 
     @GetMapping("/")
     public String getHome(Model model){
-        List<TopicOutputDto> topics = topicService.getLast15Topics();
-        model.addAttribute("topics", topics);
+        model.addAttribute("topics", topicService.getLast15Topics());
         model.addAttribute("helpMessage", new HelpMessage());
         model.addAttribute("pageListSize", topicService.getPageListSize());
         model.addAttribute("pageId", 1);
@@ -42,24 +42,27 @@ public class PageController {
     }
 
     @GetMapping("/page")
-    public String getHome(@RequestParam Long id, Model model){
-        List<TopicOutputDto> topics = topicService.getTopicByPage(id);
-        model.addAttribute("topics", topics);
+    public String getHomeWithType(@RequestParam(required = false) String type, @RequestParam(required = false) Long id, Model model){
         model.addAttribute("helpMessage", new HelpMessage());
-        model.addAttribute("pageListSize", topicService.getPageListSize());
-        model.addAttribute("pageId", id);
-        return "index";
-    }
-
-    @GetMapping("/topic")
-    public String getHomeWithType(@RequestParam("type") String type, @RequestParam(required = false) Long id, Model model){
-        if(id == null){
-            id = 1L;
+        if(id == null && type == null){
+            return "redirect:/";
         }
-        List<TopicOutputDto> topics = topicService.getLast15TopicsByType(type);
-        model.addAttribute("topics", topics);
-        model.addAttribute("helpMessage", new HelpMessage());
+        if(type != null && id != null){
+            model.addAttribute("topics", topicService.getTopicByPageAndType(type, id));
+            model.addAttribute("pageListSize", topicService.getPageListSizeByType(type));
+            model.addAttribute("pageId", id);
+            model.addAttribute("typeEnum", type);
+            return "index";
+        }
+        if(id == null){
+            model.addAttribute("pageId", 1);
+            model.addAttribute("typeEnum", type);
+            model.addAttribute("pageListSize", topicService.getPageListSizeByType(type));
+            model.addAttribute("topics", topicService.getLast15TopicsByType(type));
+            return "index";
+        }
         model.addAttribute("pageListSize", topicService.getPageListSize());
+        model.addAttribute("topics", topicService.getTopicByPage(id));
         model.addAttribute("pageId", id);
         return "index";
     }
