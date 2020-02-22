@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public interface TopicDao extends JpaRepository<Topic, Long>{
     List<Topic> findTop15ByOrderByIdDesc();
-    //TODO to change *test version*
-    List<Topic> findByType(Type type);
+    List<Topic> findByIdBetweenOrderByIdDesc(long start, long end);
+    List<Topic> findByTypeOrderByIdDesc(Type type);
+    List<Topic> findByTypeAndIdBetweenOrderByIdDesc(Type type, long start, long end);
 }

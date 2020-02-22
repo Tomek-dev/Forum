@@ -101,4 +101,18 @@ public class TopicServiceTests {
         //when
         topicService.addComment(new CommentInputDto(), "username", 4l);
     }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void shouldThrowIndexOutOfBoundsExceptionByPageUnderOne(){
+        topicService.getTopicByPage(-1);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void shouldThrowIndexOutOfBoundsExceptionByPageLargerThanPageList(){
+        //given
+        given(topicDao.count()).willReturn(30L);
+
+        //when
+        topicService.getTopicByPage(4);
+    }
 }

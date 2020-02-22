@@ -36,14 +36,31 @@ public class PageController {
         List<TopicOutputDto> topics = topicService.getLast15Topics();
         model.addAttribute("topics", topics);
         model.addAttribute("helpMessage", new HelpMessage());
+        model.addAttribute("pageListSize", topicService.getPageListSize());
+        model.addAttribute("pageId", 1);
+        return "index";
+    }
+
+    @GetMapping("/page")
+    public String getHome(@RequestParam Long id, Model model){
+        List<TopicOutputDto> topics = topicService.getTopicByPage(id);
+        model.addAttribute("topics", topics);
+        model.addAttribute("helpMessage", new HelpMessage());
+        model.addAttribute("pageListSize", topicService.getPageListSize());
+        model.addAttribute("pageId", id);
         return "index";
     }
 
     @GetMapping("/topic")
-    public String getHomeWithType(@RequestParam("type") String type, Model model){
+    public String getHomeWithType(@RequestParam("type") String type, @RequestParam(required = false) Long id, Model model){
+        if(id == null){
+            id = 1L;
+        }
         List<TopicOutputDto> topics = topicService.getLast15TopicsByType(type);
         model.addAttribute("topics", topics);
         model.addAttribute("helpMessage", new HelpMessage());
+        model.addAttribute("pageListSize", topicService.getPageListSize());
+        model.addAttribute("pageId", id);
         return "index";
     }
 

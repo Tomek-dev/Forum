@@ -40,23 +40,37 @@ public class TopicService{
         user.getTopics().add(topic);
         userDao.save(user);
         topicDao.save(topic);
-
     }
 
     public List<TopicOutputDto> getLast15TopicsByType(String type){
-        Optional<String> typeOptional = Arrays.stream(Type.values())
-                .map(Type::getDisplayName)
-                .filter(typeEnum -> typeEnum.equalsIgnoreCase(type))
+        Optional<Type> typeOptional = Arrays.stream(Type.values())
+                .filter(typeEnum -> typeEnum.toString().toLowerCase().equals(type))
                 .findFirst();
-        //TODO cast typeOptional to Enum
-        Type foundType = Type.valueOf(typeOptional.orElseThrow(() -> new RuntimeException("Type doesn't exist")));
-        return topicDao.findByType(foundType).stream()
+        //TODO
+        Type foundType = typeOptional.orElseThrow(() -> new RuntimeException("Type doesn't exist"));
+        return topicDao.findByTypeOrderByIdDesc(foundType).stream()
                 .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), posted(topic.getCreatedAt()), topic.getId()))
                 .collect(Collectors.toList());
     }
 
     public List<TopicOutputDto> getLast15Topics(){
         return topicDao.findTop15ByOrderByIdDesc().stream()
+                .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), posted(topic.getCreatedAt()), topic.getId()))
+                .collect(Collectors.toList());
+    }
+
+    public List<TopicOutputDto> getTopicByPage(long page){
+        final long count = topicDao.count();
+        if(page < 1 || page> Math.ceil((double) count/15)){
+            //TODO
+            throw new IndexOutOfBoundsException("Page out of bounds");
+        }
+        if(count <= 15){
+            return topicDao.findByIdBetweenOrderByIdDesc(1, count).stream()
+                    .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), posted(topic.getCreatedAt()), topic.getId()))
+                    .collect(Collectors.toList());
+        }
+        return topicDao.findByIdBetweenOrderByIdDesc((count-(page*15) > 0 ? count-(page*15): 1), count-((page-1)*15)).stream()
                 .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), posted(topic.getCreatedAt()), topic.getId()))
                 .collect(Collectors.toList());
     }
@@ -88,6 +102,10 @@ public class TopicService{
         commentDao.save(comment);
         userDao.save(user);
         topicDao.save(topic);
+    }
+
+    public long getPageListSize(){
+        return (long) Math.ceil((double) topicDao.count()/15);
     }
 
     private String posted(Date postedDate){
