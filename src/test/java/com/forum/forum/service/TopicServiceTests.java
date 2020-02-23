@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -102,17 +103,132 @@ public class TopicServiceTests {
         topicService.addComment(new CommentInputDto(), "username", 4l);
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
-    public void shouldThrowIndexOutOfBoundsExceptionByPageUnderOne(){
-        topicService.getTopicByPage(-1);
+    @Test
+    public void shouldThrowRunTimeException(){
+        assertThrows(RuntimeException.class, () -> topicService.getLast15TopicsByType("test"));
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
-    public void shouldThrowIndexOutOfBoundsExceptionByPageLargerThanPageList(){
+    @Test
+    public void shouldReturnTop15TopicsByType(){
+        //when
+        topicService.getLast15TopicsByType("java");
+
+        //then
+        verify(topicDao).findTop15ByTypeOrderByIdDesc(Type.JAVA);
+    }
+
+    @Test
+    public void shouldReturnListOfTopicOutputDto(){
+        //when
+        topicService.getLast15Topics();
+
+        //then
+        verify(topicDao).findTop15ByOrderByIdDesc();
+    }
+
+    @Test
+    public void shouldThrowIndexOutOfBoundsException(){
+        //given
+        given(topicDao.count()).willReturn(30L);
+
+        //then
+        assertThrows(IndexOutOfBoundsException.class, () -> topicService.get15TopicByPage(3));
+        assertThrows(IndexOutOfBoundsException.class, () -> topicService.get15TopicByPage(-1));
+    }
+
+    @Test
+    public void shouldReturnListOfTopicOutputDtoByPage(){
         //given
         given(topicDao.count()).willReturn(30L);
 
         //when
-        topicService.getTopicByPage(4);
+        topicService.get15TopicByPage(1);
+
+        //then
+        verify(topicDao).findByIdBetweenOrderByIdDesc(16, 30);
+    }
+
+    @Test
+    public void shouldInitGetLast15Topics(){
+        //given
+        given(topicDao.count()).willReturn(12L);
+
+        //when
+        topicService.get15TopicByPage(1);
+
+        //then
+        verify(topicDao).findTop15ByOrderByIdDesc();
+    }
+
+    @Test
+    public void shouldThrowUsernameNotFoundException(){
+        //given
+        given(userDao.findByUsername(Mockito.any())).willReturn(null);
+
+        assertThrows(UsernameNotFoundException.class, () -> topicService.getLast15TopicsByUsername("user"));
+    }
+
+    @Test
+    public void shouldReturnTopicProfileDtoByUsername(){
+        //given
+        User user = new User();
+        user.setUsername("user");
+        Topic topic = new Topic();
+        topic.setUser(user);
+        topic.setTitle("title");
+        user.getTopics().add(topic);
+        given(userDao.findByUsername(Mockito.any())).willReturn(user);
+
+        //when
+        topicService.getLast15TopicsByUsername("user");
+
+        //then
+        assertEquals("title", topicService.getLast15TopicsByUsername("user").get(0).getTitle());
+        assertEquals(0, topicService.getLast15TopicsByUsername("user").get(0).getCommentsCount());
+    }
+
+    @Test
+    public void shouldReturnTopicProfileDtoOfCommentedTopicByUsername(){
+        //given
+        Comment comment = new Comment();
+        Topic topic = new Topic();
+        User user = new User();
+        user.setUsername("user");
+        user.getTopics().add(topic);
+        user.getComments().add(comment);
+        comment.setUser(user);
+        comment.setTopic(topic);
+        topic.setUser(user);
+        topic.setTitle("title");
+        topic.getComments().add(comment);
+
+        given(userDao.findByUsername(Mockito.any())).willReturn(user);
+
+        //then
+        assertEquals("title", topicService.getLast15CommentedTopicsByUsername("user").get(0).getTitle());
+        assertEquals("user", topicService.getLast15CommentedTopicsByUsername("user").get(0).getUsername());
+        assertEquals(1, topicService.getLast15CommentedTopicsByUsername("user").get(0).getCommentsCount());
+    }
+
+    @Test
+    public void shouldGetCommentsByTopic(){
+        //given
+        Topic topic = new Topic();
+        Comment comment = new Comment();
+        User user = new User();
+        user.setUsername("user");
+        comment.setComment("comment");
+        comment.setUser(user);
+        topic.getComments().add(comment);
+        given(topicDao.findById(Mockito.any())).willReturn(java.util.Optional.of(topic));
+
+        //then
+        assertEquals("comment", topicService.getComments(1L).get(0).getComment());
+        assertEquals("user", topicService.getComments(1L).get(0).getUsername());
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void shouldThrowTopicNotFoundException(){
+        given(topicDao.findById(Mockito.any())).willReturn(null);
     }
 }

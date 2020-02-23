@@ -3,8 +3,6 @@ package com.forum.forum.controller;
 import com.forum.forum.dao.HelpMessageDao;
 import com.forum.forum.dto.CommentInputDto;
 import com.forum.forum.dto.TopicInputDto;
-import com.forum.forum.dto.TopicOutputDto;
-import com.forum.forum.model.Comment;
 import com.forum.forum.model.HelpMessage;
 import com.forum.forum.model.User;
 import com.forum.forum.service.TopicService;
@@ -16,9 +14,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class PageController {
@@ -48,7 +43,7 @@ public class PageController {
             return "redirect:/";
         }
         if(type != null && id != null){
-            model.addAttribute("topics", topicService.getTopicByPageAndType(type, id));
+            model.addAttribute("topics", topicService.get15TopicByPageAndType(type, id));
             model.addAttribute("pageListSize", topicService.getPageListSizeByType(type));
             model.addAttribute("pageId", id);
             model.addAttribute("typeEnum", type);
@@ -62,7 +57,7 @@ public class PageController {
             return "index";
         }
         model.addAttribute("pageListSize", topicService.getPageListSize());
-        model.addAttribute("topics", topicService.getTopicByPage(id));
+        model.addAttribute("topics", topicService.get15TopicByPage(id));
         model.addAttribute("pageId", id);
         return "index";
     }

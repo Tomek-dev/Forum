@@ -12,11 +12,9 @@ import java.util.List;
 @Repository
 public interface TopicDao extends JpaRepository<Topic, Long>{
     List<Topic> findTop15ByOrderByIdDesc();
-    List<Topic> findByIdBetweenOrderByIdDesc(long start, long end);
-    List<Topic> findByTypeOrderByIdDesc(Type type);
-    List<Topic> findByTypeAndIdBetweenOrderByIdDesc(Type type, long start, long end);
-    List<Topic> findByUserAndIdBetweenOrderByIdDesc(User user, long start, long end);
-    List<Topic> findTop15ByUserOrderByIdDesc(User user);
+    List<Topic> findByIdBetweenOrderByIdDesc(long start, long end); //TODO to change
+    List<Topic> findTop15ByTypeOrderByIdDesc(Type type);
+    List<Topic> findByTypeAndIdBetweenOrderByIdDesc(Type type, long start, long end); //TODO to change
+    List<Topic> findByUserAndIdBetweenOrderByIdDesc(User user, long start, long end); //TODO to change
     long countByType(Type type);
-    Topic findByComment(Comment comment);
 }

@@ -39,45 +39,43 @@
         </div>
         <div class="user-footer">
             <div class="user-left">
-                <a href="#">Topics</a>
-                <a href="#">Comments</a>
-                <a href="#">Votes</a>
+                <a th:href="@{/profile/{user}(user=${username},value=topic)}">Topics</a>
+                <a th:href="@{/profile/{user}(user=${username},value=comment)}">Comments</a>
+                <a th:href="@{/profile/{user}(user=${username},value=vote)}">Votes</a>
             </div>
             <a href="#" class="report"><i class="fa fa-exclamation"></i></a>
             <a th:if="${#authentication.getPrincipal().getUser().getUsername() == userOutputDto.getUsername()}" href="#" class="edit"><i class="fa fa-edit"></i></a>
         </div>
     </div>
     <div th:if="${param.value == topic}" class="topic-list">
-        <div class="topic">
+        <div th:each="topic : ${topics}" class="topic">
             <p class="topic-icon">T</p>
-            <a href="" class="topic-title">TXT file can be downloaded using stream on Heroku but fails for PDF files - NodeJS, Heroku </a>
+            <a href="" class="topic-title" th:text="topic.getTitle()"></a>
             <div class="topic-info">
-                <p>11 May '2019</p>
-                <p>10 Votes  4 Comments</p>
+                <p th:text="topic.getCreatedAt()"></p>
+                <p>10 Votes  <span th:text="topic.getCommentsCount()"></span> Comments</p>
             </div>
         </div>
     </div>
     <div th:if="${param.value == comment}" class="topic-list">
-        <div class="topic">
+        <div th:each="topic : ${topics}" class="topic">
             <p class="comment-icon"><i class="fa fa-comments-o icon"></i></p>
-            <a href="" class="topic-title">TXT file can be downloaded using stream on Heroku but fails for PDF files - NodeJS, Heroku </a>
+            <a href="" class="topic-title" th:text="topic.getTitle()"></a>
             <div class="topic-info">
-                <p>Posted by <a href="#">Mathew</a></p>
-                <p>11 May '2019</p>
-            </div>
+                <p>Posted by <a href="#" th:text="topic.getUsername()"></a></p>
+                <p th:text="topic.getCreatedAt()"></p>            </div>
         </div>
     </div>
     <div th:if="${param.value == vote}" class="topic-list">
-        <div class="topic">
+        <div th:each="topic : ${topics}" class="topic">
             <p class="vote-icon">Vote</p>
-            <a href="" class="topic-title">TXT file can be downloaded using stream on Heroku but fails for PDF files - NodeJS, Heroku </a>
+            <a href="" class="topic-title" th:text="topic.getTitle()"></a>
             <div class="topic-info">
-                <p>Posted by <a href="#">Mathew</a></p>
-                <p>11 May '2019</p>
-            </div>
+                <p>Posted by <a href="#" th:text="topic.getUsername()"></a></p>
+                <p th:text="topic.getCreatedAt()"></p>            </div>
         </div>
     </div>
-    <div class="topic-list">
+    <div class="topic-list" th:if="${topics.size() == 0}">
         <p class="blank">There arent't comment yet</p>
     </div>
     <div class="page" th:if="${pageListSize > 0}">

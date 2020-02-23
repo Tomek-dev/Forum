@@ -1,5 +1,6 @@
 package com.forum.forum.controller;
 
+import com.forum.forum.dao.HelpMessageDao;
 import com.forum.forum.model.HelpMessage;
 import com.forum.forum.service.TopicService;
 import com.forum.forum.service.UserService;
@@ -16,19 +17,19 @@ public class ProfileController {
     //TODO write all tests, add urls to front, findbyusername ignore case
 
     private TopicService topicService;
-    private HelpMessage helpMessage;
+    private HelpMessageDao helpMessageDao;
     private UserService userService;
 
     @Autowired
-    public ProfileController(TopicService topicService, HelpMessage helpMessage, UserService userService) {
+    public ProfileController(TopicService topicService, HelpMessageDao helpMessageDao, UserService userService) {
         this.topicService = topicService;
-        this.helpMessage = helpMessage;
+        this.helpMessageDao = helpMessageDao;
         this.userService = userService;
     }
 
     @GetMapping("/profile/{user}")
     public String getProfile(@PathVariable("user") String user, @RequestParam(required = false) String value, @RequestParam(required = false) Long id, Model model){
-        model.addAttribute("user", user);
+        model.addAttribute("username", user);
         model.addAttribute("userOutputDto", userService.getUserByUserName(user));
         model.addAttribute("helpMessage", new HelpMessage());
         model.addAttribute("pageId", (id == null? 1: id));
@@ -37,19 +38,15 @@ public class ProfileController {
             return "/profile/" + user + "?value=topic";
         }
         if(value.equals("topic")){
-            model.addAttribute("topics", (id == null ? topicService.getLast15TopicsByUsername(user): topicService.getTopicByPageAndUsername(id, user)));
-            model.addAttribute("pageListSize", topicService.getPageListSizeByUsername(user));
+            model.addAttribute("topics", (id == null ? topicService.getLast15TopicsByUsername(user): topicService.get15TopicsByPageAndUsername(id, user)));
+            model.addAttribute("pageListSize", topicService.getPageListSizeOfTopicsByUsername(user));
             return "profile";
         }
         if(value.equals("comment")){
-            model.addAttribute("comments", (id == null ? topicService.getLast15CommentedTopicsByUsername(user) : topicService.getLast15CommentedTopicsByUsernameAndPage(id, user)));
-            model.addAttribute("pageListSize", topicService.getPageListSizeofCommentedTopicsByUsername(user));
+            model.addAttribute("comments", (id == null ? topicService.getLast15CommentedTopicsByUsername(user) : topicService.get15CommentedTopicsByUsernameAndPage(id, user)));
+            model.addAttribute("pageListSize", topicService.getPageListSizeOfCommentedTopicsByUsername(user));
             return "profile";
         }
-        /*if(value.equals("vote")) {
-            model.addAttribute("value", (id == null ? voteService.getLast15ByUsername() : voteService.getLast15ByPageAndUsername()));
-            return "profile";
-        }*/
         throw new RuntimeException("Value not found");
     }
 }
