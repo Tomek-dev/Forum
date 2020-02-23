@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Topics</title>
     <link rel="stylesheet" th:href="@{/css/fragments.css}">
-    <link rel="stylesheet" th:href="@{/css/topic.css}">
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -39,15 +39,15 @@
         </div>
         <div class="user-footer">
             <div class="user-left">
-                <a th:href="@{/profile/{user}(user=${username},value=topic)}">Topics</a>
-                <a th:href="@{/profile/{user}(user=${username},value=comment)}">Comments</a>
-                <a th:href="@{/profile/{user}(user=${username},value=vote)}">Votes</a>
+                <a th:href="@{/profile/{user}(user=${userVariable},value=topic)}" th:style="${valueParam == topic? 'border-bottom: 1px solid #444': ''}">Topics</a>
+                <a th:href="@{/profile/{user}(user=${userVariable},value=comment)}" th:style="${valueParam == comment? 'border-bottom: 1px solid #444': ''}">Comments</a>
+                <a th:href="@{/profile/{user}(user=${userVariable},value=vote)}" th:style="${valueParam == vote? 'border-bottom: 1px solid #444': ''}">Votes</a>
             </div>
             <a href="#" class="report"><i class="fa fa-exclamation"></i></a>
-            <a th:if="${#authentication.getPrincipal().getUser().getUsername() == userOutputDto.getUsername()}" href="#" class="edit"><i class="fa fa-edit"></i></a>
+            <a href="#" th:if="${#authentication.getPrincipal() == userOutputDto.getUsername()}" class="edit"><i class="fa fa-edit"></i></a>
         </div>
     </div>
-    <div th:if="${param.value == topic}" class="topic-list">
+    <div th:if="${valueParam == topic}" class="topic-list">
         <div th:each="topic : ${topics}" class="topic">
             <p class="topic-icon">T</p>
             <a href="" class="topic-title" th:text="topic.getTitle()"></a>
@@ -57,7 +57,7 @@
             </div>
         </div>
     </div>
-    <div th:if="${param.value == comment}" class="topic-list">
+    <div th:if="${valueParam == comment}" class="topic-list">
         <div th:each="topic : ${topics}" class="topic">
             <p class="comment-icon"><i class="fa fa-comments-o icon"></i></p>
             <a href="" class="topic-title" th:text="topic.getTitle()"></a>
@@ -66,7 +66,7 @@
                 <p th:text="topic.getCreatedAt()"></p>            </div>
         </div>
     </div>
-    <div th:if="${param.value == vote}" class="topic-list">
+    <div th:if="${valueParam == vote}" class="topic-list">
         <div th:each="topic : ${topics}" class="topic">
             <p class="vote-icon">Vote</p>
             <a href="" class="topic-title" th:text="topic.getTitle()"></a>
@@ -76,17 +76,17 @@
         </div>
     </div>
     <div class="topic-list" th:if="${topics.size() == 0}">
-        <p class="blank">There arent't comment yet</p>
+        <p class="blank">There are not <span th:if="${valueParam.equals(vote)}">voted</span><span th:if="${valueParam.equals(comment)}">commented</span>topics yet</p>
     </div>
-    <div class="page" th:if="${pageListSize > 0}">
-        <a th:if="${pageId > 1}" th:href="@{/profile/{user}(value=${valueParam},id=${pageId-1})}">prev</a>
-        <a th:if="${pageId > 1}" th:href="@{/profile/{user}(value=${valueParam},id=1)}">1</a>
+    <div class="page" th:if="${pageListSize > 1}">
+        <a th:if="${pageId > 1}" th:href="@{/profile/{user}(user=${userVariable},value=${valueParam},id=${pageId-1})}">prev</a>
+        <a th:if="${pageId > 1}" th:href="@{/profile/{user}(user=${userVariable},value=${valueParam},id=1)}">1</a>
         <p th:if="${pageId > 1}">...</p>
-        <a th:if="${pageListSize > 5 && i < pageListSize}" th:each="i : ${#numbers.sequence(pageId, pageId + 4)}" th:href="@{/profile/{user}(value=${valueParam},id=${i})}" th:text="${i}" th:style="${i == pageId? 'border-color: #999': ''}"></a>
-        <a th:if="${pageListSize <= 5}" th:each="i : ${#numbers.sequence(pageId, pageListSize)}" th:href="@{/profile/{user}(value=${valueParam},id=${i})}" th:text="${i}"></a>
+        <a th:if="${pageListSize > 5 && i < pageListSize}" th:each="i : ${#numbers.sequence(pageId, pageId + 4)}" th:href="@{/profile/{user}(user=${userVariable},value=${valueParam},id=${i})}" th:text="${i}" th:style="${i == pageId? 'border-color: #999': ''}"></a>
+        <a th:if="${pageListSize <= 5}" th:each="i : ${#numbers.sequence(pageId, pageListSize)}" th:href="@{/profile/{user}(user=${userVariable},value=${valueParam},id=${i})}" th:text="${i}"></a>
         <p th:if="${pageListSize > 5 && pageId < pageListSize-1}">...</p>
-        <a th:if="${pageListSize > 5}" th:href="@{/profile/{user}(value=${valueParam},id=${pageListSize})}" th:text="${pageListSize}" th:style="${pageListSize == pageId? 'border-color: #999': ''}"></a>
-        <a th:if="${pageId < pageListSize}" th:href="@{/profile/{user}(value=${valueParam},id=${pageId+1})}">next</a>
+        <a th:if="${pageListSize > 5}" th:href="@{/profile/{user}(user=${userVariable},value=${valueParam},id=${pageListSize})}" th:text="${pageListSize}" th:style="${pageListSize == pageId? 'border-color: #999': ''}"></a>
+        <a th:if="${pageId < pageListSize}" th:href="@{/profile/{user}(user=${userVariable},value=${valueParam},id=${pageId+1})}">next</a>
     </div>
 </div>
 <div th:replace="fragments/elements :: footer-help"></div>

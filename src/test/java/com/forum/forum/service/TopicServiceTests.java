@@ -163,7 +163,7 @@ public class TopicServiceTests {
     @Test
     public void shouldThrowUsernameNotFoundException(){
         //given
-        given(userDao.findByUsername(Mockito.any())).willReturn(null);
+        given(userDao.findByUsernameIgnoreCase(Mockito.any())).willReturn(null);
 
         assertThrows(UsernameNotFoundException.class, () -> topicService.getLast15TopicsByUsername("user"));
     }
@@ -177,7 +177,7 @@ public class TopicServiceTests {
         topic.setUser(user);
         topic.setTitle("title");
         user.getTopics().add(topic);
-        given(userDao.findByUsername(Mockito.any())).willReturn(user);
+        given(userDao.findByUsernameIgnoreCase(Mockito.any())).willReturn(user);
 
         //when
         topicService.getLast15TopicsByUsername("user");
@@ -202,7 +202,7 @@ public class TopicServiceTests {
         topic.setTitle("title");
         topic.getComments().add(comment);
 
-        given(userDao.findByUsername(Mockito.any())).willReturn(user);
+        given(userDao.findByUsernameIgnoreCase(Mockito.any())).willReturn(user);
 
         //then
         assertEquals("title", topicService.getLast15CommentedTopicsByUsername("user").get(0).getTitle());
@@ -229,6 +229,10 @@ public class TopicServiceTests {
 
     @Test(expected = RuntimeException.class)
     public void shouldThrowTopicNotFoundException(){
+        //given
         given(topicDao.findById(Mockito.any())).willReturn(null);
+
+        //when
+        topicService.getTopic(4L);
     }
 }

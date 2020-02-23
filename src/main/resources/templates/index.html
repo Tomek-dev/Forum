@@ -27,7 +27,7 @@
                     <div class="topic-content">
                         <div class="topic-header">
                             <div class="topic-user-image"></div>
-                            <p><a href="#" th:text="${topic.getUsername()}"></a> &middot Posted <span th:text="${topic.getPostedAt()}"></span> ago at <a th:href="@{/topic(type=${topic.getType().toLowerCase()})}" th:text="${topic.getType()}"></a></p>
+                            <p><a th:href="@{/profile/{userId}(userId = ${topic.getUsername().toLowerCase()})}" th:text="${topic.getUsername()}"></a> &middot Posted <span th:text="${topic.getPostedAt()}"></span> ago at <a th:href="@{/page(type=${topic.getType().toLowerCase()})}" th:text="${topic.getType()}"></a></p>
                         </div>
                         <a th:href="@{/topic/{tid}(tid=${topic.getId()})}" class="paragraph-topic-content" th:text="${topic.getTitle()}"></a>
                     </div>

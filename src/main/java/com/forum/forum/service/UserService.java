@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -33,8 +35,8 @@ public class UserService {
 
     //TODO date to change
     public UserOutputDto getUserByUserName(String username){
-        Optional<User> userOptional = Optional.ofNullable(userDao.findByUsername(username));
+        Optional<User> userOptional = Optional.ofNullable(userDao.findByUsernameIgnoreCase(username));
         User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not authorized."));
-        return new UserOutputDto(user.getUsername(), user.getCreatedAt().toString(), user.getTopics().size(), user.getComments().size());
+        return new UserOutputDto(user.getUsername(), new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(user.getCreatedAt().getTime()), user.getTopics().size(), user.getComments().size());
     }
 }
