@@ -35,6 +35,8 @@ public class User implements UserDetails {
 
     private Date createdAt;
 
+    private String motto;
+
     public User(String username, String email, String password, String role) {
         this.username = username;
         this.email = email;
@@ -119,6 +121,14 @@ public class User implements UserDetails {
 
     public void setComments(Set<Comment> comments) {
         this.comments = comments;
+    }
+
+    public String getMotto() {
+        return motto;
+    }
+
+    public void setMotto(String motto) {
+        this.motto = motto;
     }
 
     private Date createdAtDate(){

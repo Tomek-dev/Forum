@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Topics</title>
+    <link rel="stylesheet" th:href="@{/css/fragments.css}">
+    <link rel="stylesheet" th:href="@{/css/topic.css}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div th:replace="fragments/elements :: header"></div>
+<div class="container">
+    <div class="user-bar">
+        <div class="user-header">
+            <div class="user-left">
+                <div class="user-image">
+
+                </div>
+                <div class="user-info">
+                    <p class="username" th:text="${userOutputDto.getUsername()}"></p>
+                    <p class="createdAt">Account created at <span th:text="${userOutputDto.getCreatedAt()}"></span></p>
+                    <p class="motto">"coding" Makes you smartest, becouse all can't do it all</p>
+                </div>
+            </div>
+            <div class="user-information">
+                <a href="#" class="star">Star</a>
+                <div class="user-stats">
+                    <div class="stat">
+                        <p><span class="topic-icon">T</span><span th:text="${userOutputDto.getTopicCount()}"></span></p>
+                        <p><span class="vote-icon">V</span>12</p>
+                    </div>
+                    <div class="stat">
+                        <p><span class="comment-icon" id="comment-color"><i class="fa fa-comments-o icon"></i></span><span th:text="${userOutputDto.getCommentCount()}"></span></p>
+                        <p><span class="star-icon"><i class="fa fa-star"></i></span>9</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="user-footer">
+            <div class="user-left">
+                <a href="#">Topics</a>
+                <a href="#">Comments</a>
+                <a href="#">Votes</a>
+            </div>
+            <a href="#" class="report"><i class="fa fa-exclamation"></i></a>
+            <a th:if="${#authentication.getPrincipal().getUser().getUsername() == userOutputDto.getUsername()}" href="#" class="edit"><i class="fa fa-edit"></i></a>
+        </div>
+    </div>
+    <div th:if="${param.value == topic}" class="topic-list">
+        <div class="topic">
+            <p class="topic-icon">T</p>
+            <a href="" class="topic-title">TXT file can be downloaded using stream on Heroku but fails for PDF files - NodeJS, Heroku </a>
+            <div class="topic-info">
+                <p>11 May '2019</p>
+                <p>10 Votes  4 Comments</p>
+            </div>
+        </div>
+    </div>
+    <div th:if="${param.value == comment}" class="topic-list">
+        <div class="topic">
+            <p class="comment-icon"><i class="fa fa-comments-o icon"></i></p>
+            <a href="" class="topic-title">TXT file can be downloaded using stream on Heroku but fails for PDF files - NodeJS, Heroku </a>
+            <div class="topic-info">
+                <p>Posted by <a href="#">Mathew</a></p>
+                <p>11 May '2019</p>
+            </div>
+        </div>
+    </div>
+    <div th:if="${param.value == vote}" class="topic-list">
+        <div class="topic">
+            <p class="vote-icon">Vote</p>
+            <a href="" class="topic-title">TXT file can be downloaded using stream on Heroku but fails for PDF files - NodeJS, Heroku </a>
+            <div class="topic-info">
+                <p>Posted by <a href="#">Mathew</a></p>
+                <p>11 May '2019</p>
+            </div>
+        </div>
+    </div>
+    <div class="topic-list">
+        <p class="blank">There arent't comment yet</p>
+    </div>
+    <div class="page" th:if="${pageListSize > 0}">
+        <a th:if="${pageId > 1}" th:href="@{/profile/{user}(value=${valueParam},id=${pageId-1})}">prev</a>
+        <a th:if="${pageId > 1}" th:href="@{/profile/{user}(value=${valueParam},id=1)}">1</a>
+        <p th:if="${pageId > 1}">...</p>
+        <a th:if="${pageListSize > 5 && i < pageListSize}" th:each="i : ${#numbers.sequence(pageId, pageId + 4)}" th:href="@{/profile/{user}(value=${valueParam},id=${i})}" th:text="${i}" th:style="${i == pageId? 'border-color: #999': ''}"></a>
+        <a th:if="${pageListSize <= 5}" th:each="i : ${#numbers.sequence(pageId, pageListSize)}" th:href="@{/profile/{user}(value=${valueParam},id=${i})}" th:text="${i}"></a>
+        <p th:if="${pageListSize > 5 && pageId < pageListSize-1}">...</p>
+        <a th:if="${pageListSize > 5}" th:href="@{/profile/{user}(value=${valueParam},id=${pageListSize})}" th:text="${pageListSize}" th:style="${pageListSize == pageId? 'border-color: #999': ''}"></a>
+        <a th:if="${pageId < pageListSize}" th:href="@{/profile/{user}(value=${valueParam},id=${pageId+1})}">next</a>
+    </div>
+</div>
+<div th:replace="fragments/elements :: footer-help"></div>
+<div th:replace="fragments/elements :: footer"></div>
+<script th:src="@{/javascript/elements.js}"></script>
+<script th:src="@{/javascript/write.js}"></script>
+</body>
+</html>
