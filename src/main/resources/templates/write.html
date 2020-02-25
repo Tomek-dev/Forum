@@ -25,7 +25,7 @@
             <div class="write-element">
                 <p class="tag-paragraph">Tags:</p>
                 <div class="tags-list">
-                    <div th:each="typeelement: ${T(com.forum.forum.Type).values()}" class="type-element">
+                    <div th:each="typeelement: ${T(com.forum.forum.enums.Type).values()}" class="type-element">
                         <input type="checkbox" th:field="*{type}" th:value="${typeelement}" class="visually-hidden" onclick="chooseOne(this)">
                         <label th:for="${#ids.prev('type')}" class="tag" th:text="${typeelement.displayName}"></label>
                     </div>
@@ -47,6 +47,6 @@
 <div th:replace="fragments/elements :: footer-help"></div>
 <div th:replace="fragments/elements :: footer"></div>
 <script th:src="@{/javascript/elements.js}"></script>
-<script th:src="@{/javascript/write.js}"></script>
+<script th:src="@{/javascript/chooseOne.js}"></script>
 </body>
 </html>

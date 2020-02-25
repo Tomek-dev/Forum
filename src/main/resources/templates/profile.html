@@ -39,40 +39,40 @@
         </div>
         <div class="user-footer">
             <div class="user-left">
-                <a th:href="@{/profile/{user}(user=${userVariable},value=topic)}" th:style="${valueParam == topic? 'border-bottom: 1px solid #444': ''}">Topics</a>
-                <a th:href="@{/profile/{user}(user=${userVariable},value=comment)}" th:style="${valueParam == comment? 'border-bottom: 1px solid #444': ''}">Comments</a>
-                <a th:href="@{/profile/{user}(user=${userVariable},value=vote)}" th:style="${valueParam == vote? 'border-bottom: 1px solid #444': ''}">Votes</a>
+                <a th:href="@{/profile/{user}(user=${userVariable},value=topic)}" th:style="${valueParam == 'topic'? 'border-bottom: 1px solid #444': ''}">Topics</a>
+                <a th:href="@{/profile/{user}(user=${userVariable},value=comment)}" th:style="${valueParam == 'comment'? 'border-bottom: 1px solid #444': ''}">Comments</a>
+                <a th:href="@{/profile/{user}(user=${userVariable},value=vote)}" th:style="${valueParam == 'vote'? 'border-bottom: 1px solid #444': ''}">Votes</a>
             </div>
-            <a href="#" class="report"><i class="fa fa-exclamation"></i></a>
+            <a th:href="@{/profile/{user}/report(user = ${userVariable})}" class="report"><i class="fa fa-exclamation"></i></a>
             <a href="#" th:if="${#authentication.getPrincipal() == userOutputDto.getUsername()}" class="edit"><i class="fa fa-edit"></i></a>
         </div>
     </div>
-    <div th:if="${valueParam == topic}" class="topic-list">
+    <div th:if="${valueParam == 'topic'}" class="topic-list">
         <div th:each="topic : ${topics}" class="topic">
             <p class="topic-icon">T</p>
-            <a href="" class="topic-title" th:text="topic.getTitle()"></a>
+            <a href="" class="topic-title" th:text="${topic.getTitle()}"></a>
             <div class="topic-info">
-                <p th:text="topic.getCreatedAt()"></p>
-                <p>10 Votes  <span th:text="topic.getCommentsCount()"></span> Comments</p>
+                <p th:text="${topic.getCreatedAt()}"></p>
+                <p>10 Votes  <span th:text="${topic.getCommentsCount()}"></span> Comments</p>
             </div>
         </div>
     </div>
-    <div th:if="${valueParam == comment}" class="topic-list">
+    <div th:if="${valueParam == 'comment'}" class="topic-list">
         <div th:each="topic : ${topics}" class="topic">
             <p class="comment-icon"><i class="fa fa-comments-o icon"></i></p>
-            <a href="" class="topic-title" th:text="topic.getTitle()"></a>
+            <a href="" class="topic-title" th:text="${topic.getTitle()}"></a>
             <div class="topic-info">
-                <p>Posted by <a href="#" th:text="topic.getUsername()"></a></p>
-                <p th:text="topic.getCreatedAt()"></p>            </div>
+                <p>Posted by <a href="#" th:text="${topic.getUsername()}"></a></p>
+                <p th:text="${topic.getCreatedAt()}"></p>            </div>
         </div>
     </div>
-    <div th:if="${valueParam == vote}" class="topic-list">
+    <div th:if="${valueParam == 'vote'}" class="topic-list">
         <div th:each="topic : ${topics}" class="topic">
             <p class="vote-icon">Vote</p>
-            <a href="" class="topic-title" th:text="topic.getTitle()"></a>
+            <a href="" class="topic-title" th:text="${topic.getTitle()}"></a>
             <div class="topic-info">
-                <p>Posted by <a href="#" th:text="topic.getUsername()"></a></p>
-                <p th:text="topic.getCreatedAt()"></p>            </div>
+                <p>Posted by <a href="#" th:text="${topic.getUsername()}"></a></p>
+                <p th:text="${topic.getCreatedAt()}"></p>            </div>
         </div>
     </div>
     <div class="topic-list" th:if="${topics.size() == 0}">

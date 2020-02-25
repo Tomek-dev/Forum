@@ -1,4 +1,4 @@
-package com.forum.forum;
+package com.forum.forum.enums;
 
 public enum Type {
     C("C"),

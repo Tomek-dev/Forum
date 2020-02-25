@@ -2,16 +2,15 @@ package com.forum.forum;
 
 import com.forum.forum.dao.TopicDao;
 import com.forum.forum.dao.UserDao;
+import com.forum.forum.enums.Type;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 @Component
 public class Start {

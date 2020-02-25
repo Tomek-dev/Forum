@@ -1,6 +1,6 @@
 package com.forum.forum.service;
 
-import com.forum.forum.Type;
+import com.forum.forum.enums.Type;
 import com.forum.forum.dao.CommentDao;
 import com.forum.forum.dao.TopicDao;
 import com.forum.forum.dao.UserDao;
@@ -93,17 +93,17 @@ public class TopicService{
 
     public List<TopicProfileDto> getLast15TopicsByUsername(String username){
         Optional<User> userOptional = Optional.ofNullable(userDao.findByUsernameIgnoreCase(username));
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not authorized."));
+        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found."));
         return user.getTopics().stream()
                 .sorted(Comparator.comparing(Topic::getCreatedAt))
-                .map(topic -> new TopicProfileDto(topic.getCreatedAt().toString(), topic.getTitle(), topic.getComments().size()))
+                .map(topic -> new TopicProfileDto(simpleDateFormat.format(topic.getCreatedAt().getTime()), topic.getTitle(), topic.getComments().size()))
                 .collect(Collectors.toList());
     }
 
     //TODO not working
     public List<TopicProfileDto> get15TopicsByPageAndUsername(long page, String username) {
         Optional<User> userOptional = Optional.ofNullable(userDao.findByUsernameIgnoreCase(username));
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not authorized."));
+        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found."));
         final long count = topicDao.count();
         if (page < 1 || page > Math.ceil((double) count/15)){
             throw new IndexOutOfBoundsException("Page index out of bounds");
@@ -115,13 +115,13 @@ public class TopicService{
                     .collect(Collectors.toList());
         }
         return topicDao.findByUserAndIdBetweenOrderByIdDesc(user, (count-(page*15) > 0? count-(page*15) : 1), count-((page-1)*15)).stream()
-                .map(topic -> new TopicProfileDto(topic.getUser().getUsername(), topic.getCreatedAt().toString(), topic.getTitle(), topic.getComments().size()))
+                .map(topic -> new TopicProfileDto(topic.getUser().getUsername(), simpleDateFormat.format(topic.getCreatedAt().getTime()), topic.getTitle(), topic.getComments().size()))
                 .collect(Collectors.toList());
     }
 
     public List<TopicProfileDto> getLast15CommentedTopicsByUsername(String username){
         Optional<User> userOptional = Optional.ofNullable(userDao.findByUsernameIgnoreCase(username));
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not authorized."));
+        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found."));
         return user.getComments().stream()
                 .map(Comment::getTopic)
                 .sorted(Comparator.comparing(Topic::getCreatedAt))
@@ -132,7 +132,7 @@ public class TopicService{
     //TODO not working
     public List<TopicProfileDto> get15CommentedTopicsByUsernameAndPage(long page, String username){
         Optional<User> userOptional = Optional.ofNullable(userDao.findByUsernameIgnoreCase(username));
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not authorized."));
+        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found."));
         final long count = topicDao.count();
         if (page < 1 || page > Math.ceil((double) count/15)){
             throw new IndexOutOfBoundsException("Page index out of bounds");
@@ -141,7 +141,7 @@ public class TopicService{
             return user.getComments().stream()
                     .map(Comment::getTopic)
                     .sorted(Comparator.comparing(Topic::getCreatedAt))
-                    .map(topic -> new TopicProfileDto(topic.getUser().getUsername(), topic.getCreatedAt().toString(), topic.getTitle(), topic.getComments().size()))
+                    .map(topic -> new TopicProfileDto(topic.getUser().getUsername(), simpleDateFormat.format(topic.getCreatedAt().getTime()), topic.getTitle(), topic.getComments().size()))
                     .collect(Collectors.toList());
         }
         return commentDao.findByUserAndIdBetweenOrderByIdDesc(user, (count-(page*15) > 0? count-(page*15) : 1), count-((page-1)*15)).stream()
@@ -194,13 +194,13 @@ public class TopicService{
 
     public long getPageListSizeOfTopicsByUsername(String username){
         Optional<User> userOptional = Optional.ofNullable(userDao.findByUsernameIgnoreCase(username));
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not authorized."));
+        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found."));
         return (long) Math.ceil((double) user.getTopics().size()/15);
     }
 
     public long getPageListSizeOfCommentedTopicsByUsername(String username){
         Optional<User> userOptional = Optional.ofNullable(userDao.findByUsernameIgnoreCase(username));
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not authorized."));
+        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found."));
         return (long) Math.ceil((double) user.getComments().size()/15);
     }
 

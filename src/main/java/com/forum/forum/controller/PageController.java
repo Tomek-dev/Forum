@@ -4,7 +4,9 @@ import com.forum.forum.dao.HelpMessageDao;
 import com.forum.forum.dto.CommentInputDto;
 import com.forum.forum.dto.TopicInputDto;
 import com.forum.forum.model.HelpMessage;
+import com.forum.forum.model.Report;
 import com.forum.forum.model.User;
+import com.forum.forum.service.ReportService;
 import com.forum.forum.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,11 +22,13 @@ public class PageController {
 
     private TopicService topicService;
     private HelpMessageDao helpMessageDao;
+    private ReportService reportService;
 
     @Autowired
-    public PageController(TopicService topicService, HelpMessageDao helpMessageDao) {
+    public PageController(TopicService topicService, HelpMessageDao helpMessageDao, ReportService reportService) {
         this.topicService = topicService;
         this.helpMessageDao = helpMessageDao;
+        this.reportService = reportService;
     }
 
     @GetMapping("/")
@@ -94,6 +98,7 @@ public class PageController {
         model.addAttribute("comments", topicService.getComments(id));
         model.addAttribute("commentInput", new CommentInputDto());
         model.addAttribute("helpMessage", new HelpMessage());
+        model.addAttribute("idVariable", id);
         return "topic";
     }
 
@@ -105,5 +110,21 @@ public class PageController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         topicService.addComment(commentInputDto, ((User) principal).getUsername(), id);
         return "redirect:/topic/" + id;
+    }
+
+    @GetMapping("/topic/{id}/report")
+    public String getReportTopic(@PathVariable Long id, Model model){
+        model.addAttribute("idVariable", id);
+        model.addAttribute("report", new Report());
+        return "report";
+    }
+
+    @PostMapping("/topic/{id}/report")
+    public String reportTopic(@PathVariable Long id, @Valid Report report, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "report";
+        }
+        reportService.addReport(report, id);
+        return "redirect:/topic/"+id;
     }
 }

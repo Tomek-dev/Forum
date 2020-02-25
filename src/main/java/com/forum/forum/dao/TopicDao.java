@@ -1,7 +1,6 @@
 package com.forum.forum.dao;
 
-import com.forum.forum.Type;
-import com.forum.forum.model.Comment;
+import com.forum.forum.enums.Type;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,6 +1,6 @@
 package com.forum.forum.service;
 
-import com.forum.forum.Type;
+import com.forum.forum.enums.Type;
 import com.forum.forum.dao.CommentDao;
 import com.forum.forum.dao.TopicDao;
 import com.forum.forum.dao.UserDao;

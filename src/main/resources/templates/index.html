@@ -58,7 +58,7 @@
             <div class="community">
                 <h1>Programming Categories</h1>
                 <div class="community-list">
-                    <a th:each="type : ${T(com.forum.forum.Type).values()}" th:href="@{page(type=${type.name().toLowerCase()})}"><span class="sharp">#</span><span th:text="${type.getDisplayName()}"></span></a>
+                    <a th:each="type : ${T(com.forum.forum.enums.Type).values()}" th:href="@{page(type=${type.name().toLowerCase()})}"><span class="sharp">#</span><span th:text="${type.getDisplayName()}"></span></a>
                 </div>
             </div>
             <div class="write">

@@ -1,12 +1,8 @@
 package com.forum.forum.model;
 
-import com.forum.forum.Type;
+import com.forum.forum.enums.Type;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.*;
 
 @Entity
@@ -30,6 +26,9 @@ public class Topic{
     private Set<Comment> comments = new HashSet<>();
 
     private Date createdAt;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Report> report = new HashSet<>();
 
     private Type type;
 
@@ -111,5 +110,13 @@ public class Topic{
 
     public void setComments(Set<Comment> comments) {
         this.comments = comments;
+    }
+
+    public Set<Report> getReport() {
+        return report;
+    }
+
+    public void setReport(Set<Report> report) {
+        this.report = report;
     }
 }

@@ -35,6 +35,9 @@ public class User implements UserDetails {
 
     private Date createdAt;
 
+    @OneToMany(mappedBy = "user")
+    private Set<Report> report = new HashSet<>();
+
     private String motto;
 
     public User(String username, String email, String password, String role) {
@@ -121,6 +124,14 @@ public class User implements UserDetails {
 
     public void setComments(Set<Comment> comments) {
         this.comments = comments;
+    }
+
+    public Set<Report> getReport() {
+        return report;
+    }
+
+    public void setReport(Set<Report> report) {
+        this.report = report;
     }
 
     public String getMotto() {

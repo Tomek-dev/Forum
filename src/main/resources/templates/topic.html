@@ -34,7 +34,7 @@
         </div>
         <div class="topic-option">
             <a class="comment" href="#comment-id"><i class="fa fa-comments-o icon"></i>Comment</a>
-            <a class="report" href="#"><i class="fa fa-exclamation"></i></a>
+            <a class="report" th:href="@{/topic/{id}/report(id = ${idVariable})}"><i class="fa fa-exclamation"></i></a>
         </div>
     </div>
     <div class="comments-list">

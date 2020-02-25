@@ -33,7 +33,6 @@ public class UserService {
         userDao.save(new User(registrationDto.getUsername(), registrationDto.getEmail(),passwordEncoder.encode(registrationDto.getPassword()), "USER"));
     }
 
-    //TODO date to change
     public UserOutputDto getUserByUserName(String username){
         Optional<User> userOptional = Optional.ofNullable(userDao.findByUsernameIgnoreCase(username));
         User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not authorized."));

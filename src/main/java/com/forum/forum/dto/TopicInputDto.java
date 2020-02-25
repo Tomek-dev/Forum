@@ -1,8 +1,7 @@
 package com.forum.forum.dto;
 
-import com.forum.forum.Type;
+import com.forum.forum.enums.Type;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
