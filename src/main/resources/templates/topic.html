@@ -27,7 +27,7 @@
                 </div>
             </div>
             <form class="vote" action="index.html" method="post">
-                <button type="submit" class="votebtn" name="button">Vote</button>
+                <button type="submit" class="votebtn" id="vote-id" name="button">Vote</button>
             </form>
         </div>
         <div class="topic-content" th:text="${topic.getDescription()}">
@@ -42,7 +42,7 @@
             <div class="comment-info">
                 <div class="comment-user">
                     <div class="comment-user-image"></div>
-                    <a href="#" th:text="${comment.getUsername()}"></a>
+                    <a th:href="@{/profile/{username}(username = ${comment.getUsername().toLowerCase()})}" th:text="${comment.getUsername()}"></a>
                 </div>
                 <p class="stars">Stars: 13<i class="fa fa-star"></i></p>
                 <form class="comment-likes" action="index.html" method="post">

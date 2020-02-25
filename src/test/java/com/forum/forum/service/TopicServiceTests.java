@@ -105,25 +105,7 @@ public class TopicServiceTests {
 
     @Test
     public void shouldThrowRunTimeException(){
-        assertThrows(RuntimeException.class, () -> topicService.getLast15TopicsByType("test"));
-    }
-
-    @Test
-    public void shouldReturnTop15TopicsByType(){
-        //when
-        topicService.getLast15TopicsByType("java");
-
-        //then
-        verify(topicDao).findTop15ByTypeOrderByIdDesc(Type.JAVA);
-    }
-
-    @Test
-    public void shouldReturnListOfTopicOutputDto(){
-        //when
-        topicService.getLast15Topics();
-
-        //then
-        verify(topicDao).findTop15ByOrderByIdDesc();
+        assertThrows(RuntimeException.class, () -> topicService.getPageOf15TopicsByType("test", 0));
     }
 
     @Test
@@ -132,32 +114,8 @@ public class TopicServiceTests {
         given(topicDao.count()).willReturn(30L);
 
         //then
-        assertThrows(IndexOutOfBoundsException.class, () -> topicService.get15TopicByPage(3));
-        assertThrows(IndexOutOfBoundsException.class, () -> topicService.get15TopicByPage(-1));
-    }
-
-    @Test
-    public void shouldReturnListOfTopicOutputDtoByPage(){
-        //given
-        given(topicDao.count()).willReturn(30L);
-
-        //when
-        topicService.get15TopicByPage(1);
-
-        //then
-        verify(topicDao).findByIdBetweenOrderByIdDesc(16, 30);
-    }
-
-    @Test
-    public void shouldInitGetLast15Topics(){
-        //given
-        given(topicDao.count()).willReturn(12L);
-
-        //when
-        topicService.get15TopicByPage(1);
-
-        //then
-        verify(topicDao).findTop15ByOrderByIdDesc();
+        assertThrows(IndexOutOfBoundsException.class, () -> topicService.getPageOf15Topics(3));
+        assertThrows(IndexOutOfBoundsException.class, () -> topicService.getPageOf15Topics(-1));
     }
 
     @Test
@@ -165,50 +123,10 @@ public class TopicServiceTests {
         //given
         given(userDao.findByUsernameIgnoreCase(Mockito.any())).willReturn(null);
 
-        assertThrows(UsernameNotFoundException.class, () -> topicService.getLast15TopicsByUsername("user"));
+        assertThrows(UsernameNotFoundException.class, () -> topicService.getPageOf15TopicsByUser("user", 0));
+        assertThrows(UsernameNotFoundException.class, () -> topicService.getPageOf15TopicsByComment("user", 0));
     }
 
-    @Test
-    public void shouldReturnTopicProfileDtoByUsername(){
-        //given
-        User user = new User();
-        user.setUsername("user");
-        Topic topic = new Topic();
-        topic.setUser(user);
-        topic.setTitle("title");
-        user.getTopics().add(topic);
-        given(userDao.findByUsernameIgnoreCase(Mockito.any())).willReturn(user);
-
-        //when
-        topicService.getLast15TopicsByUsername("user");
-
-        //then
-        assertEquals("title", topicService.getLast15TopicsByUsername("user").get(0).getTitle());
-        assertEquals(0, topicService.getLast15TopicsByUsername("user").get(0).getCommentsCount());
-    }
-
-    @Test
-    public void shouldReturnTopicProfileDtoOfCommentedTopicByUsername(){
-        //given
-        Comment comment = new Comment();
-        Topic topic = new Topic();
-        User user = new User();
-        user.setUsername("user");
-        user.getTopics().add(topic);
-        user.getComments().add(comment);
-        comment.setUser(user);
-        comment.setTopic(topic);
-        topic.setUser(user);
-        topic.setTitle("title");
-        topic.getComments().add(comment);
-
-        given(userDao.findByUsernameIgnoreCase(Mockito.any())).willReturn(user);
-
-        //then
-        assertEquals("title", topicService.getLast15CommentedTopicsByUsername("user").get(0).getTitle());
-        assertEquals("user", topicService.getLast15CommentedTopicsByUsername("user").get(0).getUsername());
-        assertEquals(1, topicService.getLast15CommentedTopicsByUsername("user").get(0).getCommentsCount());
-    }
 
     @Test
     public void shouldGetCommentsByTopic(){

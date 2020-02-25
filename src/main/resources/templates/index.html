@@ -14,16 +14,16 @@
         <div class="content">
             <div class="topics-list">
                 <div th:each="topic : ${topics}" class="topic">
-                        <form class="topic-info" action="index.html" method="post">
-                            <button class="topic-btn" type="submit" name="button">
+                        <div class="topic-info">
+                            <a th:href="@{/topic/{tid}#vote-id(tid=${topic.getId()})}" class="topic-btn" type="submit" name="button">
                                 <p>Vote</p>
                                 <p>45</p>
-                            </button>
+                            </a>
                             <a th:href="@{/topic/{tid}#comment-id(tid=${topic.getId()})}" class="topic-btn">
                                 <p>Comment</p>
                                 <p>4</p>
                             </a>
-                        </form>
+                        </div>
                     <div class="topic-content">
                         <div class="topic-header">
                             <div class="topic-user-image"></div>
@@ -33,7 +33,7 @@
                     </div>
                 </div>
             </div>
-            <div class="page" th:if="${typeEnum != null}">
+            <div class="page" th:if="${typeEnum != null && pageListSize>1}">
                 <a th:if="${pageId > 1}" th:href="@{/page(type=${typeEnum},id=${pageId-1})}">prev</a>
                 <a th:if="${pageId > 1}" th:href="@{/page(type=${typeEnum},id=1)}">1</a>
                 <p th:if="${pageId > 1}">...</p>
@@ -43,7 +43,7 @@
                 <a th:if="${pageListSize > 5}" th:href="@{/page(type=${typeEnum},id=${pageListSize})}" th:text="${pageListSize}" th:style="${pageListSize == pageId? 'border-color: #999': ''}"></a>
                 <a th:if="${pageId < pageListSize}" th:href="@{/page(type=${typeEnum},id=${pageId+1})}">next</a>
             </div>
-            <div class="page" th:if="${typeEnum == null}">
+            <div class="page" th:if="${typeEnum == null && pageListSize>1}">
                 <a th:if="${pageId > 1}" th:href="@{/page(id=${pageId-1})}">prev</a>
                 <a th:if="${pageId > 1}" th:href="@{/page(id=1)}">1</a>
                 <p th:if="${pageId > 1}">...</p>
