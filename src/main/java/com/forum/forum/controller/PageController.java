@@ -103,9 +103,9 @@ public class PageController {
     }
 
     @PostMapping("/topic/{id}/comment")
-    public String addComment(@PathVariable Long id, @Valid CommentInputDto commentInputDto, @ModelAttribute("helpMessage") HelpMessage helpMessage, BindingResult bindingResult){
+    public String addComment(@PathVariable Long id, @Valid CommentInputDto commentInputDto, BindingResult bindingResult, @ModelAttribute("helpMessage") HelpMessage helpMessage){
         if (bindingResult.hasErrors()){
-            return "topic";
+            return "redirect:/topic/"+id;
         }
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         topicService.addComment(commentInputDto, ((User) principal).getUsername(), id);
@@ -120,8 +120,9 @@ public class PageController {
     }
 
     @PostMapping("/topic/{topicId}/report")
-    public String reportTopic(@PathVariable Long topicId, @Valid Report report, BindingResult bindingResult){
+    public String reportTopic(@PathVariable Long topicId, @Valid Report report, BindingResult bindingResult, Model model){
         if(bindingResult.hasErrors()){
+            model.addAttribute("idVariable", topicId);
             return "report";
         }
         reportService.addReport(report, topicId);

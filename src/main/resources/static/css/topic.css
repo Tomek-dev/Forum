@@ -279,3 +279,7 @@ body{
   padding-right: 20px;
 }
 
+.errors{
+font-size: 14px;
+color: #bd000d;
+}

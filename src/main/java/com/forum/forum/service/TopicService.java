@@ -96,7 +96,7 @@ public class TopicService{
         User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found."));
         return user.getTopics().stream()
                 .sorted(Comparator.comparing(Topic::getCreatedAt))
-                .map(topic -> new TopicProfileDto(simpleDateFormat.format(topic.getCreatedAt().getTime()), topic.getTitle(), topic.getComments().size()))
+                .map(topic -> new TopicProfileDto(simpleDateFormat.format(topic.getCreatedAt().getTime()), topic.getTitle(), topic.getComments().size(), topic.getId()))
                 .collect(Collectors.toList());
     }
 
@@ -111,11 +111,11 @@ public class TopicService{
         if(count < 15){
             return user.getTopics().stream()
                     .sorted(Comparator.comparing(Topic::getCreatedAt))
-                    .map(topic -> new TopicProfileDto(topic.getUser().getUsername(), simpleDateFormat.format(topic.getCreatedAt().getTime()), topic.getTitle(), topic.getComments().size()))
+                    .map(topic -> new TopicProfileDto(topic.getUser().getUsername(), simpleDateFormat.format(topic.getCreatedAt().getTime()), topic.getTitle(), topic.getComments().size(), topic.getId()))
                     .collect(Collectors.toList());
         }
         return topicDao.findByUserAndIdBetweenOrderByIdDesc(user, (count-(page*15) > 0? count-(page*15) : 1), count-((page-1)*15)).stream()
-                .map(topic -> new TopicProfileDto(topic.getUser().getUsername(), simpleDateFormat.format(topic.getCreatedAt().getTime()), topic.getTitle(), topic.getComments().size()))
+                .map(topic -> new TopicProfileDto(topic.getUser().getUsername(), simpleDateFormat.format(topic.getCreatedAt().getTime()), topic.getTitle(), topic.getComments().size(), topic.getId()))
                 .collect(Collectors.toList());
     }
 
@@ -125,7 +125,7 @@ public class TopicService{
         return user.getComments().stream()
                 .map(Comment::getTopic)
                 .sorted(Comparator.comparing(Topic::getCreatedAt))
-                .map(topic -> new TopicProfileDto(topic.getUser().getUsername(), simpleDateFormat.format(topic.getCreatedAt().getTime()), topic.getTitle(), topic.getComments().size()))
+                .map(topic -> new TopicProfileDto(topic.getUser().getUsername(), simpleDateFormat.format(topic.getCreatedAt().getTime()), topic.getTitle(), topic.getComments().size(), topic.getId()))
                 .collect(Collectors.toList());
     }
 
@@ -141,12 +141,12 @@ public class TopicService{
             return user.getComments().stream()
                     .map(Comment::getTopic)
                     .sorted(Comparator.comparing(Topic::getCreatedAt))
-                    .map(topic -> new TopicProfileDto(topic.getUser().getUsername(), simpleDateFormat.format(topic.getCreatedAt().getTime()), topic.getTitle(), topic.getComments().size()))
+                    .map(topic -> new TopicProfileDto(topic.getUser().getUsername(), simpleDateFormat.format(topic.getCreatedAt().getTime()), topic.getTitle(), topic.getComments().size(), topic.getId()))
                     .collect(Collectors.toList());
         }
         return commentDao.findByUserAndIdBetweenOrderByIdDesc(user, (count-(page*15) > 0? count-(page*15) : 1), count-((page-1)*15)).stream()
                 .map(Comment::getTopic)
-                .map(topic -> new TopicProfileDto(topic.getUser().getUsername(), simpleDateFormat.format(topic.getCreatedAt().getTime()), topic.getTitle(), topic.getComments().size()))
+                .map(topic -> new TopicProfileDto(topic.getUser().getUsername(), simpleDateFormat.format(topic.getCreatedAt().getTime()), topic.getTitle(), topic.getComments().size(), topic.getId()))
                 .collect(Collectors.toList());
     }
 
@@ -183,7 +183,6 @@ public class TopicService{
         return (long) Math.ceil((double) topicDao.count()/15);
     }
 
-    //TODO not working
     public long getPageListSizeByType(String type){
         Optional<Type> typeOptional = Arrays.stream(Type.values())
                 .filter(typeElement -> typeElement.toString().toLowerCase().equals(type))

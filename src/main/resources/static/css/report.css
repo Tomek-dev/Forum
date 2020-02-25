@@ -107,3 +107,8 @@ body{
   font-family: 'Times New Roman', sans-serif;
   font-weight: bold;
 }
+
+.errors{
+font-size: 14px;
+color: #bd000d;
+}

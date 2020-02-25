@@ -50,7 +50,7 @@
     <div th:if="${valueParam == 'topic'}" class="topic-list">
         <div th:each="topic : ${topics}" class="topic">
             <p class="topic-icon">T</p>
-            <a href="" class="topic-title" th:text="${topic.getTitle()}"></a>
+            <a th:href="@{/topic/{id}(id = ${topic.getId()})}" class="topic-title" th:text="${topic.getTitle()}"></a>
             <div class="topic-info">
                 <p th:text="${topic.getCreatedAt()}"></p>
                 <p>10 Votes  <span th:text="${topic.getCommentsCount()}"></span> Comments</p>
@@ -60,18 +60,18 @@
     <div th:if="${valueParam == 'comment'}" class="topic-list">
         <div th:each="topic : ${topics}" class="topic">
             <p class="comment-icon"><i class="fa fa-comments-o icon"></i></p>
-            <a href="" class="topic-title" th:text="${topic.getTitle()}"></a>
+            <a th:href="@{/topic/{id}(id = ${topic.getId()})}" class="topic-title" th:text="${topic.getTitle()}"></a>
             <div class="topic-info">
-                <p>Posted by <a href="#" th:text="${topic.getUsername()}"></a></p>
+                <p>Posted by <a th:href="@{/profile/{username}(username = ${topic.getUsername().toLowerCase()})}" th:text="${topic.getUsername()}"></a></p>
                 <p th:text="${topic.getCreatedAt()}"></p>            </div>
         </div>
     </div>
     <div th:if="${valueParam == 'vote'}" class="topic-list">
         <div th:each="topic : ${topics}" class="topic">
             <p class="vote-icon">Vote</p>
-            <a href="" class="topic-title" th:text="${topic.getTitle()}"></a>
+            <a th:href="@{/topic/{id}(id = ${topic.getId()})}" class="topic-title" th:text="${topic.getTitle()}"></a>
             <div class="topic-info">
-                <p>Posted by <a href="#" th:text="${topic.getUsername()}"></a></p>
+                <p>Posted by <a th:href="@{/profile/{username}(username = ${topic.getUsername().toLowerCase()})}" th:text="${topic.getUsername()}"></a></p>
                 <p th:text="${topic.getCreatedAt()}"></p>            </div>
         </div>
     </div>

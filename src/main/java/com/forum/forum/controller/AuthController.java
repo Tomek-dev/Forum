@@ -72,8 +72,9 @@ public class AuthController {
     }
 
     @PostMapping("/reset")
-    public String reset(@RequestParam("v")UUID token, @Valid ResetDto resetDto, BindingResult bindingResult){
+    public String reset(@RequestParam("v")UUID token, @Valid ResetDto resetDto, BindingResult bindingResult, Model model){
         if(bindingResult.hasErrors()){
+            model.addAttribute("token", token);
             return "reset";
         }
         resetService.resetPassword(token, resetDto);

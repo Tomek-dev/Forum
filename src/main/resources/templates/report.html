@@ -31,6 +31,7 @@
                 <label th:for="${#ids.prev('type')}" class="tag" th:text="${T(com.forum.forum.enums.ReportType).OTHER.getDisplayName()}"></label>
             </div>
             <textarea placeholder="Describe it" th:field="*{describe}" name="name" rows="8" cols="80"></textarea>
+            <div class="errors" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
             <input type="submit" name="" value="Report">
         </form>
     </div>

@@ -66,8 +66,9 @@ public class ProfileController {
     }
 
     @PostMapping("/{username}/report")
-    public String reportProfile(@PathVariable String username, @Valid Report report, BindingResult bindingResult){
+    public String reportProfile(@PathVariable String username, @Valid Report report, BindingResult bindingResult, Model model){
         if(bindingResult.hasErrors()){
+            model.addAttribute("userVariable", username);
             return "report";
         }
         reportService.addReport(report, username);

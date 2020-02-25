@@ -91,23 +91,23 @@
 
                     </div>
                     <div class="auth-option">
-                        <a href="#" style="color: #222;">Tommy Andre</a>
+                        <a th:href="@{/profile/{username}(username = ${#authentication.getPrincipal().getUsername().toLowerCase()})}" style="color: #222;" sec:authentication="name"></a>
                         <a th:href="@{/logout}">logout <i class="fa">&#xf08b;</i></a>
                     </div>
                 </div>
                 <p class = "user-motto">"coding" Makes you smartest, becouse all can't do it all</p>
                 <div class="auth-info">
-                    <a href="#">
+                    <a th:href="@{/profile/{username}(username = ${#authentication.getPrincipal().getUsername()},value=vote)}">
                         <p>Votes</p>
                         <p>120</p>
                     </a>
-                    <a href="#">
+                    <a th:href="@{/profile/{username}(username = ${#authentication.getPrincipal().getUsername()},value=comment)}">
                         <p>Comments</p>
-                        <p>120</p>
+                        <p th:text="${#authentication.getPrincipal().getComments().size()}"></p>
                     </a>
-                    <a href="#">
+                    <a th:href="@{/profile/{username}(username = ${#authentication.getPrincipal().getUsername()},value=topic)}">
                         <p>Posts</p>
-                        <p>120</p>
+                        <p th:text="${#authentication.getPrincipal().getTopics().size()}"></p>
                     </a>
                 </div>
             </div>

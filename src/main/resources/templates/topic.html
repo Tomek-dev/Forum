@@ -18,7 +18,7 @@
                 <div class="user-image"></div>
                 <div class="information">
                     <div class="user-info">
-                        <a href="#" th:text="${topic.getUsername()}"></a>
+                        <a th:href="@{/profile/{username}(username = ${topic.getUsername().toLowerCase()})}" th:text="${topic.getUsername()}"></a>
                         <form class="star-form" action="index.html" method="post">
                             <button type="submit" name="button">Star</button>
                         </form>
@@ -59,6 +59,7 @@
     <form class="comment-form" id="comment-id" th:action="@{/topic/{tid}/comment(tid=${topic.getId()})}" th:object="${commentInput}" method="post">
         <h1>Know answer?</h1>
         <textarea rows="8" cols="80" th:field="*{comment}" placeholder="Your answer"></textarea>
+        <div class="errors" th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}"></div>
         <input type="submit" name="" value="Answer">
     </form>
 </div>
