@@ -14,6 +14,14 @@ public class ResetDto implements Password{
     @Size(min = 6, max = 24)
     private String password;
 
+    public ResetDto(@NotNull @NotEmpty @Size(min = 6, max = 24) String password, @NotNull @NotEmpty String confirmpassword) {
+        this.password = password;
+        this.confirmpassword = confirmpassword;
+    }
+
+    public ResetDto() {
+    }
+
     @NotNull
     @NotEmpty
     private String confirmpassword;

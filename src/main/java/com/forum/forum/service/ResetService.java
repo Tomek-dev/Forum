@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -28,26 +29,20 @@ public class ResetService {
     }
 
     public void resetPassword(UUID token, ResetDto resetDto) {
-        if(tokenDao.findByToken(token)==null){
-            throw new RuntimeException("Token not found");
-        }
-        Token resetToken = tokenDao.findByToken(token);
-        if(userDao.findByEmail(resetToken.getUser().getEmail())==null){
-            throw new UsernameNotFoundException("User not found");
-        }
-        User user = userDao.findByEmail(resetToken.getUser().getEmail());
+        Optional<Token> tokenOptional = Optional.ofNullable(tokenDao.findByToken(token));
+        Token resetToken = tokenOptional.orElseThrow(() -> new RuntimeException("Token not found"));
+        Optional<User> userOptional = Optional.ofNullable(userDao.findByEmail(resetToken.getUser().getEmail()));
+        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
         user.setPassword(passwordEncoder.encode(resetDto.getPassword()));
         user.setToken(null);
-        tokenDao.delete(tokenDao.findByToken(token));
+        tokenDao.delete(resetToken);
         userDao.save(user);
     }
 
     public void sendToken(EmailDto emailDto){
-        if(userDao.findByEmail(emailDto.getEmail())==null){
-            throw new UsernameNotFoundException("There isn't that user");
-        }
-        User user = userDao.findByEmail(emailDto.getEmail());
-        if(tokenDao.findByUser(user)==null){
+        Optional<User> userOptional = Optional.ofNullable(userDao.findByEmail(emailDto.getEmail()));
+        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        if(user.getToken() == null){
             Token token = new Token(UUID.randomUUID(), user);
             user.setToken(token);
             tokenDao.save(token);

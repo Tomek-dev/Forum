@@ -5,6 +5,7 @@ import com.forum.forum.enums.ReportType;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Calendar;
 import java.util.Date;
 
 @Entity
@@ -33,6 +34,13 @@ public class Report {
     public Report(@NotNull ReportType type, String describe) {
         this.type = type;
         this.describe = describe;
+        createdAt = createdAtDate();
+    }
+
+    private Date createdAtDate(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(new Date().getTime());
+        return new Date(calendar.getTime().getTime());
     }
 
     public Long getId() {

@@ -58,19 +58,19 @@ public class ProfileController {
         throw new RuntimeException("Value not found");
     }
 
-    @GetMapping("/{user}/report")
-    public String getReportProfile(@PathVariable String user,Model model){
+    @GetMapping("/{username}/report")
+    public String getReportProfile(@PathVariable String username,Model model){
         model.addAttribute("report", new Report());
-        model.addAttribute("userVariable", user);
+        model.addAttribute("userVariable", username);
         return "report";
     }
 
-    @PostMapping("/{user}/report")
-    public String reportProfile(@PathVariable String user, @Valid Report report, BindingResult bindingResult){
+    @PostMapping("/{username}/report")
+    public String reportProfile(@PathVariable String username, @Valid Report report, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return "report";
         }
-        reportService.addReport(report, user);
-        return"redirect:/profile/" + user;
+        reportService.addReport(report, username);
+        return"redirect:/profile/" + username;
     }
 }

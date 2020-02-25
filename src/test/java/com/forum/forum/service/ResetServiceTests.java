@@ -63,4 +63,41 @@ public class ResetServiceTests {
         //when
         resetService.sendToken(new EmailDto("email"));
     }
+
+    @Test
+    public void shouldResetPassword(){
+        //given
+        Token token = new Token();
+        User user = new User();
+        token.setUser(user);
+        user.setToken(token);
+        user.setPassword(passwordEncoder.encode("password"));
+        ResetDto resetDto = new ResetDto("resetPassword", "resetPassword");
+        given(tokenDao.findByToken(Mockito.any())).willReturn(token);
+        given(userDao.findByEmail(Mockito.any())).willReturn(user);
+
+        //when
+        resetService.resetPassword(UUID.randomUUID(), resetDto);
+
+        //then
+        verify(tokenDao).delete(token);
+
+        assertNotEquals("password", user.getPassword());
+        assertNull(user.getToken());
+    }
+
+    @Test
+    public void shouldSendToken(){
+        //given
+        User user = new User();
+        given(userDao.findByEmail(Mockito.any())).willReturn(user);
+
+        //when
+        resetService.sendToken(new EmailDto());
+
+        //then
+        verify(tokenDao).save(any());
+
+        assertNotNull(user.getToken());
+    }
 }

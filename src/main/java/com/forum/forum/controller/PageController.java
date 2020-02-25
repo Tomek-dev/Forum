@@ -112,19 +112,19 @@ public class PageController {
         return "redirect:/topic/" + id;
     }
 
-    @GetMapping("/topic/{id}/report")
-    public String getReportTopic(@PathVariable Long id, Model model){
-        model.addAttribute("idVariable", id);
+    @GetMapping("/topic/{topicId}/report")
+    public String getReportTopic(@PathVariable Long topicId, Model model){
+        model.addAttribute("idVariable", topicId);
         model.addAttribute("report", new Report());
         return "report";
     }
 
-    @PostMapping("/topic/{id}/report")
-    public String reportTopic(@PathVariable Long id, @Valid Report report, BindingResult bindingResult){
+    @PostMapping("/topic/{topicId}/report")
+    public String reportTopic(@PathVariable Long topicId, @Valid Report report, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return "report";
         }
-        reportService.addReport(report, id);
-        return "redirect:/topic/"+id;
+        reportService.addReport(report, topicId);
+        return "redirect:/topic/"+topicId;
     }
 }

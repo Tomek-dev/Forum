@@ -32,8 +32,8 @@ public class ReportService {
         Topic foundTopic = topicOptional.orElseThrow(() -> new RuntimeException("Topic not found"));
         foundTopic.getReport().add(report);
         report.setTopic(foundTopic);
-        reportDao.save(report);
         topicDao.save(foundTopic);
+        reportDao.save(report);
     }
 
     public void addReport(Report report, String user){
