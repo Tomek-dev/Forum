@@ -7,6 +7,7 @@ import com.forum.forum.dto.TopicOutputDto;
 import com.forum.forum.model.HelpMessage;
 import com.forum.forum.model.Report;
 import com.forum.forum.model.User;
+import com.forum.forum.service.CommentService;
 import com.forum.forum.service.ReportService;
 import com.forum.forum.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +26,14 @@ public class PageController {
     private TopicService topicService;
     private HelpMessageDao helpMessageDao;
     private ReportService reportService;
+    private CommentService commentService;
 
     @Autowired
-    public PageController(TopicService topicService, HelpMessageDao helpMessageDao, ReportService reportService) {
+    public PageController(TopicService topicService, HelpMessageDao helpMessageDao, ReportService reportService, CommentService commentService) {
         this.topicService = topicService;
         this.helpMessageDao = helpMessageDao;
         this.reportService = reportService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/")
@@ -110,8 +113,14 @@ public class PageController {
             return "redirect:/topic/"+id;
         }
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        topicService.addComment(commentInputDto, ((User) principal).getUsername(), id);
+        commentService.addComment(commentInputDto, ((User) principal).getUsername(), id);
         return "redirect:/topic/" + id;
+    }
+
+    @PostMapping("/topic/{id}/delete")
+    public String deleteComment(@PathVariable Long id){
+        commentService.deleteComment(id);
+        return "redirect:/";
     }
 
     @GetMapping("/topic/{topicId}/report")

@@ -9,6 +9,7 @@ import com.forum.forum.model.Comment;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -42,6 +43,22 @@ public class TopicService{
         user.getTopics().add(topic);
         userDao.save(user);
         topicDao.save(topic);
+    }
+
+    public void deleteTopic(Long id){
+        Optional<Topic> topicOptional = topicDao.findById(id);
+        Topic topic = topicOptional.orElseThrow(() -> new RuntimeException("Type doesn't exist"));
+        User user = topic.getUser();
+        user.getTopics().remove(topic);
+        topic.getComments()
+                .forEach(comment -> {
+                    commentDao.delete(comment);
+                    User commentUser = comment.getUser();
+                    commentUser.getComments().remove(comment);
+                    userDao.save(commentUser);
+                });
+        topicDao.delete(topic);
+        userDao.save(user);
     }
 
     public List<TopicOutputDto> getPageOf15TopicsByType(String type, int page){
@@ -87,8 +104,7 @@ public class TopicService{
         if(page < 0 || page> Math.ceil((double) count/15)){
             throw new IndexOutOfBoundsException("Page index out of bounds");
         }
-        return commentDao.findByUser(PageRequest.of(page, 15, Sort.by("id").descending()), user).stream()
-                .map(Comment::getTopic)
+        return topicDao.findByCommentsIn(PageRequest.of(page, 15, Sort.by("id").descending()), user.getComments()).stream()
                 .map(topic -> new TopicProfileDto(topic.getUser().getUsername(), simpleDateFormat.format(topic.getCreatedAt()),topic.getTitle(), topic.getComments().size(),topic.getId()))
                 .collect(Collectors.toList());
     }
@@ -106,20 +122,6 @@ public class TopicService{
                 .sorted(Comparator.comparing(Comment::getCreatedAt))
                 .map(comment -> new CommentOutputDto(comment.getComment(), comment.getUser().getUsername(), posted(comment.getCreatedAt())))
                 .collect(Collectors.toList());
-    }
-
-    public void addComment(CommentInputDto commentInputDto, String username, Long id){
-        User user = userDao.findByUsername(username);
-        Optional<Topic> topicOptional = topicDao.findById(id);
-        Topic topic = topicOptional.orElseThrow(() -> new RuntimeException("Topic doesn't exist"));
-        Comment comment = new Comment(commentInputDto.getComment());
-        comment.setTopic(topic);
-        comment.setUser(user);
-        user.getComments().add(comment);
-        topic.getComments().add(comment);
-        commentDao.save(comment);
-        userDao.save(user);
-        topicDao.save(topic);
     }
 
     public long getPageSize(){

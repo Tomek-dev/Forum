@@ -112,12 +112,6 @@ body{
   justify-content: center;
 }
 
-.choice-buttons{
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
-
 .write-option a{
   border-radius: 24px;
   background-color: #1c9963;
@@ -140,20 +134,6 @@ body{
   font-weight: bold;
   padding-bottom: 0px;
   margin: 30px 0 0 0;
-}
-
-.add{
-  padding: 4px 10px;
-  color: #666;
-  margin-left: 10px;
-  background-color: #eee;
-  border-radius: 20px;
-  border: none;
-  outline: none;
-}
-
-.add:hover{
-  background-color: #ddd;
 }
 
 .errors{

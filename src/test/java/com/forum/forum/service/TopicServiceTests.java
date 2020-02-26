@@ -70,40 +70,6 @@ public class TopicServiceTests {
     }
 
     @Test
-    public void shouldAddComment(){
-        //given
-        Topic topic = new Topic();
-        final Comment[] savedComment = new Comment[1];
-        given(topicDao.findById(Mockito.any())).willReturn(java.util.Optional.of(topic));
-        given(commentDao.save(Mockito.any(Comment.class))).willAnswer(invocationOnMock -> {
-            savedComment[0] = (Comment) invocationOnMock.getArguments()[0];
-            return invocationOnMock.getArguments()[0];
-        });
-
-        //when
-        topicService.addComment(new CommentInputDto("comment"), "user", 1l);
-
-        //then
-        verify(topicDao).save(topic);
-        verify(userDao).save(user);
-        verify(commentDao).save(any());
-
-        assertTrue(user.getComments().contains(savedComment[0]));
-        assertTrue(topic.getComments().contains(savedComment[0]));
-        assertEquals(user.getUsername(), savedComment[0].getUser().getUsername());
-        assertEquals(topic, savedComment[0].getTopic());
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void shouldThrowException(){
-        //given
-        given(topicDao.findById(Mockito.any())).willReturn(null);
-
-        //when
-        topicService.addComment(new CommentInputDto(), "username", 4l);
-    }
-
-    @Test
     public void shouldThrowRunTimeException(){
         assertThrows(RuntimeException.class, () -> topicService.getPageOf15TopicsByType("test", 0));
     }
@@ -133,7 +99,6 @@ public class TopicServiceTests {
         //given
         Topic topic = new Topic();
         Comment comment = new Comment();
-        User user = new User();
         user.setUsername("user");
         comment.setComment("comment");
         comment.setUser(user);
