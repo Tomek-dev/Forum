@@ -43,7 +43,7 @@ body{
     margin-right: 10px;
 }
 
-.user-left, .user-stats{
+.user-left, .user-stats, .option-element{
   display: flex;
   align-items: center;
 }
@@ -241,4 +241,18 @@ body{
 .page p{
   color: #777;
   margin: 0 2px;
+}
+
+.delete{
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: #555;
+  font-size: 20px;
+  margin-right:15px;
+  margin-bottom: 6px;
+}
+
+.delete:hover{
+  color: #333;
 }

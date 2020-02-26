@@ -24,15 +24,11 @@ public class PageController {
 
     private TopicService topicService;
     private HelpService helpService;
-    private ReportService reportService;
-    private CommentService commentService;
 
     @Autowired
-    public PageController(TopicService topicService, HelpService helpService, ReportService reportService, CommentService commentService) {
+    public PageController(TopicService topicService, HelpService helpService) {
         this.topicService = topicService;
         this.helpService = helpService;
-        this.reportService = reportService;
-        this.commentService = commentService;
     }
 
     @GetMapping("/")
@@ -85,67 +81,4 @@ public class PageController {
         return "redirect:/";
     }
 
-    @GetMapping("/write")
-    public String getWriteTopic(Model model){
-        model.addAttribute("topic", new TopicInputDto());
-        return "write";
-    }
-
-    @PostMapping("/write")
-    public String writeTopic(@Valid TopicInputDto topicInputDto, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
-            return "write";
-        }
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        topicService.addTopic(topicInputDto, ((User) principal).getUsername());
-        return "redirect:/";
-    }
-
-    @GetMapping("/topic/{id}")
-    public String getTopic(@PathVariable Long id, Model model){
-        model.addAttribute("topic", topicService.getTopic(id));
-        model.addAttribute("comments", topicService.getComments(id));
-        model.addAttribute("commentInput", new CommentInputDto());
-        model.addAttribute("idVariable", id);
-        return "topic";
-    }
-
-    @PostMapping("/topic/{id}/comment")
-    public String addComment(@PathVariable Long id, @Valid CommentInputDto commentInputDto, BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
-            return "redirect:/topic/"+id;
-        }
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        commentService.addComment(commentInputDto, ((User) principal).getUsername(), id);
-        return "redirect:/topic/" + id;
-    }
-
-    @PostMapping("/comment/{id}/delete")
-    public String deleteComment(@PathVariable Long id){
-        commentService.deleteComment(id);
-        return "redirect:/";
-    }
-
-    @PostMapping("/topic/{id}/delete")
-    public String deleteTopic(@PathVariable Long id){
-        topicService.deleteTopic(id);
-        return "redirect:/";
-    }
-
-    @GetMapping("/topic/{topicId}/report")
-    public String getReportTopic(@PathVariable Long topicId, Model model){
-        model.addAttribute("idVariable", topicId);
-        model.addAttribute("report", new Report());
-        return "report";
-    }
-
-    @PostMapping("/topic/{topicId}/report")
-    public String reportTopic(@PathVariable Long topicId, @Valid Report report, BindingResult bindingResult, Model model){
-        if(bindingResult.hasErrors()){
-            model.addAttribute("idVariable", topicId);
-            return "report";
-        }
-        reportService.addReport(report, topicId);
-        return "redirect:/topic/"+topicId;
-    }
 }

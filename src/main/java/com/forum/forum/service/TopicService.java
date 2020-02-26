@@ -123,7 +123,7 @@ public class TopicService{
         Topic topic = topicOptional.orElseThrow(()-> new RuntimeException("Topic doesn't exist"));
         return topic.getComments().stream()
                 .sorted(Comparator.comparing(Comment::getCreatedAt))
-                .map(comment -> new CommentOutputDto(comment.getComment(), comment.getUser().getUsername(), posted(comment.getCreatedAt())))
+                .map(comment -> new CommentOutputDto(comment.getComment(), comment.getUser().getUsername(), posted(comment.getCreatedAt()), comment.getId()))
                 .collect(Collectors.toList());
     }
 

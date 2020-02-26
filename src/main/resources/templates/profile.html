@@ -43,8 +43,13 @@
                 <a th:href="@{/profile/{user}(user=${userVariable},value=comment)}" th:style="${valueParam == 'comment'? 'border-bottom: 1px solid #444': ''}">Comments</a>
                 <a th:href="@{/profile/{user}(user=${userVariable},value=vote)}" th:style="${valueParam == 'vote'? 'border-bottom: 1px solid #444': ''}">Votes</a>
             </div>
-            <a th:if="${#authentication.getPrincipal() != userOutputDto.getUsername()}" th:href="@{/profile/{user}/report(user = ${userVariable})}" class="report"><i class="fa fa-exclamation"></i></a>
-            <a href="#" th:if="${#authentication.getPrincipal() == userOutputDto.getUsername()}" class="edit"><i class="fa fa-edit"></i></a>
+            <div class="option-element">
+            <a th:href="@{/profile/{user}/report(user = ${userVariable})}" class="report"><i class="fa fa-exclamation"></i></a>
+                <a href="#" sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername().equals(userOutputDto.getUsername())}" class="edit"><i class="fa fa-edit"></i></a>
+                <form sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername().equals(userOutputDto.getUsername()) || #authentication.getPrincipal().getRole().equals('ADMIN')}" method="post">
+                    <button class="delete"><i class="fa fa-trash-o"></i></button>
+                </form>
+            </div>
         </div>
     </div>
     <div th:if="${valueParam == 'topic'}" class="topic-list">
@@ -90,6 +95,5 @@
     </div>
 </div>
 <div th:replace="fragments/elements :: footer"></div>
-<script th:src="@{/javascript/write.js}"></script>
 </body>
 </html>
