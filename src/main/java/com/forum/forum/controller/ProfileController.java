@@ -19,14 +19,12 @@ import javax.validation.Valid;
 public class ProfileController {
 
     private TopicService topicService;
-    private HelpMessageDao helpMessageDao;
     private UserService userService;
     private ReportService reportService;
 
     @Autowired
-    public ProfileController(TopicService topicService, HelpMessageDao helpMessageDao, UserService userService, ReportService reportService) {
+    public ProfileController(TopicService topicService, UserService userService, ReportService reportService) {
         this.topicService = topicService;
-        this.helpMessageDao = helpMessageDao;
         this.userService = userService;
         this.reportService = reportService;
     }
@@ -35,7 +33,6 @@ public class ProfileController {
     public String getProfile(@PathVariable("user") String user, @RequestParam(required = false) String value, @RequestParam(required = false) Integer id, Model model){
         model.addAttribute("userVariable", user);
         model.addAttribute("userOutputDto", userService.getUserByUserName(user));
-        model.addAttribute("helpMessage", new HelpMessage());
         model.addAttribute("pageId", (id == null? 1: id));
         model.addAttribute("valueParam", value);
         if(value==null){

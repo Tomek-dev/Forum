@@ -4,7 +4,6 @@ import com.forum.forum.enums.Type;
 import com.forum.forum.dao.CommentDao;
 import com.forum.forum.dao.TopicDao;
 import com.forum.forum.dao.UserDao;
-import com.forum.forum.dto.CommentInputDto;
 import com.forum.forum.dto.TopicInputDto;
 import com.forum.forum.model.Comment;
 import com.forum.forum.model.Topic;

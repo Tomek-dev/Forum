@@ -89,9 +89,7 @@
         <a th:if="${pageId < pageListSize}" th:href="@{/profile/{user}(user=${userVariable},value=${valueParam},id=${pageId+1})}">next</a>
     </div>
 </div>
-<div th:replace="fragments/elements :: footer-help"></div>
 <div th:replace="fragments/elements :: footer"></div>
-<script th:src="@{/javascript/elements.js}"></script>
 <script th:src="@{/javascript/write.js}"></script>
 </body>
 </html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/help.css}">
+    <title>Help</title>
+</head>
+<body>
+<div id="help">
+    <div class="help-content">
+        <form id="help-form" th:action="@{/help}" th:object="${helpMessage}" method="post">
+            <h1>Help</h1>
+            <p>Have a problem? Report it, type subject and describe. Our help service will try help you as fast as is it possible.</p>
+            <input type="text" th:field="*{subject}" placeholder="subject">
+            <div class="errors" th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}"></div>
+            <textarea placeholder="What's your problem?" name="name" rows="8" cols="80" th:field="*{description}"></textarea>
+            <div class="errors" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+            <input type="submit" name="" value="Send">
+        </form>
+    </div>
+</div>
+</body>
+</html>
