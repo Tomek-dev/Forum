@@ -50,14 +50,17 @@ public class TopicService{
         Topic topic = topicOptional.orElseThrow(() -> new RuntimeException("Type doesn't exist"));
         User user = topic.getUser();
         user.getTopics().remove(topic);
+        Set<User> commentUserList = new HashSet<>();
+        Set<Comment> commentList = topic.getComments();
         topic.getComments()
                 .forEach(comment -> {
-                    commentDao.delete(comment);
                     User commentUser = comment.getUser();
                     commentUser.getComments().remove(comment);
-                    userDao.save(commentUser);
+                    commentUserList.add(commentUser);
                 });
         topicDao.delete(topic);
+        commentDao.deleteAll(commentList);
+        userDao.saveAll(commentUserList);
         userDao.save(user);
     }
 

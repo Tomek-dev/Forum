@@ -1,7 +1,5 @@
 package com.forum.forum.controller;
 
-import com.forum.forum.dao.HelpMessageDao;
-import com.forum.forum.model.HelpMessage;
 import com.forum.forum.model.Report;
 import com.forum.forum.service.ReportService;
 import com.forum.forum.service.TopicService;
@@ -32,7 +30,7 @@ public class ProfileController {
     @GetMapping("/{user}")
     public String getProfile(@PathVariable("user") String user, @RequestParam(required = false) String value, @RequestParam(required = false) Integer id, Model model){
         model.addAttribute("userVariable", user);
-        model.addAttribute("userOutputDto", userService.getUserByUserName(user));
+        model.addAttribute("userOutputDto", userService.getUserByUsername(user));
         model.addAttribute("pageId", (id == null? 1: id));
         model.addAttribute("valueParam", value);
         if(value==null){
@@ -66,5 +64,11 @@ public class ProfileController {
         }
         reportService.addReport(report, username);
         return"redirect:/profile/" + username;
+    }
+
+    @PostMapping("/{username}/delete")
+    public String deleteProfile(@PathVariable String username){
+        userService.deleteUser(username);
+        return "redirect:/";
     }
 }

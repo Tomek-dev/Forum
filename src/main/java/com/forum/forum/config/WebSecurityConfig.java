@@ -57,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
                 /*To check what this really do*/
-                //TODO access /topic
+                //TODO access
     }
 
     @Bean

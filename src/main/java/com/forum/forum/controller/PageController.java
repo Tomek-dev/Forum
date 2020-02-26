@@ -120,8 +120,14 @@ public class PageController {
         return "redirect:/topic/" + id;
     }
 
-    @PostMapping("/topic/{id}/delete")
+    @PostMapping("/comment/{id}/delete")
     public String deleteComment(@PathVariable Long id){
+        commentService.deleteComment(id);
+        return "redirect:/";
+    }
+
+    @PostMapping("/topic/{id}/delete")
+    public String deleteTopic(@PathVariable Long id){
         topicService.deleteTopic(id);
         return "redirect:/";
     }

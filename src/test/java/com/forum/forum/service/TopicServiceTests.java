@@ -109,12 +109,39 @@ public class TopicServiceTests {
         assertEquals("user", topicService.getComments(1L).get(0).getUsername());
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void shouldThrowTopicNotFoundException(){
         //given
         given(topicDao.findById(Mockito.any())).willReturn(null);
 
+        //then
+        assertThrows(RuntimeException.class, () -> topicService.getTopic(4L));
+        assertThrows(RuntimeException.class, () -> topicService.deleteTopic(4L));
+    }
+
+    @Test
+    public void shouldDeleteTopic(){
+        //given
+        User user = new User();
+        Topic topic = new Topic();
+        topic.setUser(user);
+        Comment comment = new Comment();
+        user.getComments().add(comment);
+        topic.getComments().add(comment);
+        comment.setTopic(topic);
+        comment.setUser(user);
+        given(topicDao.findById(Mockito.any())).willReturn(java.util.Optional.of(topic));
+
         //when
-        topicService.getTopic(4L);
+        topicService.deleteTopic(4L);
+
+        //then
+        verify(topicDao).delete(topic);
+        verify(commentDao).deleteAll(topic.getComments());
+        verify(userDao).save(user);
+
+
+        assertEquals(0, user.getComments().size());
+        assertEquals(0, user.getTopics().size());
     }
 }
