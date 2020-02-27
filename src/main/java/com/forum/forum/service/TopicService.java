@@ -65,9 +65,7 @@ public class TopicService{
     }
 
     public List<TopicOutputDto> getPageOf15TopicsByType(String type, int page){
-        Optional<Type> typeOptional = Arrays.stream(Type.values())
-                .filter(typeEnum -> typeEnum.toString().toLowerCase().equals(type))
-                .findFirst();
+        Optional<Type> typeOptional = Type.fromValue(type);
         Type foundType = typeOptional.orElseThrow(() -> new RuntimeException("Type doesn't exist"));
         long count = topicDao.countByType(foundType);
         if(page < 0 || page> Math.ceil((double) count/15)){
@@ -132,9 +130,7 @@ public class TopicService{
     }
 
     public long getPageSizeByType(String type){
-        Optional<Type> typeOptional = Arrays.stream(Type.values())
-                .filter(typeElement -> typeElement.toString().toLowerCase().equals(type))
-                .findFirst();
+        Optional<Type> typeOptional = Type.fromValue(type);
         Type foundType = typeOptional.orElseThrow(() -> new RuntimeException("Type doesn't exist"));
         return (long) Math.ceil((double) topicDao.countByType(foundType)/15);
     }

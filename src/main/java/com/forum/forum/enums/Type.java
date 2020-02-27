@@ -1,5 +1,8 @@
 package com.forum.forum.enums;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 public enum Type {
     C("C"),
     JAVA("Java"),
@@ -22,5 +25,9 @@ public enum Type {
 
     public String getDisplayName() {
         return displayName;
+    }
+
+    public static Optional<Type> fromValue(String value){
+        return Arrays.stream(Type.values()).filter(type -> type.displayName.equalsIgnoreCase(value)).findFirst();
     }
 }

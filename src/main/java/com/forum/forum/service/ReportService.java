@@ -3,15 +3,22 @@ package com.forum.forum.service;
 import com.forum.forum.dao.ReportDao;
 import com.forum.forum.dao.TopicDao;
 import com.forum.forum.dao.UserDao;
+import com.forum.forum.dto.ReportDto;
 import com.forum.forum.enums.ReportType;
 import com.forum.forum.model.Report;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ReportService {
@@ -45,5 +52,34 @@ public class ReportService {
         userDao.save(foundUser);
     }
 
+    public List<ReportDto> getPageOf15Report(int page){
+        long count = reportDao.count();
+        if(page < 0 || page> Math.ceil((double) count/15)){
+            throw new IndexOutOfBoundsException("Page index out of bounds");
+        }
+        return reportDao.findAll(PageRequest.of(page, 15, Sort.by("id").descending())).stream()
+                .map(report -> {
+                    if(report.getTopic() == null){
+                        return new ReportDto(report.getUser().getUsername(), report.getUser().getId(), report.getType().getDisplayName(), new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(report.getCreatedAt().getTime()), report.getDescribe());
+                    }
+                    return new ReportDto(report.getTopic().getTitle(), report.getTopic().getId(), report.getType().getDisplayName(), new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(report.getCreatedAt().getTime()), report.getDescribe());
+                })
+                .collect(Collectors.toList());
+    }
 
+    public void deleteReportById(long id){
+        Optional<Report> reportOptional = reportDao.findById(id);
+        Report report = reportOptional.orElseThrow(() -> new RuntimeException("Report not found"));
+        reportDao.deleteById(id);
+        if(report.getTopic() == null){
+            User user = report.getUser();
+            user.getReport().remove(report);
+            userDao.save(user);
+        }
+        else{
+            Topic topic = report.getTopic();
+            topic.getReport().remove(report);
+            topicDao.save(topic);
+        }
+    }
 }

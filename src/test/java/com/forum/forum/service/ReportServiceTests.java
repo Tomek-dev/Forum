@@ -3,7 +3,9 @@ package com.forum.forum.service;
 import com.forum.forum.dao.ReportDao;
 import com.forum.forum.dao.TopicDao;
 import com.forum.forum.dao.UserDao;
+import com.forum.forum.dto.ReportDto;
 import com.forum.forum.enums.ReportType;
+import com.forum.forum.enums.Type;
 import com.forum.forum.model.Report;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
@@ -13,9 +15,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -89,4 +99,35 @@ public class ReportServiceTests {
         assertEquals(1, topicDao.save(topic).getReport().size());
     }
 
+    @Test
+    public void shouldDeleteTopicReport(){
+        //given
+        Topic topic = new Topic();
+        Report report = new Report();
+        report.setTopic(topic);
+        given(reportDao.findById(Mockito.any())).willReturn(java.util.Optional.of(report));
+
+        //when
+        reportService.deleteReportById(4L);
+
+        //then
+        verify(topicDao).save(topic);
+        assertEquals(0, topic.getReport().size());
+    }
+
+    @Test
+    public void shouldDeleteUserReport(){
+        //given
+        User user = new User();
+        Report report = new Report();
+        report.setUser(user);
+        given(reportDao.findById(Mockito.any())).willReturn(java.util.Optional.of(report));
+
+        //when
+        reportService.deleteReportById(4L);
+
+        //then
+        verify(userDao).save(user);
+        assertEquals(0, user.getReport().size());
+    }
 }
