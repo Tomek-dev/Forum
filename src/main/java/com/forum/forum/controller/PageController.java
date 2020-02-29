@@ -2,6 +2,7 @@ package com.forum.forum.controller;
 
 import com.forum.forum.dao.HelpMessageDao;
 import com.forum.forum.dto.CommentInputDto;
+import com.forum.forum.dto.SearchDto;
 import com.forum.forum.dto.TopicInputDto;
 import com.forum.forum.model.HelpMessage;
 import com.forum.forum.model.Report;
@@ -33,6 +34,7 @@ public class PageController {
 
     @GetMapping("/")
     public String getHome(Model model){
+        model.addAttribute("search", new SearchDto());
         model.addAttribute("topics", topicService.getPageOf15Topics(0));
         model.addAttribute("helpMessage", new HelpMessage());
         model.addAttribute("pageListSize", topicService.getPageSize());
@@ -42,7 +44,7 @@ public class PageController {
 
     @GetMapping("/page")
     public String getHomeWithType(@RequestParam(required = false) String type, @RequestParam(required = false) Integer id, Model model){
-        model.addAttribute("helpMessage", new HelpMessage());
+        model.addAttribute("search", new SearchDto());
         if(id == null && type == null){
             return "redirect:/";
         }

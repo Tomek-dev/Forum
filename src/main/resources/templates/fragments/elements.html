@@ -10,10 +10,10 @@
 <body>
     <div class="header" th:fragment="header">
         <a th:href="@{/}" class="logo">Topics</a>
-        <form class="search-input" action="index.html" method="post">
+        <form class="search-input" th:action="@{/search}" th:object="${search}" method="post">
             <div class="search">
-                <input class="text" type="text" name="" placeholder="Search">
-                <button type="button" name="button"><i class="fa fa-search"></i></button>
+                <input class="text" type="text" th:field="*{query}" placeholder="Search">
+                <button type="submit" name="button"><i class="fa fa-search"></i></button>
             </div>
         </form>
         <div class="auth" sec:authorize="isAnonymous()">

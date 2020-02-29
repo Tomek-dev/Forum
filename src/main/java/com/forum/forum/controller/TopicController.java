@@ -1,6 +1,7 @@
 package com.forum.forum.controller;
 
 import com.forum.forum.dto.CommentInputDto;
+import com.forum.forum.dto.SearchDto;
 import com.forum.forum.dto.TopicInputDto;
 import com.forum.forum.model.Report;
 import com.forum.forum.model.User;
@@ -12,9 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -34,6 +33,7 @@ public class TopicController {
 
     @GetMapping("/write")
     public String getWriteTopic(Model model){
+        model.addAttribute("search", new SearchDto());
         model.addAttribute("topic", new TopicInputDto());
         return "write";
     }
@@ -50,6 +50,7 @@ public class TopicController {
 
     @GetMapping("/topic/{id}")
     public String getTopic(@PathVariable Long id, Model model){
+        model.addAttribute("search", new SearchDto());
         model.addAttribute("topic", topicService.getTopic(id));
         model.addAttribute("comments", topicService.getComments(id));
         model.addAttribute("commentInput", new CommentInputDto());

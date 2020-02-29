@@ -1,5 +1,6 @@
 package com.forum.forum.controller;
 
+import com.forum.forum.dto.SearchDto;
 import com.forum.forum.model.Report;
 import com.forum.forum.service.ReportService;
 import com.forum.forum.service.TopicService;
@@ -29,6 +30,7 @@ public class ProfileController {
 
     @GetMapping("/{user}")
     public String getProfile(@PathVariable("user") String user, @RequestParam(required = false) String value, @RequestParam(required = false) Integer id, Model model){
+        model.addAttribute("search", new SearchDto());
         model.addAttribute("userVariable", user);
         model.addAttribute("userOutputDto", userService.getUserByUsername(user));
         model.addAttribute("pageId", (id == null? 1: id));

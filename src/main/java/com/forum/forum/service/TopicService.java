@@ -8,10 +8,12 @@ import com.forum.forum.dto.*;
 import com.forum.forum.model.Comment;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
+import com.forum.forum.other.DateFormater;
+import com.forum.forum.other.SearchFilter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -72,7 +74,7 @@ public class TopicService{
             throw new IndexOutOfBoundsException("Page index out of bounds");
         }
         return topicDao.findByType(PageRequest.of(page, 15, Sort.by("id").descending()), foundType).stream()
-                .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), posted(topic.getCreatedAt()), topic.getId()))
+                .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), DateFormater.posted(topic.getCreatedAt()), topic.getId()))
                 .collect(Collectors.toList());
     }
 
@@ -82,7 +84,7 @@ public class TopicService{
             throw new IndexOutOfBoundsException("Page index out of bounds");
         }
         return topicDao.findAll(PageRequest.of(page, 15, Sort.by("id").descending())).stream()
-                .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), posted(topic.getCreatedAt()), topic.getId()))
+                .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), DateFormater.posted(topic.getCreatedAt()), topic.getId()))
                 .collect(Collectors.toList());
     }
 
@@ -113,7 +115,7 @@ public class TopicService{
     public TopicOutputDto getTopic(Long id){
         Optional<Topic> topicOptional = topicDao.findById(id);
         Topic foundTopic = topicOptional.orElseThrow(()-> new RuntimeException("Topic doesn't exist"));
-        return new TopicOutputDto(foundTopic.getUser().getUsername(), foundTopic.getTitle(), foundTopic.getDescription(), foundTopic.getType().getDisplayName(), posted(foundTopic.getCreatedAt()), foundTopic.getId());
+        return new TopicOutputDto(foundTopic.getUser().getUsername(), foundTopic.getTitle(), foundTopic.getDescription(), foundTopic.getType().getDisplayName(), DateFormater.posted(foundTopic.getCreatedAt()), foundTopic.getId());
     }
 
     public List<CommentOutputDto> getComments(Long id){
@@ -121,7 +123,7 @@ public class TopicService{
         Topic topic = topicOptional.orElseThrow(()-> new RuntimeException("Topic doesn't exist"));
         return topic.getComments().stream()
                 .sorted(Comparator.comparing(Comment::getCreatedAt))
-                .map(comment -> new CommentOutputDto(comment.getComment(), comment.getUser().getUsername(), posted(comment.getCreatedAt()), comment.getId()))
+                .map(comment -> new CommentOutputDto(comment.getComment(), comment.getUser().getUsername(), DateFormater.posted(comment.getCreatedAt()), comment.getId()))
                 .collect(Collectors.toList());
     }
 
@@ -147,25 +149,4 @@ public class TopicService{
         return (long) Math.ceil((double) user.getComments().size()/15);
     }
 
-    private String posted(Date postedDate){
-        long actualDate = new Date().getTime();
-        long remain = (actualDate - postedDate.getTime())/1000;
-        if(remain < 60){
-            return remain + " secs";
-        }
-        remain /= 60;
-        if(remain < 60){
-            return remain + " mins";
-        }
-        remain /= 60;
-        if(remain < 60){
-            return remain + " hours";
-        }
-        remain /= 24;
-        if(remain < 365){
-            return remain + " days";
-        }
-        remain /= 365;
-        return remain + " years";
-    }
 }
