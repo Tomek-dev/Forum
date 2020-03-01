@@ -68,31 +68,6 @@ public class TopicServiceTests {
         assertEquals(Type.JAVA, savedTopic[0].getType());
     }
 
-    /*@Test
-    public void shouldThrowRunTimeException(){
-        assertThrows(RuntimeException.class, () -> topicService.getPageOf15TopicsByType("test", 0));
-    }
-
-    @Test
-    public void shouldThrowIndexOutOfBoundsException(){
-        //given
-        given(topicDao.count()).willReturn(30L);
-
-        //then
-        assertThrows(IndexOutOfBoundsException.class, () -> topicService.getPageOf15Topics(3));
-        assertThrows(IndexOutOfBoundsException.class, () -> topicService.getPageOf15Topics(-1));
-    }
-
-    @Test
-    public void shouldThrowUsernameNotFoundException(){
-        //given
-        given(userDao.findByUsernameIgnoreCase(Mockito.any())).willReturn(null);
-
-        assertThrows(UsernameNotFoundException.class, () -> topicService.getPageOf15TopicsByUser("user", 0));
-        assertThrows(UsernameNotFoundException.class, () -> topicService.getPageOf15TopicsByComment("user", 0));
-    }
-*/
-
     @Test
     public void shouldGetCommentsByTopic(){
         //given

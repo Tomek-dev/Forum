@@ -26,4 +26,8 @@ public class SearchSerivce {
                 .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), DateFormater.posted(topic.getCreatedAt()), topic.getId()))
                 .collect(Collectors.toList());
     }
+
+    public long getPageNumber(SearchSpecification searchSpecification, Pageable pageable){
+        return (long) Math.ceil((double) topicDao.count(searchSpecification)/pageable.getPageSize());
+    }
 }

@@ -87,18 +87,6 @@ public class TopicService{
                 .collect(Collectors.toList());
     }
 
-    public List<TopicOutputDto> getPageOf15TopicsByType(String type, int page){
-        Optional<Type> typeOptional = Type.fromValue(type);
-        Type foundType = typeOptional.orElseThrow(() -> new RuntimeException("Type doesn't exist"));
-        long count = topicDao.countByType(foundType);
-        if(page < 0 || page> Math.ceil((double) count/15)){
-            throw new IndexOutOfBoundsException("Page index out of bounds");
-        }
-        return topicDao.findByType(PageRequest.of(page, 15, Sort.by("id").descending()), foundType).stream()
-                .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), DateFormater.posted(topic.getCreatedAt()), topic.getId()))
-                .collect(Collectors.toList());
-    }
-
     public TopicOutputDto getTopic(Long id){
         Optional<Topic> topicOptional = topicDao.findById(id);
         Topic foundTopic = topicOptional.orElseThrow(()-> new RuntimeException("Topic doesn't exist"));

@@ -34,7 +34,6 @@ public class PageController {
         Pageable pageable = PageRequest.of(1, 15, Sort.by("id").descending());
         model.addAttribute("search", new SearchDto());
         model.addAttribute("topics", topicService.getPageOf15Topics(pageable));
-        model.addAttribute("helpMessage", new HelpMessage());
         model.addAttribute("pageListSize", topicService.getPageNumber(pageable));
         model.addAttribute("pageId", 1);
         return "index";
@@ -45,7 +44,6 @@ public class PageController {
         model.addAttribute("search", new SearchDto());
         model.addAttribute("typeEnum", typeSpecification.getType());
         model.addAttribute("topics", (typeSpecification.getType() == null? topicService.getPageOf15Topics(pageable): topicService.getPageOf15Topics(typeSpecification, pageable)));
-        model.addAttribute("helpMessage", new HelpMessage());
         model.addAttribute("pageListSize", topicService.getPageNumber(typeSpecification, pageable));
         model.addAttribute("pageId", pageable.getPageNumber());
         return "index";
