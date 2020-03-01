@@ -28,6 +28,6 @@ public enum Type {
     }
 
     public static Optional<Type> fromValue(String value){
-        return Arrays.stream(Type.values()).filter(type -> type.displayName.equalsIgnoreCase(value)).findFirst();
+        return Arrays.stream(Type.values()).filter(type -> type.toString().equalsIgnoreCase(value)).findFirst();
     }
 }

@@ -25,7 +25,7 @@ public class SearchSerivce {
     public List<TopicOutputDto> getPageBySearch(SearchSpecification searchSpecification, Pageable pageable){
         Pageable pageableValue = PageRequest.of(pageable.getPageNumber()-1, pageable.getPageSize(), pageable.getSort());
         return topicDao.findAll(searchSpecification, pageableValue).stream()
-                .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), DateFormater.posted(topic.getCreatedAt()), topic.getId()))
+                .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), DateFormater.posted(topic.getCreatedAt()), topic.getId(), topic.getComments().size()))
                 .collect(Collectors.toList());
     }
 

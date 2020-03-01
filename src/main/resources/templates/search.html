@@ -34,7 +34,7 @@
                     </a>
                     <a th:href="@{/topic/{tid}#comment-id(tid=${topic.getId()})}" class="search-result-btn">
                         <p>Comment</p>
-                        <p>4</p>
+                        <p th:text="${topic.getCommentSize()}"></p>
                     </a>
                 </div>
                 <div class="search-result-content">

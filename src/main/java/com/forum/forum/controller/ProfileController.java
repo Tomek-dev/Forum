@@ -34,15 +34,15 @@ public class ProfileController {
     }
 
     @GetMapping("/{user}")
-    public String getProfile(@PathVariable("user") String user, ProfileSpecification profileSpecification, @PageableDefault(sort = "id", size = 10, page = 1, direction = Sort.Direction.DESC) Pageable pageable, Model model){
+    public String getProfile(@PathVariable("user") String user, ProfileSpecification profileSpecification, @PageableDefault(sort = "id", page = 1, direction = Sort.Direction.DESC) Pageable pageable, Model model){
         model.addAttribute("userOutputDto", userService.getUserByUsername(user));
         model.addAttribute("search", new SearchDto());
         model.addAttribute("userVariable", user);
         model.addAttribute("pageId", (pageable == null? 1: pageable.getPageNumber()));
         model.addAttribute("valueParam", profileSpecification.getValue());
         profileSpecification.setUser(user);
-        model.addAttribute("topics", topicService.getPageOfTopic(profileSpecification, (pageable == null? PageRequest.of(1, 15, Sort.by("id").descending()): pageable)));
-        model.addAttribute("pageListSize", topicService.getProfilePageNumber(profileSpecification));
+        model.addAttribute("topics", topicService.getPageOfTopic(profileSpecification, (pageable == null? PageRequest.of(1, 10, Sort.by("id").descending()): pageable)));
+        model.addAttribute("pageListSize", topicService.getProfilePageNumber(profileSpecification, (pageable == null? PageRequest.of(1, 10, Sort.by("id").descending()): pageable)));
         return "profile";
     }
 

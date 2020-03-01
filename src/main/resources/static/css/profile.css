@@ -3,11 +3,12 @@ body{
   font-family: 'Roboto', sans-serif;
   padding: 0;
   margin: 0;
+  position: relative;
+   min-height: 100vh;
 }
 
 .container{
-  padding-top: 88px;
-  padding-bottom: 40px;
+  padding: 72px 0;
   width: 900px;
   margin-left: auto;
   margin-right: auto;
@@ -18,6 +19,7 @@ body{
   }
 
 .user-bar{
+  padding-top: 10px;
   display: flex;
   flex-direction: column;
 }
@@ -158,6 +160,7 @@ body{
   display: flex;
   flex-direction: column;
   margin: 0 auto;
+  padding-bottom: 15px;
 }
 
 .topic{

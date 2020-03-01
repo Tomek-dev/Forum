@@ -69,14 +69,14 @@ public class TopicService{
     public List<TopicOutputDto> getPageOf15Topics(TypeSpecification typeSpecification, Pageable pageable){
         Pageable pageableValue = PageRequest.of(pageable.getPageNumber()-1, pageable.getPageSize(), pageable.getSort());
         return topicDao.findAll(typeSpecification, pageableValue).stream()
-                .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), DateFormater.posted(topic.getCreatedAt()), topic.getId()))
+                .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), DateFormater.posted(topic.getCreatedAt()), topic.getId(), topic.getComments().size()))
                 .collect(Collectors.toList());
     }
 
     public List<TopicOutputDto> getPageOf15Topics(Pageable pageable){
         Pageable pageableValue = PageRequest.of(pageable.getPageNumber()-1, pageable.getPageSize(), pageable.getSort());
         return topicDao.findAll(pageableValue).stream()
-                .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), DateFormater.posted(topic.getCreatedAt()), topic.getId()))
+                .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), DateFormater.posted(topic.getCreatedAt()), topic.getId(), topic.getComments().size()))
                 .collect(Collectors.toList());
     }
 
@@ -90,7 +90,7 @@ public class TopicService{
     public TopicOutputDto getTopic(Long id){
         Optional<Topic> topicOptional = topicDao.findById(id);
         Topic foundTopic = topicOptional.orElseThrow(()-> new RuntimeException("Topic doesn't exist"));
-        return new TopicOutputDto(foundTopic.getUser().getUsername(), foundTopic.getTitle(), foundTopic.getDescription(), foundTopic.getType().getDisplayName(), DateFormater.posted(foundTopic.getCreatedAt()), foundTopic.getId());
+        return new TopicOutputDto(foundTopic.getUser().getUsername(), foundTopic.getTitle(), foundTopic.getDescription(), foundTopic.getType().getDisplayName(), DateFormater.posted(foundTopic.getCreatedAt()), foundTopic.getId(), foundTopic.getComments().size());
     }
 
     public List<CommentOutputDto> getComments(Long id){
@@ -113,8 +113,8 @@ public class TopicService{
         return (long) Math.ceil((double) topicDao.count()/pageable.getPageSize());
     }
 
-    public long getProfilePageNumber(ProfileSpecification profileSpecification){
-        return (long) Math.ceil((double) topicDao.count(profileSpecification)/15);
+    public long getProfilePageNumber(ProfileSpecification profileSpecification, Pageable pageable){
+        return (long) Math.ceil((double) topicDao.count(profileSpecification)/pageable.getPageSize());
     }
 
 }

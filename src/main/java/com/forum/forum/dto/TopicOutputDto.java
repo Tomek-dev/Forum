@@ -8,14 +8,16 @@ public class TopicOutputDto {
     private String type;
     private String postedAt;
     private Long id;
+    private Integer commentSize;
 
-    public TopicOutputDto(String username, String title, String description, String type, String postedAt, Long id) {
+    public TopicOutputDto(String username, String title, String description, String type, String postedAt, Long id, Integer commentSize) {
         this.username = username;
         this.title = title;
         this.description = description;
         this.type = type;
         this.postedAt = postedAt;
         this.id = id;
+        this.commentSize = commentSize;
     }
 
     public TopicOutputDto() {
@@ -67,5 +69,13 @@ public class TopicOutputDto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getCommentSize() {
+        return commentSize;
+    }
+
+    public void setCommentSize(Integer commentSize) {
+        this.commentSize = commentSize;
     }
 }
