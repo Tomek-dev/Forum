@@ -5,8 +5,6 @@ import com.forum.forum.dao.CommentDao;
 import com.forum.forum.dao.TopicDao;
 import com.forum.forum.dao.UserDao;
 import com.forum.forum.dto.RegistrationDto;
-import com.forum.forum.model.Comment;
-import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
 
 import static org.junit.Assert.*;

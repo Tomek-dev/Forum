@@ -1,18 +1,15 @@
 package com.forum.forum.controller;
 
-import com.forum.forum.dao.HelpMessageDao;
-import com.forum.forum.dto.CommentInputDto;
 import com.forum.forum.dto.SearchDto;
-import com.forum.forum.dto.TopicInputDto;
 import com.forum.forum.model.HelpMessage;
-import com.forum.forum.model.Report;
-import com.forum.forum.model.User;
-import com.forum.forum.service.CommentService;
+import com.forum.forum.other.TypeSpecification;
 import com.forum.forum.service.HelpService;
-import com.forum.forum.service.ReportService;
 import com.forum.forum.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,37 +31,23 @@ public class PageController {
 
     @GetMapping("/")
     public String getHome(Model model){
+        Pageable pageable = PageRequest.of(1, 15, Sort.by("id").descending());
         model.addAttribute("search", new SearchDto());
-        model.addAttribute("topics", topicService.getPageOf15Topics(0));
+        model.addAttribute("topics", topicService.getPageOf15Topics(pageable));
         model.addAttribute("helpMessage", new HelpMessage());
-        model.addAttribute("pageListSize", topicService.getPageSize());
+        model.addAttribute("pageListSize", topicService.getPageNumber(pageable));
         model.addAttribute("pageId", 1);
         return "index";
     }
 
-    @GetMapping("/page")
-    public String getHomeWithType(@RequestParam(required = false) String type, @RequestParam(required = false) Integer id, Model model){
+    @GetMapping("/topic")
+    public String getHomeWithType(TypeSpecification typeSpecification, @PageableDefault(sort = "id", size = 15, page = 1, direction = Sort.Direction.DESC) Pageable pageable, Model model){
         model.addAttribute("search", new SearchDto());
-        if(id == null && type == null){
-            return "redirect:/";
-        }
-        if(type != null && id != null){
-            model.addAttribute("topics", topicService.getPageOf15TopicsByType(type, id-1));
-            model.addAttribute("pageListSize", topicService.getPageSizeByType(type));
-            model.addAttribute("pageId", id);
-            model.addAttribute("typeEnum", type);
-            return "index";
-        }
-        if(id == null){
-            model.addAttribute("pageId", 1);
-            model.addAttribute("typeEnum", type);
-            model.addAttribute("pageListSize", topicService.getPageSizeByType(type));
-            model.addAttribute("topics", topicService.getPageOf15TopicsByType(type, 0));
-            return "index";
-        }
-        model.addAttribute("pageListSize", topicService.getPageSize());
-        model.addAttribute("topics", topicService.getPageOf15Topics(id-1));
-        model.addAttribute("pageId", id);
+        model.addAttribute("typeEnum", typeSpecification.getType());
+        model.addAttribute("topics", (typeSpecification.getType() == null? topicService.getPageOf15Topics(pageable): topicService.getPageOf15Topics(typeSpecification, pageable)));
+        model.addAttribute("helpMessage", new HelpMessage());
+        model.addAttribute("pageListSize", topicService.getPageNumber(typeSpecification, pageable));
+        model.addAttribute("pageId", pageable.getPageNumber());
         return "index";
     }
 

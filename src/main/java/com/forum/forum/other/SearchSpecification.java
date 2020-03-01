@@ -8,12 +8,12 @@ import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchFilter implements Specification<Topic> {
+public class SearchSpecification implements Specification<Topic> {
 
     private String query;
     private String type;
 
-    public SearchFilter(String query, String type) {
+    public SearchSpecification(String query, String type) {
         this.query = query;
         this.type = type;
     }
@@ -32,7 +32,6 @@ public class SearchFilter implements Specification<Topic> {
         }
         Predicate predicateOr = criteriaBuilder.or(predicatesOr.toArray(new Predicate[0]));
         Predicate predicateAnd = criteriaBuilder.and(predicatesAnd.toArray(new Predicate[0]));
-        String string = criteriaBuilder.and(predicateOr, predicateAnd).toString();
         return criteriaBuilder.and(predicateOr, predicateAnd);
     }
 }

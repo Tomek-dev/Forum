@@ -2,10 +2,15 @@ package com.forum.forum.controller;
 
 import com.forum.forum.dto.SearchDto;
 import com.forum.forum.model.Report;
+import com.forum.forum.other.ProfileSpecification;
 import com.forum.forum.service.ReportService;
 import com.forum.forum.service.TopicService;
 import com.forum.forum.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,26 +34,16 @@ public class ProfileController {
     }
 
     @GetMapping("/{user}")
-    public String getProfile(@PathVariable("user") String user, @RequestParam(required = false) String value, @RequestParam(required = false) Integer id, Model model){
+    public String getProfile(@PathVariable("user") String user, ProfileSpecification profileSpecification, @PageableDefault(sort = "id", size = 10, page = 1, direction = Sort.Direction.DESC) Pageable pageable, Model model){
+        model.addAttribute("userOutputDto", userService.getUserByUsername(user));
         model.addAttribute("search", new SearchDto());
         model.addAttribute("userVariable", user);
-        model.addAttribute("userOutputDto", userService.getUserByUsername(user));
-        model.addAttribute("pageId", (id == null? 1: id));
-        model.addAttribute("valueParam", value);
-        if(value==null){
-            return "redirect:/profile/" + user + "?value=topic";
-        }
-        if(value.equals("topic")){
-            model.addAttribute("topics", (id == null ? topicService.getPageOf15TopicsByUser(user, 0): topicService.getPageOf15TopicsByUser(user, id-1)));
-            model.addAttribute("pageListSize", topicService.getPageSizeByUsername(user));
-            return "profile";
-        }
-        if(value.equals("comment")){
-            model.addAttribute("topics", (id == null ? topicService.getPageOf15TopicsByComment(user, 0) : topicService.getPageOf15TopicsByComment(user, id-1)));
-            model.addAttribute("pageListSize", topicService.getPageSizeByComment(user));
-            return "profile";
-        }
-        throw new RuntimeException("Value not found");
+        model.addAttribute("pageId", (pageable == null? 1: pageable.getPageNumber()));
+        model.addAttribute("valueParam", profileSpecification.getValue());
+        profileSpecification.setUser(user);
+        model.addAttribute("topics", topicService.getPageOfTopic(profileSpecification, (pageable == null? PageRequest.of(1, 15, Sort.by("id").descending()): pageable)));
+        model.addAttribute("pageListSize", topicService.getProfilePageNumber(profileSpecification));
+        return "profile";
     }
 
     @GetMapping("/{username}/report")

@@ -9,12 +9,12 @@ import com.forum.forum.model.Comment;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
 import com.forum.forum.other.DateFormater;
-import com.forum.forum.other.SearchFilter;
+import com.forum.forum.other.ProfileSpecification;
+import com.forum.forum.other.TypeSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -66,6 +66,27 @@ public class TopicService{
         userDao.save(user);
     }
 
+    public List<TopicOutputDto> getPageOf15Topics(TypeSpecification typeSpecification, Pageable pageable){
+        Pageable pageableValue = PageRequest.of(pageable.getPageNumber()-1, pageable.getPageSize(), pageable.getSort());
+        return topicDao.findAll(typeSpecification, pageableValue).stream()
+                .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), DateFormater.posted(topic.getCreatedAt()), topic.getId()))
+                .collect(Collectors.toList());
+    }
+
+    public List<TopicOutputDto> getPageOf15Topics(Pageable pageable){
+        Pageable pageableValue = PageRequest.of(pageable.getPageNumber()-1, pageable.getPageSize(), pageable.getSort());
+        return topicDao.findAll(pageableValue).stream()
+                .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), DateFormater.posted(topic.getCreatedAt()), topic.getId()))
+                .collect(Collectors.toList());
+    }
+
+    public List<TopicProfileDto> getPageOfTopic(ProfileSpecification profileSpecification, Pageable pageable){
+        Pageable pageableValue = PageRequest.of(pageable.getPageNumber()-1, pageable.getPageSize(), pageable.getSort());
+        return topicDao.findAll(profileSpecification, pageableValue).stream()
+                .map(topic -> new TopicProfileDto(topic.getUser().getUsername(), simpleDateFormat.format(topic.getCreatedAt()),topic.getTitle(), topic.getComments().size(),topic.getId()))
+                .collect(Collectors.toList());
+    }
+
     public List<TopicOutputDto> getPageOf15TopicsByType(String type, int page){
         Optional<Type> typeOptional = Type.fromValue(type);
         Type foundType = typeOptional.orElseThrow(() -> new RuntimeException("Type doesn't exist"));
@@ -75,40 +96,6 @@ public class TopicService{
         }
         return topicDao.findByType(PageRequest.of(page, 15, Sort.by("id").descending()), foundType).stream()
                 .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), DateFormater.posted(topic.getCreatedAt()), topic.getId()))
-                .collect(Collectors.toList());
-    }
-
-    public List<TopicOutputDto> getPageOf15Topics(int page){
-        long count = topicDao.count();
-        if(page < 0 || page> Math.ceil((double) count/15)){
-            throw new IndexOutOfBoundsException("Page index out of bounds");
-        }
-        return topicDao.findAll(PageRequest.of(page, 15, Sort.by("id").descending())).stream()
-                .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), DateFormater.posted(topic.getCreatedAt()), topic.getId()))
-                .collect(Collectors.toList());
-    }
-
-    public List<TopicProfileDto> getPageOf15TopicsByUser(String username, int page){
-        Optional<User> userOptional = Optional.ofNullable(userDao.findByUsernameIgnoreCase(username));
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found."));
-        long count = topicDao.countByUser(user);
-        if(page < 0 || page> Math.ceil((double) count/15)){
-            throw new IndexOutOfBoundsException("Page index out of bounds");
-        }
-        return topicDao.findByUser(PageRequest.of(page, 15, Sort.by("id").descending()), user).stream()
-                .map(topic -> new TopicProfileDto(simpleDateFormat.format(topic.getCreatedAt()),topic.getTitle(), topic.getComments().size(),topic.getId()))
-                .collect(Collectors.toList());
-    }
-
-    public List<TopicProfileDto> getPageOf15TopicsByComment(String username, int page){
-        Optional<User> userOptional = Optional.ofNullable(userDao.findByUsernameIgnoreCase(username));
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found."));
-        long count = user.getComments().size();
-        if(page < 0 || page> Math.ceil((double) count/15)){
-            throw new IndexOutOfBoundsException("Page index out of bounds");
-        }
-        return topicDao.findByCommentsIn(PageRequest.of(page, 15, Sort.by("id").descending()), user.getComments()).stream()
-                .map(topic -> new TopicProfileDto(topic.getUser().getUsername(), simpleDateFormat.format(topic.getCreatedAt()),topic.getTitle(), topic.getComments().size(),topic.getId()))
                 .collect(Collectors.toList());
     }
 
@@ -127,26 +114,19 @@ public class TopicService{
                 .collect(Collectors.toList());
     }
 
-    public long getPageSize(){
-        return (long) Math.ceil((double) topicDao.count()/15);
+    public long getPageNumber(TypeSpecification typeSpecification, Pageable pageable){
+        if(typeSpecification.getType() == null){
+            return getPageNumber(pageable);
+        }
+        return (long) Math.ceil((double) topicDao.count(typeSpecification)/pageable.getPageSize());
     }
 
-    public long getPageSizeByType(String type){
-        Optional<Type> typeOptional = Type.fromValue(type);
-        Type foundType = typeOptional.orElseThrow(() -> new RuntimeException("Type doesn't exist"));
-        return (long) Math.ceil((double) topicDao.countByType(foundType)/15);
+    public long getPageNumber(Pageable pageable){
+        return (long) Math.ceil((double) topicDao.count()/pageable.getPageSize());
     }
 
-    public long getPageSizeByUsername(String username){
-        Optional<User> userOptional = Optional.ofNullable(userDao.findByUsernameIgnoreCase(username));
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found."));
-        return (long) Math.ceil((double) user.getTopics().size()/15);
-    }
-
-    public long getPageSizeByComment(String username){
-        Optional<User> userOptional = Optional.ofNullable(userDao.findByUsernameIgnoreCase(username));
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found."));
-        return (long) Math.ceil((double) user.getComments().size()/15);
+    public long getProfilePageNumber(ProfileSpecification profileSpecification){
+        return (long) Math.ceil((double) topicDao.count(profileSpecification)/15);
     }
 
 }
