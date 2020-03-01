@@ -6,7 +6,7 @@ public class SearchDto {
 
     private String query;
 
-    private boolean text;
+    private Boolean text;
 
     private Type type;
 
@@ -18,11 +18,11 @@ public class SearchDto {
         this.query = query;
     }
 
-    public boolean isText() {
+    public Boolean getText() {
         return text;
     }
 
-    public void setText(boolean text) {
+    public void setText(Boolean text) {
         this.text = text;
     }
 

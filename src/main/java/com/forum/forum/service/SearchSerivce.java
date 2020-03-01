@@ -5,6 +5,7 @@ import com.forum.forum.dto.TopicOutputDto;
 import com.forum.forum.other.DateFormater;
 import com.forum.forum.other.SearchSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,8 @@ public class SearchSerivce {
     }
 
     public List<TopicOutputDto> getPageBySearch(SearchSpecification searchSpecification, Pageable pageable){
-        return topicDao.findAll(searchSpecification, pageable).stream()
+        Pageable pageableValue = PageRequest.of(pageable.getPageNumber()-1, pageable.getPageSize(), pageable.getSort());
+        return topicDao.findAll(searchSpecification, pageableValue).stream()
                 .map(topic -> new TopicOutputDto(topic.getUser().getUsername(), topic.getTitle(), topic.getDescription(), topic.getType().getDisplayName(), DateFormater.posted(topic.getCreatedAt()), topic.getId()))
                 .collect(Collectors.toList());
     }

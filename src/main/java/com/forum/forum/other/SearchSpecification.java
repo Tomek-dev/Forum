@@ -12,10 +12,24 @@ public class SearchSpecification implements Specification<Topic> {
 
     private String query;
     private String type;
+    private Boolean text;
 
-    public SearchSpecification(String query, String type) {
+    public SearchSpecification(String query, String type, Boolean text) {
         this.query = query;
         this.type = type;
+        this.text = text;
+    }
+
+    public String getQuery() {
+        return query;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public Boolean getText() {
+        return text;
     }
 
     @Override
@@ -29,6 +43,9 @@ public class SearchSpecification implements Specification<Topic> {
         }
         if(type != null){
             predicatesAnd.add(criteriaBuilder.equal(root.get("type"), Type.fromValue(type).orElseThrow(() -> new RuntimeException("Type doesn't exist"))));
+        }
+        if(text != null && text){
+            predicatesOr.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("description")), "%"+ query.toLowerCase()+"%"));
         }
         Predicate predicateOr = criteriaBuilder.or(predicatesOr.toArray(new Predicate[0]));
         Predicate predicateAnd = criteriaBuilder.and(predicatesAnd.toArray(new Predicate[0]));

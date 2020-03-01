@@ -22,7 +22,7 @@
                 <div class="tags-list">
                     <div th:each="typeelement: ${T(com.forum.forum.enums.Type).values()}" class="type-element">
                         <input type="checkbox" th:field="*{type}" th:value="${typeelement}" class="visually-hidden" onclick="chooseOne(this)">
-                        <label th:for="${#ids.prev('type')}" class="tag" th:text="${typeelement.displayName}"></label>
+                        <label th:for="${#ids.prev('type')}" class="tag"><span class="sharp">#</span><span th:text="${typeelement.displayName}"></span></label>
                     </div>
                 </div>
             </div>

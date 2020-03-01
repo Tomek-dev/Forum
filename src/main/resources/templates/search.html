@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Topics</title>
-    <link rel="stylesheet" th:href="@{/css/index.css}">
     <link rel="stylesheet" th:href="@{/css/fragments.css}">
     <link rel="stylesheet" th:href="@{/css/search.css}">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
@@ -13,13 +12,13 @@
 <div th:replace="fragments/elements :: header"></div>
 <div class="container">
     <div class="search-bar">
-        <form class="search-form" action="index.html" th:object="${search}" method="post">
+        <form class="search-form" th:action="@{/search}" th:object="${search}" method="post">
             <input class="search-box" type="text" th:field="*{query}" placeholder="What's are you looking for?">
             <label class="in-text"><input th:field="*{text}" type="checkbox">Search in text</label>
             <div class="search-type">
-                <div th:each="typeelement: ${T(com.forum.forum.enums.Type).values()}" class="type-element">
+                <div th:each="typeelement: ${T(com.forum.forum.enums.Type).values()}" class="type-element" style="margin: 8px 0">
                     <input type="checkbox" th:field="*{type}" th:value="${typeelement}" class="visually-hidden" onclick="chooseOne(this)">
-                    <label th:for="${#ids.prev('type')}" class="search-type-element" th:text="${typeelement.displayName}"><span class="sharp">#</span><span th:text="${typeelement.displayName}"></span></label>
+                    <label th:for="${#ids.prev('type')}" class="search-type-element" ><span class="sharp">#</span><span th:text="${typeelement.displayName}"></span></label>
                 </div>
             </div>
             <button type="submit" class="search-submit" name="button"><i class="fa fa-search"></i> Search</button>
@@ -47,20 +46,23 @@
                 </div>
             </div>
         </div>
-        <p class="blank" th:if="${topics.size() == 0}">Result not found</p>
+        <div style="width: 100%" th:if="${topics.size() == 0}">
+            <p class="blank">Result not found</p>
+        </div>
         <div class="page" th:if="${pageListSize>1}">
-            <a th:if="${pageId > 1}" th:href="@{/topic(type=${typeEnum},page=${pageId-1})}">prev</a>
-            <a th:if="${pageId > 1}" th:href="@{/topic(type=${typeEnum},page=1)}">1</a>
-            <p th:if="${pageId > 1}">...</p>
-            <a th:if="${pageListSize > 5 && i < pageListSize}" th:each="i : ${#numbers.sequence(pageId, pageId + 4)}" th:href="@{/topic(type=${typeEnum},page=${i})}" th:text="${i}" th:style="${i == pageId? 'border-color: #999': ''}"></a>
-            <a th:if="${pageListSize <= 5}" th:each="i : ${#numbers.sequence(pageId, pageListSize)}" th:href="@{/topic(type=${typeEnum},page=${i})}" th:text="${i}"></a>
+            <a th:if="${pageId > 1}" th:href="@{/search(query=${currentURI},page=${pageId-1})}">prev</a>
+            <a th:if="${pageId > 1}" th:href="@{/search(query=${currentURI},page=1)}">1</a>
+            <p th:if="${pageId > 2}">...</p>
+            <a th:if="${pageListSize > 5 && i < pageListSize}" th:each="i : ${#numbers.sequence(pageId, pageId + 4)}" th:href="@{/search(query=${currentURI},page=${i})}" th:text="${i}" th:style="${i == pageId? 'border-color: #999': ''}"></a>
+            <a th:if="${pageListSize <= 5}" th:each="i : ${#numbers.sequence(pageId, pageListSize)}" th:href="@{/search(query=${currentURI},page=${i})}" th:text="${i}"></a>
             <p th:if="${pageListSize > 5 && pageId < pageListSize-1}">...</p>
-            <a th:if="${pageListSize > 5}" th:href="@{/topic(type=${typeEnum},page=${pageListSize})}" th:text="${pageListSize}" th:style="${pageListSize == pageId? 'border-color: #999': ''}"></a>
-            <a th:if="${pageId < pageListSize}" th:href="@{/topic(type=${typeEnum},page=${pageId+1})}">next</a>
+            <a th:if="${pageListSize > 5}" th:href="@{/search(query=${currentURI}, page=${pageListSize})}" th:text="${pageListSize}" th:style="${pageListSize == pageId? 'border-color: #999': ''}"></a>
+            <a th:if="${pageId < pageListSize}" th:href="@{/search(query=${currentURI},page=${pageId+1})}">next</a>
+            <!--TODO paging not work-->
         </div>
     </div>
 </div>
-<!--<div th:replace="fragments/elements :: footer"></div>-->
+<div style="position: absolute" th:replace="fragments/elements :: footer"></div>
 <script th:src="@{/javascript/chooseOne.js}"></script>
 </body>
 </html>
