@@ -4,6 +4,10 @@ package com.forum.forum.controller;
 import com.forum.forum.service.HelpService;
 import com.forum.forum.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,14 +28,14 @@ public class AdminController {
     }
 
     @GetMapping("/reports")
-    public String getReport(@RequestParam(required = false) Integer page, Model model){
-        model.addAttribute("report", reportService.getPageOf15Report((page == null? 0: page-1)));
+    public String getReport(@PageableDefault(page = 1, sort = "id", direction = Sort.Direction.DESC) Pageable pageable, Model model){
+        model.addAttribute("report", reportService.getPageOf15Report((pageable == null? PageRequest.of(1, 10, Sort.by("id").descending()) : pageable)));
         return "";
     }
 
     @GetMapping("/help-messages")
-    public String getHelpMessages(@RequestParam(required = false) Integer page, Model model){
-        model.addAttribute("report", helpService.getPageOfHelpMessage((page == null? 0: page-1)));
+    public String getHelpMessages(@PageableDefault(page = 1, sort = "id", direction = Sort.Direction.DESC) Pageable pageable, Model model){
+        model.addAttribute("report", helpService.getPageOfHelpMessage((pageable == null? PageRequest.of(1, 10, Sort.by("id").descending()) : pageable)));
         return "";
     }
 }

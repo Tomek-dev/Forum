@@ -10,6 +10,7 @@ import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -52,12 +53,8 @@ public class ReportService {
         userDao.save(foundUser);
     }
 
-    public List<ReportDto> getPageOf15Report(int page){
-        long count = reportDao.count();
-        if(page < 0 || page> Math.ceil((double) count/15)){
-            throw new IndexOutOfBoundsException("Page index out of bounds");
-        }
-        return reportDao.findAll(PageRequest.of(page, 15, Sort.by("id").descending())).stream()
+    public List<ReportDto> getPageOf15Report(Pageable pageable){
+        return reportDao.findAll(pageable).stream()
                 .map(report -> {
                     if(report.getTopic() == null){
                         return new ReportDto(report.getUser().getUsername(), report.getUser().getId(), report.getType().getDisplayName(), new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(report.getCreatedAt().getTime()), report.getDescribe());

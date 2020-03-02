@@ -4,6 +4,7 @@ import com.forum.forum.dao.HelpMessageDao;
 import com.forum.forum.model.HelpMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -27,12 +28,8 @@ public class HelpService {
         helpMessageDao.deleteById(id);
     }
 
-    public List<HelpMessage> getPageOfHelpMessage(int page){
-        long count = helpMessageDao.count();
-        if(page < 0 || page> Math.ceil((double) count/15)){
-            throw new IndexOutOfBoundsException("Page index out of bounds");
-        }
-        return helpMessageDao.findAll(PageRequest.of(page, 15, Sort.by("id").descending())).stream()
+    public List<HelpMessage> getPageOfHelpMessage(Pageable pageable){
+        return helpMessageDao.findAll(pageable).stream()
                 .collect(Collectors.toList());
     }
 }
