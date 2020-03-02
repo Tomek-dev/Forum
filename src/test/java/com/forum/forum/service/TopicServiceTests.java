@@ -8,6 +8,8 @@ import com.forum.forum.dto.TopicInputDto;
 import com.forum.forum.model.Comment;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
+import com.forum.forum.other.ProfileSpecification;
+import com.forum.forum.other.TypeSpecification;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +17,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -69,7 +74,7 @@ public class TopicServiceTests {
     }
 
     @Test
-    public void shouldGetCommentsByTopic(){
+    public void shouldGetCommentsByTopicId(){
         //given
         Topic topic = new Topic();
         Comment comment = new Comment();
@@ -118,5 +123,64 @@ public class TopicServiceTests {
 
         assertEquals(0, user.getComments().size());
         assertEquals(0, user.getTopics().size());
+    }
+
+    @Test
+    public void shouldGetTopic(){
+        //given
+        Topic topic = new Topic();
+        User user = new User();
+        user.setUsername("user");
+        topic.setTitle("title");
+        topic.setDescription("description");
+        topic.setId(1L);
+        topic.setType(Type.JAVA);
+        topic.setUser(user);
+        given(topicDao.findById(Mockito.any())).willReturn(java.util.Optional.of(topic));
+
+        //when
+        topicService.getTopic(4L);
+
+        //then
+        verify(topicDao).findById(4L);
+        assertEquals("user", topicService.getTopic(4L).getUsername());
+        assertEquals("title", topicService.getTopic(4L).getTitle());
+        assertEquals("description", topicService.getTopic(4L).getDescription());
+        assertEquals(0, topicService.getTopic(4L).getCommentSize());
+    }
+
+    @Test
+    public void shouldReturnPageNumberByTypeSpecification(){
+        //given
+        TypeSpecification typeSpecification = new TypeSpecification("java");
+        given(topicDao.count(Mockito.any(TypeSpecification.class))).willReturn(34L);
+
+        //then
+        assertEquals(3, topicService.getPageNumber(typeSpecification, PageRequest.of(1,15)));
+        assertEquals(4, topicService.getPageNumber(typeSpecification, PageRequest.of(1,10)));
+        assertEquals(2, topicService.getPageNumber(typeSpecification, PageRequest.of(1,20)));
+    }
+
+    @Test
+    public void shouldReturnPageNumber(){
+        //given
+        given(topicDao.count()).willReturn(34L);
+
+        //then
+        assertEquals(3, topicService.getPageNumber(PageRequest.of(1,15)));
+        assertEquals(4, topicService.getPageNumber(PageRequest.of(1,10)));
+        assertEquals(2, topicService.getPageNumber(PageRequest.of(1,20)));
+    }
+
+    @Test
+    public void shouldReturnPageNumberByProfileSpecification(){
+        //given
+        ProfileSpecification profileSpecification = new ProfileSpecification("comment");
+        given(topicDao.count(Mockito.any(ProfileSpecification.class))).willReturn(34L);
+
+        //then
+        assertEquals(3, topicService.getProfilePageNumber(profileSpecification, PageRequest.of(1,15)));
+        assertEquals(4, topicService.getProfilePageNumber(profileSpecification, PageRequest.of(1,10)));
+        assertEquals(2, topicService.getProfilePageNumber(profileSpecification, PageRequest.of(1,20)));
     }
 }

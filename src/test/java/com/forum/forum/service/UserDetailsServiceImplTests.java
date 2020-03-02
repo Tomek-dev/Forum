@@ -1,30 +1,54 @@
 package com.forum.forum.service;
 
+import com.forum.forum.dao.UserDao;
+import com.forum.forum.model.User;
 import com.forum.forum.service.UserDetailsServiceImpl;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-class UserDetailsServiceImplTests {
-    @Autowired
-    UserDetailsServiceImpl userDetailsService;
+@RunWith(MockitoJUnitRunner.class)
+public class UserDetailsServiceImplTests {
+
+    @Mock
+    private UserDao userDao;
+
+    @InjectMocks
+    private UserDetailsServiceImpl userDetailsService;
+
+    @Test(expected = UsernameNotFoundException.class)
+    public void shouldThrowUsernameNotFoundException(){
+        //given
+        given(userDao.findByUsername(Mockito.any())).willReturn(null);
+
+        //when
+        userDetailsService.loadUserByUsername("");
+    }
 
     @Test
-    void shouldThrowUsernameNotFoundException(){
-        try{
-            userDetailsService.loadUserByUsername("");
-            fail("Exception wasn't thrown!");
-        }catch (UsernameNotFoundException exception){
-            assertEquals("User not authorized.", exception.getMessage());
-        }
+    public void shouldReturnUserDetails(){
+        //given
+        User user = new User("user", "email", "password", "USER");
+        given(userDao.findByUsername(Mockito.any())).willReturn(user);
+
+        //then
+        assertEquals("user", userDetailsService.loadUserByUsername("").getUsername());
+        assertEquals(Collections.singleton(new SimpleGrantedAuthority("USER")), userDetailsService.loadUserByUsername("").getAuthorities());
     }
 }
