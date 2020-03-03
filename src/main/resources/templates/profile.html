@@ -20,7 +20,7 @@
                 <div class="user-info">
                     <p class="username" th:text="${userOutputDto.getUsername()}"></p>
                     <p class="createdAt">Account created at <span th:text="${userOutputDto.getCreatedAt()}"></span></p>
-                    <p class="motto">"coding" Makes you smartest, becouse all can't do it all</p>
+                    <p class="motto" th:text="${userOutputDto.getMotto()}">"coding" Makes you smartest, becouse all can't do it all</p>
                 </div>
             </div>
             <div class="user-information">

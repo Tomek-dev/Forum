@@ -6,12 +6,22 @@ public class UserOutputDto {
     private String createdAt;
     private int topicCount;
     private int commentCount;
+    private String motto;
 
-    public UserOutputDto(String username, String createdAt, int topicCount, int commentCount) {
+    public UserOutputDto(String username, String createdAt, int topicCount, int commentCount, String motto) {
         this.username = username;
         this.createdAt = createdAt;
         this.topicCount = topicCount;
         this.commentCount = commentCount;
+        this.motto = motto;
+    }
+
+    public String getMotto() {
+        return motto;
+    }
+
+    public void setMotto(String motto) {
+        this.motto = motto;
     }
 
     public String getUsername() {

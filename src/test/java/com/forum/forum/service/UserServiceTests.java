@@ -4,6 +4,7 @@ package com.forum.forum.service;
 import com.forum.forum.dao.CommentDao;
 import com.forum.forum.dao.TopicDao;
 import com.forum.forum.dao.UserDao;
+import com.forum.forum.dto.MottoDto;
 import com.forum.forum.dto.RegistrationDto;
 import com.forum.forum.model.User;
 
@@ -63,6 +64,7 @@ public class UserServiceTests {
         //then
         assertThrows(UsernameNotFoundException.class, () -> userService.getUserByUsername("user"));
         assertThrows(UsernameNotFoundException.class, () -> userService.deleteUser("user"));
+        assertThrows(UsernameNotFoundException.class, () -> userService.setMotto("user", new MottoDto()));
     }
 
     @Test

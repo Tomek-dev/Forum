@@ -1,5 +1,6 @@
 package com.forum.forum.controller;
 
+import com.forum.forum.dto.MottoDto;
 import com.forum.forum.dto.SearchDto;
 import com.forum.forum.model.Report;
 import com.forum.forum.other.ProfileSpecification;
@@ -66,6 +67,15 @@ public class ProfileController {
     @PostMapping("/{username}/delete")
     public String deleteProfile(@PathVariable String username){
         userService.deleteUser(username);
+        return "redirect:/";
+    }
+
+    @PostMapping("/{username}/motto")
+    public String setProfileMotto(@PathVariable String username, @Valid MottoDto mottoDto, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "redirect:/" + username;
+        }
+        userService.setMotto(username, mottoDto);
         return "redirect:/";
     }
 }

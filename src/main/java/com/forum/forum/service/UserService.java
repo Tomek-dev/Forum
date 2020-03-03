@@ -5,6 +5,7 @@ import com.forum.forum.dao.TokenDao;
 import com.forum.forum.dao.TopicDao;
 import com.forum.forum.dao.UserDao;
 import com.forum.forum.dto.EmailDto;
+import com.forum.forum.dto.MottoDto;
 import com.forum.forum.dto.RegistrationDto;
 import com.forum.forum.dto.UserOutputDto;
 import com.forum.forum.model.Comment;
@@ -42,7 +43,7 @@ public class UserService {
     public UserOutputDto getUserByUsername(String username){
         Optional<User> userOptional = Optional.ofNullable(userDao.findByUsernameIgnoreCase(username));
         User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not authorized."));
-        return new UserOutputDto(user.getUsername(), new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(user.getCreatedAt().getTime()), user.getTopics().size(), user.getComments().size());
+        return new UserOutputDto(user.getUsername(), new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(user.getCreatedAt().getTime()), user.getTopics().size(), user.getComments().size(), user.getMotto());
     }
 
     public void deleteUser(String username){
@@ -53,5 +54,12 @@ public class UserService {
         commentDao.deleteAll(commentSet);
         topicDao.deleteAll(topicSet);
         userDao.delete(user);
+    }
+
+    public void setMotto(String username, MottoDto mottoDto){
+        Optional<User> userOptional = Optional.ofNullable(userDao.findByUsernameIgnoreCase(username));
+        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        user.setMotto(mottoDto.getMotto());
+        userDao.save(user);
     }
 }
