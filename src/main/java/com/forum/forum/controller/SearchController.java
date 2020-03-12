@@ -1,9 +1,7 @@
 package com.forum.forum.controller;
 
 import com.forum.forum.dto.SearchDto;
-import com.forum.forum.dto.TopicOutputDto;
-import com.forum.forum.model.HelpMessage;
-import com.forum.forum.other.SearchSpecification;
+import com.forum.forum.other.specification.SearchSpecification;
 import com.forum.forum.other.URISearchMapper;
 import com.forum.forum.service.SearchSerivce;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +12,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/search")

@@ -1,4 +1,4 @@
-package com.forum.forum.other;
+package com.forum.forum.other.specification;
 
 import com.forum.forum.enums.Type;
 import com.forum.forum.model.Topic;

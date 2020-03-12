@@ -2,7 +2,7 @@ package com.forum.forum.controller;
 
 import com.forum.forum.dto.SearchDto;
 import com.forum.forum.model.HelpMessage;
-import com.forum.forum.other.TypeSpecification;
+import com.forum.forum.other.specification.TypeSpecification;
 import com.forum.forum.service.HelpService;
 import com.forum.forum.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;

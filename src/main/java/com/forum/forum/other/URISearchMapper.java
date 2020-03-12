@@ -1,6 +1,7 @@
 package com.forum.forum.other;
 
 import com.forum.forum.dto.SearchDto;
+import com.forum.forum.other.specification.SearchSpecification;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;

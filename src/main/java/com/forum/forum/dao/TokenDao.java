@@ -14,10 +14,7 @@ import java.util.UUID;
 @Repository
 public interface TokenDao extends JpaRepository<Token, Long> {
 
-    @Transactional
-    @Modifying
-    @Query("DELETE FROM Token token WHERE token.expiryDate <= ?1")
-    void deleteAllExpiredSince(Date now);
+    void deleteByExpiryDateLessThanEqual(Date now);
 
     Token findByUser(User user);
     Token findByToken(UUID token);

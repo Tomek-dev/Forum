@@ -19,6 +19,6 @@ public class TaskConfig {
     @Scheduled(fixedRate = 60000)
     public void purgeTask(){
         Date now = Date.from(Instant.now());
-        tokenDao.deleteAllExpiredSince(now);
+        tokenDao.deleteByExpiryDateLessThanEqual(now);
     }
 }

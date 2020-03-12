@@ -3,7 +3,7 @@ package com.forum.forum.controller;
 import com.forum.forum.dto.MottoDto;
 import com.forum.forum.dto.SearchDto;
 import com.forum.forum.model.Report;
-import com.forum.forum.other.ProfileSpecification;
+import com.forum.forum.other.specification.ProfileSpecification;
 import com.forum.forum.service.ReportService;
 import com.forum.forum.service.TopicService;
 import com.forum.forum.service.UserService;

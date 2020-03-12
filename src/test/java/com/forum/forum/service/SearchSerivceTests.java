@@ -1,7 +1,7 @@
 package com.forum.forum.service;
 
 import com.forum.forum.dao.TopicDao;
-import com.forum.forum.other.SearchSpecification;
+import com.forum.forum.other.specification.SearchSpecification;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

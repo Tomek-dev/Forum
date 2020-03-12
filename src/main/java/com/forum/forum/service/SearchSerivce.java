@@ -3,7 +3,7 @@ package com.forum.forum.service;
 import com.forum.forum.dao.TopicDao;
 import com.forum.forum.dto.TopicOutputDto;
 import com.forum.forum.other.DateFormater;
-import com.forum.forum.other.SearchSpecification;
+import com.forum.forum.other.specification.SearchSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

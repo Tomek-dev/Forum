@@ -1,20 +1,17 @@
 package com.forum.forum.service;
 
-import com.forum.forum.enums.Type;
 import com.forum.forum.dao.CommentDao;
 import com.forum.forum.dao.TopicDao;
 import com.forum.forum.dao.UserDao;
 import com.forum.forum.dto.*;
-import com.forum.forum.model.Comment;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
 import com.forum.forum.other.DateFormater;
-import com.forum.forum.other.ProfileSpecification;
-import com.forum.forum.other.TypeSpecification;
+import com.forum.forum.other.specification.ProfileSpecification;
+import com.forum.forum.other.specification.TypeSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
