@@ -7,6 +7,7 @@ import com.forum.forum.dto.CommentInputDto;
 import com.forum.forum.model.Comment;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
+import com.forum.forum.other.DateFormater;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,22 +81,27 @@ public class CommentServiceTests {
 
     @Test
     public void shouldDeleteComment(){
-        //given
-        Comment comment = new Comment();
-        comment.setUser(user);
-        Topic topic = new Topic();
-        topic.getComments().add(comment);
-        comment.setTopic(topic);
-        given(commentDao.findById(Mockito.any())).willReturn(java.util.Optional.of(comment));
-
         //when
         commentService.deleteComment(4L);
 
         //then
-        verify(userDao).save(user);
-        verify(topicDao).save(topic);
+        verify(commentDao).deleteById(4L);
+    }
 
-        assertEquals(0, topic.getComments().size());
-        assertEquals(0, user.getComments().size());
+    @Test
+    public void shouldGetCommentsByTopicId(){
+        //given
+        Topic topic = new Topic();
+        Comment comment = new Comment();
+        user.setUsername("user");
+        comment.setComment("comment");
+        comment.setUser(user);
+        topic.getComments().add(comment);
+        given(topicDao.findById(Mockito.any())).willReturn(java.util.Optional.of(topic));
+
+        //then
+        assertEquals("comment", commentService.getComments(1L).get(0).getComment());
+        assertEquals("user", commentService.getComments(1L).get(0).getUsername());
+        assertEquals(DateFormater.posted(comment.getCreatedAt()), commentService.getComments(1L).get(0).getPostedAt());
     }
 }

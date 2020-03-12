@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -46,14 +47,9 @@ public class UserService {
         return new UserOutputDto(user.getUsername(), new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(user.getCreatedAt().getTime()), user.getTopics().size(), user.getComments().size(), user.getMotto());
     }
 
+    @Transactional
     public void deleteUser(String username){
-        Optional<User> userOptional = Optional.ofNullable(userDao.findByUsernameIgnoreCase(username));
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        Set<Topic> topicSet = user.getTopics();
-        Set<Comment> commentSet = user.getComments();
-        commentDao.deleteAll(commentSet);
-        topicDao.deleteAll(topicSet);
-        userDao.delete(user);
+        userDao.deleteByUsernameIgnoreCase(username);
     }
 
     public void setMotto(String username, MottoDto mottoDto){

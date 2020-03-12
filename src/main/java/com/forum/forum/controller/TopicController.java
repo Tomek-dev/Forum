@@ -52,7 +52,7 @@ public class TopicController {
     public String getTopic(@PathVariable Long id, Model model){
         model.addAttribute("search", new SearchDto());
         model.addAttribute("topic", topicService.getTopic(id));
-        model.addAttribute("comments", topicService.getComments(id));
+        model.addAttribute("comments", commentService.getComments(id));
         model.addAttribute("commentInput", new CommentInputDto());
         model.addAttribute("idVariable", id);
         return "topic";

@@ -100,34 +100,11 @@ public class ReportServiceTests {
     }
 
     @Test
-    public void shouldDeleteTopicReport(){
-        //given
-        Topic topic = new Topic();
-        Report report = new Report();
-        report.setTopic(topic);
-        given(reportDao.findById(Mockito.any())).willReturn(java.util.Optional.of(report));
-
+    public void shouldDeleteReport(){
         //when
         reportService.deleteReportById(4L);
 
         //then
-        verify(topicDao).save(topic);
-        assertEquals(0, topic.getReport().size());
-    }
-
-    @Test
-    public void shouldDeleteUserReport(){
-        //given
-        User user = new User();
-        Report report = new Report();
-        report.setUser(user);
-        given(reportDao.findById(Mockito.any())).willReturn(java.util.Optional.of(report));
-
-        //when
-        reportService.deleteReportById(4L);
-
-        //then
-        verify(userDao).save(user);
-        assertEquals(0, user.getReport().size());
+        verify(reportDao).deleteById(4L);
     }
 }

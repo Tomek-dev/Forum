@@ -85,16 +85,10 @@ public class UserServiceTests {
 
     @Test
     public void shouldDeleteUser(){
-        //given
-        User user = new User();
-        given(userDao.findByUsernameIgnoreCase(Mockito.any())).willReturn(user);
-
         //when
         userService.deleteUser("user");
 
         //then
-        verify(commentDao).deleteAll(user.getComments());
-        verify(topicDao).deleteAll(user.getTopics());
-        verify(userDao).delete(user);
+        verify(userDao).deleteByUsernameIgnoreCase("user");
     }
 }

@@ -48,22 +48,7 @@ public class TopicService{
     }
 
     public void deleteTopic(Long id){
-        Optional<Topic> topicOptional = topicDao.findById(id);
-        Topic topic = topicOptional.orElseThrow(() -> new RuntimeException("Type doesn't exist"));
-        User user = topic.getUser();
-        user.getTopics().remove(topic);
-        Set<User> commentUserList = new HashSet<>();
-        Set<Comment> commentList = topic.getComments();
-        topic.getComments()
-                .forEach(comment -> {
-                    User commentUser = comment.getUser();
-                    commentUser.getComments().remove(comment);
-                    commentUserList.add(commentUser);
-                });
-        topicDao.delete(topic);
-        commentDao.deleteAll(commentList);
-        userDao.saveAll(commentUserList);
-        userDao.save(user);
+        topicDao.deleteById(id);
     }
 
     public List<TopicOutputDto> getPageOf15Topics(TypeSpecification typeSpecification, Pageable pageable){
@@ -91,15 +76,6 @@ public class TopicService{
         Optional<Topic> topicOptional = topicDao.findById(id);
         Topic foundTopic = topicOptional.orElseThrow(()-> new RuntimeException("Topic doesn't exist"));
         return new TopicOutputDto(foundTopic.getUser().getUsername(), foundTopic.getTitle(), foundTopic.getDescription(), foundTopic.getType().getDisplayName(), DateFormater.posted(foundTopic.getCreatedAt()), foundTopic.getId(), foundTopic.getComments().size());
-    }
-
-    public List<CommentOutputDto> getComments(Long id){
-        Optional<Topic> topicOptional = topicDao.findById(id);
-        Topic topic = topicOptional.orElseThrow(()-> new RuntimeException("Topic doesn't exist"));
-        return topic.getComments().stream()
-                .sorted(Comparator.comparing(Comment::getCreatedAt))
-                .map(comment -> new CommentOutputDto(comment.getComment(), comment.getUser().getUsername(), DateFormater.posted(comment.getCreatedAt()), comment.getId()))
-                .collect(Collectors.toList());
     }
 
     public long getPageNumber(TypeSpecification typeSpecification, Pageable pageable){

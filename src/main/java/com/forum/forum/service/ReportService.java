@@ -65,18 +65,6 @@ public class ReportService {
     }
 
     public void deleteReportById(long id){
-        Optional<Report> reportOptional = reportDao.findById(id);
-        Report report = reportOptional.orElseThrow(() -> new RuntimeException("Report not found"));
         reportDao.deleteById(id);
-        if(report.getTopic() == null){
-            User user = report.getUser();
-            user.getReport().remove(report);
-            userDao.save(user);
-        }
-        else{
-            Topic topic = report.getTopic();
-            topic.getReport().remove(report);
-            topicDao.save(topic);
-        }
     }
 }

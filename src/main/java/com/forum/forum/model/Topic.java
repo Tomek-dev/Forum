@@ -22,12 +22,12 @@ public class Topic{
     @ManyToOne
     private User user;
 
-    @OneToMany(mappedBy = "topic")
+    @OneToMany(mappedBy = "topic", orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
 
     private Date createdAt;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "topic", orphanRemoval = true)
     private Set<Report> report = new HashSet<>();
 
     private Type type;
