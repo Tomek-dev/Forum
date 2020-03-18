@@ -57,9 +57,9 @@ public class ReportService {
         return reportDao.findAll(pageable).stream()
                 .map(report -> {
                     if(report.getTopic() == null){
-                        return new ReportDto(report.getUser().getUsername(), report.getUser().getId(), report.getType().getDisplayName(), new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(report.getCreatedAt().getTime()), report.getDescribe());
+                        return new ReportDto(report.getUser().getUsername(), report.getUser().getId(), report.getType().getDisplayName(), new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(report.getCreatedAt()), report.getDescribe());
                     }
-                    return new ReportDto(report.getTopic().getTitle(), report.getTopic().getId(), report.getType().getDisplayName(), new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(report.getCreatedAt().getTime()), report.getDescribe());
+                    return new ReportDto(report.getTopic().getTitle(), report.getTopic().getId(), report.getType().getDisplayName(), new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(report.getCreatedAt()), report.getDescribe());
                 })
                 .collect(Collectors.toList());
     }

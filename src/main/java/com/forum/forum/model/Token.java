@@ -3,6 +3,7 @@ package com.forum.forum.model;
 import com.forum.forum.model.User;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
@@ -10,8 +11,6 @@ import java.util.UUID;
 @Entity
 public class Token {
 
-    @Transient
-    final int expiry = 24 * 60;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,23 +22,21 @@ public class Token {
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
 
-    private Date expiryDate;
+    private LocalDateTime expiryDate;
 
     public Token(UUID token, User user) {
         this.token = token;
         this.user = user;
-        expiryDate = calculateExpiryDate(expiry);
+        expiryDate = calculateExpiryDate();
     }
 
     public Token() {
-        expiryDate = calculateExpiryDate(expiry);
+        expiryDate = calculateExpiryDate();
     }
 
-    private Date calculateExpiryDate(final int expiry){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(new Date().getTime());
-        calendar.add(Calendar.MINUTE, expiry);
-        return new Date(calendar.getTime().getTime());
+    private LocalDateTime calculateExpiryDate(){
+        LocalDateTime date = LocalDateTime.now().plusDays(1);
+        return date;
     }
 
     public Long getId() {
@@ -66,11 +63,11 @@ public class Token {
         this.user = user;
     }
 
-    public Date getExpiryDate() {
+    public LocalDateTime getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(Date expiryDate) {
+    public void setExpiryDate(LocalDateTime expiryDate) {
         this.expiryDate = expiryDate;
     }
 }

@@ -31,8 +31,7 @@ public class ResetService {
     public void resetPassword(UUID token, ResetDto resetDto) {
         Optional<Token> tokenOptional = Optional.ofNullable(tokenDao.findByToken(token));
         Token resetToken = tokenOptional.orElseThrow(() -> new RuntimeException("Token not found"));
-        Optional<User> userOptional = Optional.ofNullable(userDao.findByEmail(resetToken.getUser().getEmail()));
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = resetToken.getUser();
         user.setPassword(passwordEncoder.encode(resetDto.getPassword()));
         user.setToken(null);
         tokenDao.delete(resetToken);

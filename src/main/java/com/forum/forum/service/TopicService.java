@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,14 +25,13 @@ public class TopicService{
     private TopicDao topicDao;
     private UserDao userDao;
     private CommentDao commentDao;
-    private SimpleDateFormat simpleDateFormat;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.ENGLISH);
 
     @Autowired
     public TopicService(TopicDao topicDao, UserDao userDao, CommentDao commentDao) {
         this.topicDao = topicDao;
         this.userDao = userDao;
         this.commentDao = commentDao;
-        simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
     }
 
     public void addTopic(TopicInputDto topicInputDto, String username){
@@ -65,7 +65,7 @@ public class TopicService{
     public List<TopicProfileDto> getPageOfTopic(ProfileSpecification profileSpecification, Pageable pageable){
         Pageable pageableValue = PageRequest.of(pageable.getPageNumber()-1, pageable.getPageSize(), pageable.getSort());
         return topicDao.findAll(profileSpecification, pageableValue).stream()
-                .map(topic -> new TopicProfileDto(topic.getUser().getUsername(), simpleDateFormat.format(topic.getCreatedAt()),topic.getTitle(), topic.getComments().size(),topic.getId()))
+                .map(topic -> new TopicProfileDto(topic.getUser().getUsername(), FORMATTER.format(topic.getCreatedAt()),topic.getTitle(), topic.getComments().size(),topic.getId()))
                 .collect(Collectors.toList());
     }
 

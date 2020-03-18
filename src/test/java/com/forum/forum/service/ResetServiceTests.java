@@ -39,15 +39,6 @@ public class ResetServiceTests {
     @InjectMocks
     private ResetService resetService;
 
-    @Test(expected = UsernameNotFoundException.class)
-    public void shouldThrowUsernameNotFoundException(){
-        //given
-        given(tokenDao.findByToken(Mockito.any())).willReturn(new Token(UUID.randomUUID(), new User()));
-        given(userDao.findByEmail(Mockito.any())).willReturn(null);
-        //when
-        resetService.resetPassword(UUID.randomUUID(), new ResetDto());
-    }
-
     @Test(expected = RuntimeException.class)
     public void shouldThrowRuntimeException(){
         //given
@@ -74,7 +65,6 @@ public class ResetServiceTests {
         user.setPassword(passwordEncoder.encode("password"));
         ResetDto resetDto = new ResetDto("resetPassword", "resetPassword");
         given(tokenDao.findByToken(Mockito.any())).willReturn(token);
-        given(userDao.findByEmail(Mockito.any())).willReturn(user);
 
         //when
         resetService.resetPassword(UUID.randomUUID(), resetDto);

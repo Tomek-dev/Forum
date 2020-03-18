@@ -5,6 +5,7 @@ import com.forum.forum.enums.ReportType;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -26,7 +27,7 @@ public class Report {
 
     private String describe;
 
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     public Report() {
     }
@@ -34,13 +35,7 @@ public class Report {
     public Report(@NotNull ReportType type, String describe) {
         this.type = type;
         this.describe = describe;
-        createdAt = createdAtDate();
-    }
-
-    private Date createdAtDate(){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(new Date().getTime());
-        return new Date(calendar.getTime().getTime());
+        createdAt = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -67,11 +62,11 @@ public class Report {
         this.describe = describe;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 

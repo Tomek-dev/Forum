@@ -1,6 +1,7 @@
 package com.forum.forum.model;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -20,21 +21,15 @@ public class Comment {
     @Column(columnDefinition = "TEXT")
     private String comment;
 
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     public Comment() {
-        this.createdAt = createdAtDate();
+        this.createdAt = LocalDateTime.now();
     }
 
     public Comment(String comment) {
         this.comment = comment;
-        this.createdAt = createdAtDate();
-    }
-
-    private Date createdAtDate(){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(new Date().getTime());
-        return new Date(calendar.getTime().getTime());
+        this.createdAt = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -69,11 +64,11 @@ public class Comment {
         this.comment = comment;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 }

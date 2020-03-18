@@ -3,6 +3,7 @@ package com.forum.forum.model;
 import com.forum.forum.enums.Type;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -25,7 +26,7 @@ public class Topic{
     @OneToMany(mappedBy = "topic", orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
 
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "topic", orphanRemoval = true)
     private Set<Report> report = new HashSet<>();
@@ -35,17 +36,11 @@ public class Topic{
     public Topic(String title, String description) {
         this.title = title;
         this.description = description;
-        createdAt = createdAtDate();
+        createdAt = LocalDateTime.now();
     }
 
     public Topic() {
-        createdAt = createdAtDate();
-    }
-
-    private Date createdAtDate(){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(new Date().getTime());
-        return new Date(calendar.getTime().getTime());
+        createdAt = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -88,11 +83,11 @@ public class Topic{
         this.user = user;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createAt) {
+    public void setCreatedAt(LocalDateTime createAt) {
         this.createdAt = createAt;
     }
 
