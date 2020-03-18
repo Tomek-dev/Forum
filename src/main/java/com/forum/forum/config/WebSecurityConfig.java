@@ -69,8 +69,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @EventListener(ApplicationReadyEvent.class)
-    public void load(){
-        userDao.save(new User("admin", "email", passwordEncoder().encode("password"), "ADMIN"));
-    }
 }

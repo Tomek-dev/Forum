@@ -8,6 +8,7 @@ import com.forum.forum.model.Comment;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
 import com.forum.forum.other.DateFormater;
+import com.forum.forum.other.builder.UserBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,7 +41,9 @@ public class CommentServiceTests {
 
     @Before
     public void init(){
-        user = new User("user", "email", "password", "USER");
+        user = UserBuilder.builder()
+                .username("user")
+                .build();
         given(userDao.findByUsername(Mockito.any())).willReturn(user);
         given(userDao.save(Mockito.any(User.class))).willAnswer(invocationOnMock -> invocationOnMock.getArguments()[0]);
     }
@@ -93,7 +96,6 @@ public class CommentServiceTests {
         //given
         Topic topic = new Topic();
         Comment comment = new Comment();
-        user.setUsername("user");
         comment.setComment("comment");
         comment.setUser(user);
         topic.getComments().add(comment);

@@ -5,16 +5,20 @@ import com.forum.forum.dao.UserDao;
 import com.forum.forum.enums.Type;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
+import com.forum.forum.other.builder.UserBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class Start {
 
+    private static final String[] USERNAME= {"Ciri", "Andrew", "John", "Tommy", "Farhad", "Mohammed", "Filip", "Zion", "Omar", "Michael"};
     private UserDao userDao;
     private PasswordEncoder passwordEncoder;
     private TopicDao topicDao;
@@ -41,18 +45,23 @@ public class Start {
     }
 
     private void loadUser(){
-        user[0] = new User("Ciri", "email0@test.test", passwordEncoder.encode("password"), "USER");
-        user[1] = new User("Andrew", "email1@test.test", passwordEncoder.encode("password"), "USER");
-        user[2] = new User("John", "email2@test.test", passwordEncoder.encode("password"), "USER");
-        user[3] = new User("Tommy", "email3@test.test", passwordEncoder.encode("password"), "USER");
-        user[4] = new User("Farhad", "email4@test.test", passwordEncoder.encode("password"), "USER");
-        user[5] = new User("Mohammed", "email5@test.test", passwordEncoder.encode("password"), "USER");
-        user[6] = new User("Filip", "email6@test.test", passwordEncoder.encode("password"), "USER");
-        user[7] = new User("Zion", "email7@test.test", passwordEncoder.encode("password"), "USER");
-        user[8] = new User("Omar", "email8@test.test", passwordEncoder.encode("password"), "USER");
-        user[9] = new User("Michael", "email9@test.test", passwordEncoder.encode("password"), "USER");
-
-        userDao.saveAll(Arrays.asList(user));
+        for (int i = 0; i < user.length; i++) {
+            user[i] = UserBuilder.builder()
+                    .username(USERNAME[i])
+                    .email("email" + i + "@test.test")
+                    .password(passwordEncoder.encode("password"))
+                    .roles(Collections.singleton("USER"))
+                    .build();
+        }
+        User admin = UserBuilder.builder()
+                .username("admin")
+                .email("email")
+                .password(passwordEncoder.encode("password"))
+                .roles(Collections.singleton("ADMIN"))
+                .build();
+        List<User> users = Arrays.asList(user);
+        users.add(admin);
+        userDao.saveAll(users);
     }
 
 

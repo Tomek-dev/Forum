@@ -6,7 +6,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "usermodel")
@@ -22,7 +24,8 @@ public class User implements UserDetails {
 
     private String password;
 
-    private String role;
+    @ElementCollection(fetch = FetchType.LAZY)
+    private Set<String> roles = new HashSet<>();
 
     @OneToOne(mappedBy = "user", orphanRemoval = true)
     private Token token;
@@ -33,23 +36,15 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
 
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private Set<Report> report = new HashSet<>();
 
     private String motto;
 
-    public User(String username, String email, String password, String role) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        createdAt = createdAtDate();
-    }
-
     public User() {
-        createdAt = createdAtDate();
+        createdAt = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -86,19 +81,19 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
+    public Set<String> getRole() {
+        return roles;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRole(Set<String> roles) {
+        this.roles = roles;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -142,15 +137,12 @@ public class User implements UserDetails {
         this.motto = motto;
     }
 
-    private Date createdAtDate(){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(new Date().getTime());
-        return new Date(calendar.getTime().getTime());
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(role));
+        return roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toSet());
     }
 
     @Override

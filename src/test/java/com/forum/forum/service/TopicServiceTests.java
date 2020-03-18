@@ -7,6 +7,7 @@ import com.forum.forum.dao.UserDao;
 import com.forum.forum.dto.TopicInputDto;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
+import com.forum.forum.other.builder.UserBuilder;
 import com.forum.forum.other.specification.ProfileSpecification;
 import com.forum.forum.other.specification.TypeSpecification;
 import org.junit.Before;
@@ -42,7 +43,9 @@ public class TopicServiceTests {
 
     @Before
     public void init(){
-        user = new User("user", "email", "password", "USER");
+        user = UserBuilder.builder()
+                .username("username")
+                .build();
         given(userDao.findByUsername(Mockito.any())).willReturn(user);
         given(userDao.save(Mockito.any(User.class))).willAnswer(invocationOnMock -> invocationOnMock.getArguments()[0]);
     }

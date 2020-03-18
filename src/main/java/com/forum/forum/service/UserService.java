@@ -12,6 +12,7 @@ import com.forum.forum.model.Comment;
 import com.forum.forum.model.Token;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
+import com.forum.forum.other.builder.UserBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -38,13 +40,19 @@ public class UserService {
     }
 
     public void addUser(RegistrationDto registrationDto){
-        userDao.save(new User(registrationDto.getUsername(), registrationDto.getEmail(),passwordEncoder.encode(registrationDto.getPassword()), "USER"));
+        User user = UserBuilder.builder()
+                .username(registrationDto.getUsername())
+                .email(registrationDto.getEmail())
+                .password(passwordEncoder.encode(registrationDto.getPassword()))
+                .roles(Collections.singleton("USER"))
+                .build();
+        userDao.save(user);
     }
 
     public UserOutputDto getUserByUsername(String username){
         Optional<User> userOptional = Optional.ofNullable(userDao.findByUsernameIgnoreCase(username));
         User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not authorized."));
-        return new UserOutputDto(user.getUsername(), new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(user.getCreatedAt().getTime()), user.getTopics().size(), user.getComments().size(), user.getMotto());
+        return new UserOutputDto(user.getUsername(), DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.ENGLISH).format(user.getCreatedAt()), user.getTopics().size(), user.getComments().size(), user.getMotto());
     }
 
     @Transactional

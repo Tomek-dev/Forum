@@ -2,6 +2,7 @@ package com.forum.forum.service;
 
 import com.forum.forum.dao.UserDao;
 import com.forum.forum.model.User;
+import com.forum.forum.other.builder.UserBuilder;
 import com.forum.forum.service.UserDetailsServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,11 +45,14 @@ public class UserDetailsServiceImplTests {
     @Test
     public void shouldReturnUserDetails(){
         //given
-        User user = new User("user", "email", "password", "USER");
+        User user = UserBuilder.builder()
+                .username("username")
+                .roles(Collections.singleton("USER"))
+                .build();
         given(userDao.findByUsername(Mockito.any())).willReturn(user);
 
         //then
-        assertEquals("user", userDetailsService.loadUserByUsername("").getUsername());
+        assertEquals("username", userDetailsService.loadUserByUsername("").getUsername());
         assertEquals(Collections.singleton(new SimpleGrantedAuthority("USER")), userDetailsService.loadUserByUsername("").getAuthorities());
     }
 }

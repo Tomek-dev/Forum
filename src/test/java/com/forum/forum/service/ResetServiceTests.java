@@ -42,7 +42,7 @@ public class ResetServiceTests {
     @Test(expected = UsernameNotFoundException.class)
     public void shouldThrowUsernameNotFoundException(){
         //given
-        given(tokenDao.findByToken(Mockito.any())).willReturn(new Token(UUID.randomUUID(), new User("user", "email", "password", "USER")));
+        given(tokenDao.findByToken(Mockito.any())).willReturn(new Token(UUID.randomUUID(), new User()));
         given(userDao.findByEmail(Mockito.any())).willReturn(null);
         //when
         resetService.resetPassword(UUID.randomUUID(), new ResetDto());
