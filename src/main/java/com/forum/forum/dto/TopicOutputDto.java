@@ -16,16 +16,6 @@ public class TopicOutputDto {
     private Long id;
     private Integer comments;
 
-    public TopicOutputDto(String userUsername, String title, String description, String type, String createdAt, Long id, Integer comments) {
-        this.userUsername = userUsername;
-        this.title = title;
-        this.description = description;
-        this.type = type;
-        this.createdAt = createdAt;
-        this.id = id;
-        this.comments = comments;
-    }
-
     public TopicOutputDto() {
     }
 

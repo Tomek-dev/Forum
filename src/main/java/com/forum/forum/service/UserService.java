@@ -25,15 +25,11 @@ public class UserService {
 
 
     private UserDao userDao;
-    private TopicDao topicDao;
-    private CommentDao commentDao;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserDao userDao, TopicDao topicDao, CommentDao commentDao, PasswordEncoder passwordEncoder) {
+    public UserService(UserDao userDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
-        this.topicDao = topicDao;
-        this.commentDao = commentDao;
         this.passwordEncoder = passwordEncoder;
     }
 

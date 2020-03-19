@@ -15,21 +15,6 @@ public class TopicProfileDto {
     private int comments;
     private Long id;
 
-    public TopicProfileDto(String userUsername, String createdAt, String title, int comments, Long id) {
-        this.userUsername = userUsername;
-        this.createdAt = createdAt;
-        this.title = title;
-        this.comments = comments;
-        this.id = id;
-    }
-
-    public TopicProfileDto(String createdAt, String title, int comments, Long id) {
-        this.createdAt = createdAt;
-        this.title = title;
-        this.comments = comments;
-        this.id = id;
-    }
-
     public TopicProfileDto() {
     }
 

@@ -26,13 +26,11 @@ public class TopicService{
 
     private TopicDao topicDao;
     private UserDao userDao;
-    private CommentDao commentDao;
 
     @Autowired
-    public TopicService(TopicDao topicDao, UserDao userDao, CommentDao commentDao) {
+    public TopicService(TopicDao topicDao, UserDao userDao) {
         this.topicDao = topicDao;
         this.userDao = userDao;
-        this.commentDao = commentDao;
     }
 
     public void addTopic(TopicInputDto topicInputDto, String username){

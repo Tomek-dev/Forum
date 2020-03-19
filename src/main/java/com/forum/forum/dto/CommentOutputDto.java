@@ -11,13 +11,6 @@ public class CommentOutputDto {
     private String createdAt;
     private Long id;
 
-    public CommentOutputDto(String comment, String userUsername, String createdAt, Long id) {
-        this.comment = comment;
-        this.userUsername = userUsername;
-        this.createdAt = createdAt;
-        this.id = id;
-    }
-
     public CommentOutputDto() {
     }
 

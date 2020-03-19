@@ -36,7 +36,7 @@
             <a class="comment" href="#comment-id"><i class="fa fa-comments-o icon"></i>Comment</a>
             <div class="option-element">
                 <a class="report" th:href="@{/topic/{id}/report(id = ${idVariable})}"><i class="fa fa-exclamation"></i></a>
-                <form sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername().equals(topic.getUsername()) || #authentication.getPrincipal().getRole().equals('ADMIN')}" th:action="@{/topic/{id}/delete(id = ${idVariable})}" method="post">
+                <form sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername().equals(topic.getUserUsername()) || #authentication.getPrincipal().getRole().equals('ADMIN')}" th:action="@{/topic/{id}/delete(id = ${idVariable})}" method="post">
                     <button class="delete"><i class="fa fa-trash-o"></i></button>
                 </form>
             </div>
@@ -57,8 +57,8 @@
             </div>
             <div class="comment-content">
                 <div class="option-element" style="justify-content: space-between">
-                    <p class="comment-info-posted">Posted <span th:text="${comment.getPostedAt()}"></span> ago</p>
-                    <form sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername().equals(comment.getUsername()) || #authentication.getPrincipal().getRole().equals('ADMIN')}" th:action="@{/topic/{topicId}/comment/{commentId}/delete(commentId = ${comment.getId()}, topicId = ${idVariable})}" method="post">
+                    <p class="comment-info-posted">Posted <span th:text="${comment.getCreatedAt()}"></span> ago</p>
+                    <form sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername().equals(comment.getUserUsername()) || #authentication.getPrincipal().getRole().equals('ADMIN')}" th:action="@{/topic/{topicId}/comment/{commentId}/delete(commentId = ${comment.getId()}, topicId = ${idVariable})}" method="post">
                         <button class="delete" style="margin-top: 3px"><i class="fa fa-trash-o"></i></button>
                     </form>
                 </div>

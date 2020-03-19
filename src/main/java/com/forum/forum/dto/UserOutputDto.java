@@ -15,13 +15,6 @@ public class UserOutputDto {
     private int topics;
     private int comments;
 
-    public UserOutputDto(String username, String createdAt, int topics, int comments, String motto) {
-        this.username = username;
-        this.createdAt = createdAt;
-        this.topics = topics;
-        this.comments = comments;
-    }
-
     public UserOutputDto() {
     }
 

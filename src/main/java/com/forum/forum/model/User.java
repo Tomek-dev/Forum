@@ -24,7 +24,7 @@ public class User implements UserDetails {
 
     private String password;
 
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> roles = new HashSet<>();
 
     @OneToOne(mappedBy = "user", orphanRemoval = true)
