@@ -9,6 +9,7 @@ import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
 import com.forum.forum.other.DateFormater;
 import com.forum.forum.other.builder.UserBuilder;
+import com.forum.forum.other.exceptions.TopicNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,7 +49,7 @@ public class CommentServiceTests {
         given(userDao.save(Mockito.any(User.class))).willAnswer(invocationOnMock -> invocationOnMock.getArguments()[0]);
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test(expected = TopicNotFoundException.class)
     public void shouldThrowException(){
         //given
         given(topicDao.findById(Mockito.any())).willReturn(null);

@@ -7,6 +7,7 @@ import com.forum.forum.dto.*;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
 import com.forum.forum.other.builder.TopicBuilder;
+import com.forum.forum.other.exceptions.TopicNotFoundException;
 import com.forum.forum.other.specification.ProfileSpecification;
 import com.forum.forum.other.specification.TypeSpecification;
 import org.modelmapper.ModelMapper;
@@ -73,7 +74,7 @@ public class TopicService{
 
     public TopicOutputDto getTopic(Long id){
         Optional<Topic> topicOptional = topicDao.findById(id);
-        Topic foundTopic = topicOptional.orElseThrow(()-> new RuntimeException("Topic doesn't exist"));
+        Topic foundTopic = topicOptional.orElseThrow(TopicNotFoundException::new);
         return MAPPER.map(foundTopic, TopicOutputDto.class);
      }
 

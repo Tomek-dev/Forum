@@ -8,6 +8,7 @@ import com.forum.forum.dto.CommentOutputDto;
 import com.forum.forum.model.Comment;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
+import com.forum.forum.other.exceptions.TopicNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class CommentService {
     public void addComment(CommentInputDto commentInputDto, String username, Long id){
         User user = userDao.findByUsername(username);
         Optional<Topic> topicOptional = topicDao.findById(id);
-        Topic topic = topicOptional.orElseThrow(() -> new RuntimeException("Topic doesn't exist"));
+        Topic topic = topicOptional.orElseThrow(TopicNotFoundException::new);
         Comment comment = new Comment(commentInputDto.getComment());
         comment.setTopic(topic);
         comment.setUser(user);
@@ -49,7 +50,7 @@ public class CommentService {
 
     public List<CommentOutputDto> getComments(Long id){
         Optional<Topic> topicOptional = topicDao.findById(id);
-        Topic topic = topicOptional.orElseThrow(()-> new RuntimeException("Topic doesn't exist"));
+        Topic topic = topicOptional.orElseThrow(TopicNotFoundException::new);
         return topic.getComments().stream()
                 .sorted(Comparator.comparing(Comment::getCreatedAt))//to change
                 .map(comment -> MAPPER.map(comment, CommentOutputDto.class))

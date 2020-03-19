@@ -6,6 +6,7 @@ import com.forum.forum.dto.EmailDto;
 import com.forum.forum.dto.ResetDto;
 import com.forum.forum.model.Token;
 import com.forum.forum.model.User;
+import com.forum.forum.other.exceptions.TokenNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,7 +31,7 @@ public class ResetService {
 
     public void resetPassword(UUID token, ResetDto resetDto) {
         Optional<Token> tokenOptional = Optional.ofNullable(tokenDao.findByToken(token));
-        Token resetToken = tokenOptional.orElseThrow(() -> new RuntimeException("Token not found"));
+        Token resetToken = tokenOptional.orElseThrow(TokenNotFoundException::new);
         User user = resetToken.getUser();
         user.setPassword(passwordEncoder.encode(resetDto.getPassword()));
         user.setToken(null);

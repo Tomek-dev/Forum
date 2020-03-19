@@ -8,6 +8,7 @@ import com.forum.forum.enums.ReportType;
 import com.forum.forum.model.Report;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
+import com.forum.forum.other.exceptions.TopicNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +38,7 @@ public class ReportService {
 
     public void addReport(Report report, long id){
         Optional<Topic> topicOptional = topicDao.findById(id);
-        Topic foundTopic = topicOptional.orElseThrow(() -> new RuntimeException("Topic not found"));
+        Topic foundTopic = topicOptional.orElseThrow(TopicNotFoundException::new);
         foundTopic.getReport().add(report);
         report.setTopic(foundTopic);
         topicDao.save(foundTopic);

@@ -8,6 +8,7 @@ import com.forum.forum.dto.TopicInputDto;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
 import com.forum.forum.other.builder.UserBuilder;
+import com.forum.forum.other.exceptions.TopicNotFoundException;
 import com.forum.forum.other.specification.ProfileSpecification;
 import com.forum.forum.other.specification.TypeSpecification;
 import org.junit.Before;
@@ -18,6 +19,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.PageRequest;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -75,10 +78,10 @@ public class TopicServiceTests {
     @Test
     public void shouldThrowTopicNotFoundException(){
         //given
-        given(topicDao.findById(Mockito.any())).willReturn(null);
+        given(topicDao.findById(Mockito.any())).willReturn(Optional.empty());
 
         //then
-        assertThrows(RuntimeException.class, () -> topicService.getTopic(4L));
+        assertThrows(TopicNotFoundException.class, () -> topicService.getTopic(4L));
         //assertThrows(RuntimeException.class, () -> topicService.deleteTopic(4L));
     }
 

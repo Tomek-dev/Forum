@@ -6,6 +6,7 @@ import com.forum.forum.dto.EmailDto;
 import com.forum.forum.dto.ResetDto;
 import com.forum.forum.model.Token;
 import com.forum.forum.model.User;
+import com.forum.forum.other.exceptions.TokenNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,7 +40,7 @@ public class ResetServiceTests {
     @InjectMocks
     private ResetService resetService;
 
-    @Test(expected = RuntimeException.class)
+    @Test(expected = TokenNotFoundException.class)
     public void shouldThrowRuntimeException(){
         //given
         given(tokenDao.findByToken(Mockito.any())).willReturn(null);
