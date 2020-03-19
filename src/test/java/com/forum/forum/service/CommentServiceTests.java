@@ -103,7 +103,7 @@ public class CommentServiceTests {
 
         //then
         assertEquals("comment", commentService.getComments(1L).get(0).getComment());
-        assertEquals("user", commentService.getComments(1L).get(0).getUsername());
-        assertEquals(DateFormater.posted(comment.getCreatedAt()), commentService.getComments(1L).get(0).getPostedAt());
+        assertEquals("user", commentService.getComments(1L).get(0).getUserUsername());
+        assertEquals(DateFormater.posted(comment.getCreatedAt()), commentService.getComments(1L).get(0).getCreatedAt());
     }
 }

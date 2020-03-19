@@ -20,18 +20,18 @@
                 <div class="user-info">
                     <p class="username" th:text="${userOutputDto.getUsername()}"></p>
                     <p class="createdAt">Account created at <span th:text="${userOutputDto.getCreatedAt()}"></span></p>
-                    <p class="motto" th:text="${userOutputDto.getMotto()}">"coding" Makes you smartest, becouse all can't do it all</p>
+                    <p class="motto">"coding" Makes you smartest, becouse all can't do it all</p>
                 </div>
             </div>
             <div class="user-information">
                 <a href="#" class="star">Star</a>
                 <div class="user-stats">
                     <div class="stat">
-                        <p><span class="topic-icon">T</span><span th:text="${userOutputDto.getTopicCount()}"></span></p>
+                        <p><span class="topic-icon">T</span><span th:text="${userOutputDto.getTopics()}"></span></p>
                         <p><span class="vote-icon">V</span>12</p>
                     </div>
                     <div class="stat">
-                        <p><span class="comment-icon" id="comment-color"><i class="fa fa-comments-o icon"></i></span><span th:text="${userOutputDto.getCommentCount()}"></span></p>
+                        <p><span class="comment-icon" id="comment-color"><i class="fa fa-comments-o icon"></i></span><span th:text="${userOutputDto.getComments()}"></span></p>
                         <p><span class="star-icon"><i class="fa fa-star"></i></span>9</p>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
             <a th:href="@{/topic/{id}(id = ${topic.getId()})}" class="topic-title" th:text="${topic.getTitle()}"></a>
             <div class="topic-info">
                 <p th:text="${topic.getCreatedAt()}"></p>
-                <p>10 Votes  <span th:text="${topic.getCommentsCount()}"></span> Comments</p>
+                <p>10 Votes  <span th:text="${topic.getComments()}"></span> Comments</p>
             </div>
         </div>
     </div>
@@ -67,7 +67,7 @@
             <p class="comment-icon"><i class="fa fa-comments-o icon"></i></p>
             <a th:href="@{/topic/{id}(id = ${topic.getId()})}" class="topic-title" th:text="${topic.getTitle()}"></a>
             <div class="topic-info">
-                <p>Posted by <a th:href="@{/profile/{username}(username = ${topic.getUsername().toLowerCase()})}" th:text="${topic.getUsername()}"></a></p>
+                <p>Posted by <a th:href="@{/profile/{username}(username = ${topic.getUserUsername().toLowerCase()})}" th:text="${topic.getUserUsername()}"></a></p>
                 <p th:text="${topic.getCreatedAt()}"></p>            </div>
         </div>
     </div>
@@ -76,7 +76,7 @@
             <p class="vote-icon">Vote</p>
             <a th:href="@{/topic/{id}(id = ${topic.getId()})}" class="topic-title" th:text="${topic.getTitle()}"></a>
             <div class="topic-info">
-                <p>Posted by <a th:href="@{/profile/{username}(username = ${topic.getUsername().toLowerCase()})}" th:text="${topic.getUsername()}"></a></p>
+                <p>Posted by <a th:href="@{/profile/{username}(username = ${topic.getUserUsername().toLowerCase()})}" th:text="${topic.getUserUsername()}"></a></p>
                 <p th:text="${topic.getCreatedAt()}"></p>            </div>
         </div>
     </div>

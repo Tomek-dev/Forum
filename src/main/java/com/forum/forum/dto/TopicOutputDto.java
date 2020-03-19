@@ -1,34 +1,40 @@
 package com.forum.forum.dto;
 
+import com.forum.forum.model.Comment;
+import com.forum.forum.other.DateFormater;
+
+import java.time.LocalDateTime;
+import java.util.Set;
+
 public class TopicOutputDto {
 
-    private String username;
+    private String userUsername;
     private String title;
     private String description;
     private String type;
-    private String postedAt;
+    private String createdAt;
     private Long id;
-    private Integer commentSize;
+    private Integer comments;
 
-    public TopicOutputDto(String username, String title, String description, String type, String postedAt, Long id, Integer commentSize) {
-        this.username = username;
+    public TopicOutputDto(String userUsername, String title, String description, String type, String createdAt, Long id, Integer comments) {
+        this.userUsername = userUsername;
         this.title = title;
         this.description = description;
         this.type = type;
-        this.postedAt = postedAt;
+        this.createdAt = createdAt;
         this.id = id;
-        this.commentSize = commentSize;
+        this.comments = comments;
     }
 
     public TopicOutputDto() {
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserUsername() {
+        return userUsername;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserUsername(String userUsername) {
+        this.userUsername = userUsername;
     }
 
     public String getTitle() {
@@ -55,12 +61,12 @@ public class TopicOutputDto {
         this.type = type;
     }
 
-    public String getPostedAt() {
-        return postedAt;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setPostedAt(String postedAt) {
-        this.postedAt = postedAt;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = DateFormater.posted(createdAt);
     }
 
     public Long getId() {
@@ -71,11 +77,11 @@ public class TopicOutputDto {
         this.id = id;
     }
 
-    public Integer getCommentSize() {
-        return commentSize;
+    public Integer getComments() {
+        return comments;
     }
 
-    public void setCommentSize(Integer commentSize) {
-        this.commentSize = commentSize;
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments.size();
     }
 }

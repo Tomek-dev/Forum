@@ -1,42 +1,52 @@
 package com.forum.forum.dto;
 
+import com.forum.forum.model.Comment;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.util.Set;
+
 public class TopicProfileDto {
 
-    private String username;
+    private String userUsername;
     private String createdAt;
     private String title;
-    private int commentsCount;
+    private int comments;
     private Long id;
 
-    public TopicProfileDto(String username, String createdAt, String title, int commentsCount, Long id) {
-        this.username = username;
+    public TopicProfileDto(String userUsername, String createdAt, String title, int comments, Long id) {
+        this.userUsername = userUsername;
         this.createdAt = createdAt;
         this.title = title;
-        this.commentsCount = commentsCount;
+        this.comments = comments;
         this.id = id;
     }
 
-    public TopicProfileDto(String createdAt, String title, int commentsCount, Long id) {
+    public TopicProfileDto(String createdAt, String title, int comments, Long id) {
         this.createdAt = createdAt;
         this.title = title;
-        this.commentsCount = commentsCount;
+        this.comments = comments;
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public TopicProfileDto() {
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getUserUsername() {
+        return userUsername;
+    }
+
+    public void setUserUsername(String userUsername) {
+        this.userUsername = userUsername;
     }
 
     public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.ENGLISH).format(createdAt);
     }
 
     public String getTitle() {
@@ -47,12 +57,12 @@ public class TopicProfileDto {
         this.title = title;
     }
 
-    public int getCommentsCount() {
-        return commentsCount;
+    public int getComments() {
+        return comments;
     }
 
-    public void setCommentsCount(int commentsCount) {
-        this.commentsCount = commentsCount;
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments.size();
     }
 
     public Long getId() {

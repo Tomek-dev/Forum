@@ -7,6 +7,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Configuration
@@ -18,7 +20,7 @@ public class TaskConfig {
 
     @Scheduled(fixedRate = 60000)
     public void purgeTask(){
-        Date now = Date.from(Instant.now());
+        LocalDateTime now = LocalDateTime.now();
         tokenDao.deleteByExpiryDateLessThanEqual(now);
     }
 }

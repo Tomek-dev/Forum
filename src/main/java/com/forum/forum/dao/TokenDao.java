@@ -8,13 +8,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
 @Repository
 public interface TokenDao extends JpaRepository<Token, Long> {
 
-    void deleteByExpiryDateLessThanEqual(Date now);
+    void deleteByExpiryDateLessThanEqual(LocalDateTime now);
 
     Token findByUser(User user);
     Token findByToken(UUID token);

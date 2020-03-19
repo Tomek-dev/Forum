@@ -109,10 +109,10 @@ public class TopicServiceTests {
 
         //then
         verify(topicDao).findById(4L);
-        assertEquals("user", topicService.getTopic(4L).getUsername());
+        assertEquals("user", topicService.getTopic(4L).getUserUsername());
         assertEquals("title", topicService.getTopic(4L).getTitle());
         assertEquals("description", topicService.getTopic(4L).getDescription());
-        assertEquals(0, topicService.getTopic(4L).getCommentSize());
+        assertEquals(0, topicService.getTopic(4L).getComments());
     }
 
     @Test

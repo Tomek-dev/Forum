@@ -18,12 +18,12 @@
                 <div class="user-image"></div>
                 <div class="information">
                     <div class="user-info">
-                        <a th:href="@{/profile/{username}(username = ${topic.getUsername().toLowerCase()})}" th:text="${topic.getUsername()}"></a>
+                        <a th:href="@{/profile/{username}(username = ${topic.getUserUsername().toLowerCase()})}" th:text="${topic.getUserUsername()}"></a>
                         <form class="star-form" action="index.html" method="post">
                             <button type="submit" name="button">Star</button>
                         </form>
                     </div>
-                    <p>Posted <span th:text="${topic.getPostedAt()}"></span> ago &middot <a class="topic-type" href="#" th:text="${topic.getType()}"></a></p>
+                    <p>Posted <span th:text="${topic.getCreatedAt()}"></span> ago &middot <a class="topic-type" href="#" th:text="${topic.getType()}"></a></p>
                 </div>
             </div>
             <form class="vote" action="index.html" method="post">
@@ -47,7 +47,7 @@
             <div class="comment-info">
                 <div class="comment-user">
                     <div class="comment-user-image"></div>
-                    <a th:href="@{/profile/{username}(username = ${comment.getUsername().toLowerCase()})}" th:text="${comment.getUsername()}"></a>
+                    <a th:href="@{/profile/{username}(username = ${comment.getUserUsername().toLowerCase()})}" th:text="${comment.getUserUsername()}"></a>
                 </div>
                 <p class="stars">Stars: 13<i class="fa fa-star"></i></p>
                 <form class="comment-likes" action="index.html" method="post">

@@ -9,6 +9,7 @@ import com.forum.forum.service.CommentService;
 import com.forum.forum.service.ReportService;
 import com.forum.forum.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,12 +40,11 @@ public class TopicController {
     }
 
     @PostMapping("/write")
-    public String writeTopic(@Valid TopicInputDto topicInputDto, BindingResult bindingResult){
+    public String writeTopic(@Valid TopicInputDto topicInputDto, Authentication authentication, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return "write";
         }
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        topicService.addTopic(topicInputDto, ((User) principal).getUsername());
+        topicService.addTopic(topicInputDto, authentication.getName());
         return "redirect:/";
     }
 
@@ -59,12 +59,12 @@ public class TopicController {
     }
 
     @PostMapping("/topic/{id}/comment")
-    public String addComment(@PathVariable Long id, @Valid CommentInputDto commentInputDto, BindingResult bindingResult){
+    public String addComment(@PathVariable Long id, @Valid CommentInputDto commentInputDto, Authentication authentication, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             return "redirect:/topic/"+id;
         }
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        commentService.addComment(commentInputDto, ((User) principal).getUsername(), id);
+
+        commentService.addComment(commentInputDto, authentication.getName(), id);
         return "redirect:/topic/" + id;
     }
 
@@ -78,13 +78,6 @@ public class TopicController {
     public String deleteTopic(@PathVariable Long id){
         topicService.deleteTopic(id);
         return "redirect:/";
-    }
-
-    @GetMapping("/topic/{topicId}/report")
-    public String getReportTopic(@PathVariable Long topicId, Model model){
-        model.addAttribute("idVariable", topicId);
-        model.addAttribute("report", new Report());
-        return "report";
     }
 
     @PostMapping("/topic/{topicId}/report")

@@ -1,17 +1,24 @@
 package com.forum.forum.dto;
 
+import com.forum.forum.other.DateFormater;
+
+import java.time.LocalDateTime;
+
 public class CommentOutputDto {
 
     private String comment;
-    private String username;
-    private String postedAt;
+    private String userUsername;
+    private String createdAt;
     private Long id;
 
-    public CommentOutputDto(String comment, String username, String postedAt, Long id) {
+    public CommentOutputDto(String comment, String userUsername, String createdAt, Long id) {
         this.comment = comment;
-        this.username = username;
-        this.postedAt = postedAt;
+        this.userUsername = userUsername;
+        this.createdAt = createdAt;
         this.id = id;
+    }
+
+    public CommentOutputDto() {
     }
 
     public String getComment() {
@@ -22,20 +29,20 @@ public class CommentOutputDto {
         this.comment = comment;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserUsername() {
+        return userUsername;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserUsername(String userUsername) {
+        this.userUsername = userUsername;
     }
 
-    public String getPostedAt() {
-        return postedAt;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setPostedAt(String postedAt) {
-        this.postedAt = postedAt;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = DateFormater.posted(createdAt);
     }
 
     public Long getId() {

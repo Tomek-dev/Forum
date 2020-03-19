@@ -17,7 +17,5 @@ import java.util.List;
 
 @Repository
 public interface TopicDao extends JpaRepository<Topic, Long>, JpaSpecificationExecutor<Topic> {
-    Page<Topic> findByType(Pageable pageable, Type type);
     Page<Topic> findAll(Pageable pageable);
-    long countByType(Type type);
 }

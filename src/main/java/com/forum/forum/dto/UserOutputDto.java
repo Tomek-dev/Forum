@@ -1,27 +1,28 @@
 package com.forum.forum.dto;
 
+import com.forum.forum.model.Comment;
+import com.forum.forum.model.Topic;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.util.Set;
+
 public class UserOutputDto {
 
     private String username;
     private String createdAt;
-    private int topicCount;
-    private int commentCount;
-    private String motto;
+    private int topics;
+    private int comments;
 
-    public UserOutputDto(String username, String createdAt, int topicCount, int commentCount, String motto) {
+    public UserOutputDto(String username, String createdAt, int topics, int comments, String motto) {
         this.username = username;
         this.createdAt = createdAt;
-        this.topicCount = topicCount;
-        this.commentCount = commentCount;
-        this.motto = motto;
+        this.topics = topics;
+        this.comments = comments;
     }
 
-    public String getMotto() {
-        return motto;
-    }
-
-    public void setMotto(String motto) {
-        this.motto = motto;
+    public UserOutputDto() {
     }
 
     public String getUsername() {
@@ -36,23 +37,23 @@ public class UserOutputDto {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.ENGLISH).format(createdAt);
     }
 
-    public int getTopicCount() {
-        return topicCount;
+    public int getTopics() {
+        return topics;
     }
 
-    public void setTopicCount(int topicCount) {
-        this.topicCount = topicCount;
+    public void setTopics(Set<Topic> topics) {
+        this.topics = topics.size();
     }
 
-    public int getCommentCount() {
-        return commentCount;
+    public int getComments() {
+        return comments;
     }
 
-    public void setCommentCount(int commentCount) {
-        this.commentCount = commentCount;
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments.size();
     }
 }

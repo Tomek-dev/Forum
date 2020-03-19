@@ -19,8 +19,7 @@ import java.util.*;
 public class Start {
 
     private static final String[] USERNAME= {"Ciri", "Andrew", "John", "Tommy", "Farhad", "Mohammed", "Filip", "Zion", "Omar", "Michael"};
-    private static final String[] TYPES = {"C", "Java", "PYTHON", "JAVASCRIPT", "RUBY", "CSHARP", "SQL", "PHP", "CPP", "SWIFT", "HTMLCSS", "OTHER"};
-    private static final ChronoUnit UNIT[] = {ChronoUnit.MINUTES, ChronoUnit.HOURS, ChronoUnit.DAYS, ChronoUnit.SECONDS, ChronoUnit.MONTHS};
+    private static final ChronoUnit[] UNIT = {ChronoUnit.MINUTES, ChronoUnit.HOURS, ChronoUnit.DAYS, ChronoUnit.SECONDS, ChronoUnit.MONTHS};
     private UserDao userDao;
     private PasswordEncoder passwordEncoder;
     private TopicDao topicDao;
@@ -45,6 +44,7 @@ public class Start {
                     .email("email" + i + "@test.test")
                     .password(passwordEncoder.encode("password"))
                     .roles(Collections.singleton("USER"))
+                    .createdAt(date)
                     .build();
         }
         User admin = UserBuilder.builder()
@@ -53,26 +53,26 @@ public class Start {
                 .password(passwordEncoder.encode("password"))
                 .roles(Collections.singleton("ADMIN"))
                 .build();
-        List<User> users = Arrays.asList(user);
-        users.add(admin);
-        userDao.saveAll(users);
+        userDao.save(admin);
+        userDao.saveAll(Arrays.asList(user));
     }
 
     private void loadTopic(){
         Random random = new Random();
-        for (String type : TYPES) {
+        for (Type value : Type.values()) {
             for (int i = 0; i < 15; i++) {
                 int id = random.nextInt(10);
                 Topic topic = TopicBuilder.builder()
                         .user(user[id])
-                        .type(Type.valueOf(type))
-                        .title("Type is " + type)
-                        .description("Description is " + type)
+                        .type(value)
+                        .title("Type is " + value)
+                        .description("Description is " + value)
                         .createdAt(date.minus(random.nextInt(10), UNIT[random.nextInt(5)]))
                         .build();
                 user[id].getTopics().add(topic);
                 topics.add(topic);
             }
         }
+        topicDao.saveAll(topics);
     }
 }

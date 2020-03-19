@@ -33,12 +33,6 @@ public class Topic{
 
     private Type type;
 
-    public Topic(String title, String description) {
-        this.title = title;
-        this.description = description;
-        createdAt = LocalDateTime.now();
-    }
-
     public Topic() {
         createdAt = LocalDateTime.now();
     }

@@ -1,51 +1,27 @@
 package com.forum.forum.controller;
 
-import com.forum.forum.dao.UserDao;
 import com.forum.forum.dto.EmailDto;
-import com.forum.forum.dto.RegistrationDto;
 import com.forum.forum.dto.ResetDto;
 import com.forum.forum.service.ResetService;
-import com.forum.forum.service.TopicService;
-import com.forum.forum.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.UUID;
 
 @Controller
-public class AuthController {
+public class ResetController {
 
     private ResetService resetService;
-    private UserService userService;
-    private TopicService topicService;
 
     @Autowired
-    public AuthController(TopicService topicService, ResetService resetService, UserService userService) {
+    public ResetController(ResetService resetService) {
         this.resetService = resetService;
-        this.userService = userService;
-        this.topicService = topicService;
-    }
-
-    @GetMapping("/get-started")
-    public String getRegistration(Model model){
-        model.addAttribute("registrationDto", new RegistrationDto());
-        return "registration";
-    }
-
-    @PostMapping("/get-started")
-    public String registration(@Valid RegistrationDto registrationDto, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
-            return "registration";
-        }
-        userService.addUser(registrationDto);
-        return "redirect:/login";
     }
 
     @GetMapping("/forgot")
