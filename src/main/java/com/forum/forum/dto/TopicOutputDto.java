@@ -1,6 +1,7 @@
 package com.forum.forum.dto;
 
 import com.forum.forum.model.Comment;
+import com.forum.forum.model.Vote;
 import com.forum.forum.other.DateFormater;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ public class TopicOutputDto {
     private String createdAt;
     private Long id;
     private Integer comments;
+    private Integer votes;
 
     public TopicOutputDto() {
     }
@@ -73,5 +75,13 @@ public class TopicOutputDto {
 
     public void setComments(Set<Comment> comments) {
         this.comments = comments.size();
+    }
+
+    public Integer getVotes() {
+        return votes;
+    }
+
+    public void setVotes(Set<Vote> votes) {
+        this.votes = votes.size();
     }
 }

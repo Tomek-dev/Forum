@@ -1,6 +1,7 @@
 package com.forum.forum.dto;
 
 import com.forum.forum.model.Comment;
+import com.forum.forum.model.Vote;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -12,7 +13,8 @@ public class TopicProfileDto {
     private String userUsername;
     private String createdAt;
     private String title;
-    private int comments;
+    private Integer comments;
+    private Integer votes;
     private Long id;
 
     public TopicProfileDto() {
@@ -42,7 +44,7 @@ public class TopicProfileDto {
         this.title = title;
     }
 
-    public int getComments() {
+    public Integer getComments() {
         return comments;
     }
 
@@ -56,5 +58,13 @@ public class TopicProfileDto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getVotes() {
+        return votes;
+    }
+
+    public void setVotes(Set<Vote> votes) {
+        this.votes = votes.size();
     }
 }

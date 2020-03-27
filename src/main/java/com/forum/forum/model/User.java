@@ -41,6 +41,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private Set<Report> report = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private Set<Vote> votes = new HashSet<>();
+
     private String motto;
 
     public User() {
@@ -137,6 +140,13 @@ public class User implements UserDetails {
         this.motto = motto;
     }
 
+    public Set<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(Set<Vote> votes) {
+        this.votes = votes;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

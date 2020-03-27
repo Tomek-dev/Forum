@@ -10,9 +10,10 @@ import javax.validation.constraints.Size;
 @PasswordMatch
 public class RegistrationDto implements Password{
 
-    @UniqueEmail
+
     @NotEmpty
     @NotNull
+    @UniqueEmail
     private String username;
 
     @UniqueEmail

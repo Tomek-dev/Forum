@@ -42,6 +42,10 @@ public class ProfileSpecification implements Specification<Topic> {
             predicate.getExpressions().add(criteriaBuilder.equal(criteriaBuilder.upper(root.join("comments").join("user").get("username")), user.toUpperCase()));
             return predicate;
         }
+        if(value.equals("vote")){
+            predicate.getExpressions().add(criteriaBuilder.equal(criteriaBuilder.upper(root.join("votes").join("user").get("username")), user.toUpperCase()));
+            return predicate;
+        }
         throw new RuntimeException("Value not exist");
     }
 }

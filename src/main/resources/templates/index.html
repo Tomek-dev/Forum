@@ -17,7 +17,7 @@
                         <div class="topic-info">
                             <a th:href="@{/topic/{tid}#vote-id(tid=${topic.getId()})}" class="topic-btn" type="submit" name="button">
                                 <p>Vote</p>
-                                <p>45</p>
+                                <p th:text="${topic.getVotes()}"></p>
                             </a>
                             <a th:href="@{/topic/{tid}#comment-id(tid=${topic.getId()})}" class="topic-btn">
                                 <p>Comment</p>
@@ -99,15 +99,15 @@
                 <div class="auth-info">
                     <a th:href="@{/profile/{username}(username = ${#authentication.getPrincipal().getUsername()},value=vote)}">
                         <p>Votes</p>
-                        <p>120</p>
+                        <p th:text="${userInfo.getUserVotes()}"></p>
                     </a>
                     <a th:href="@{/profile/{username}(username = ${#authentication.getPrincipal().getUsername()},value=comment)}">
                         <p>Comments</p>
-                        <p th:text="${#authentication.getPrincipal().getComments().size()}"></p>
+                        <p th:text="${userInfo.getUserComments()}"></p>
                     </a>
                     <a th:href="@{/profile/{username}(username = ${#authentication.getPrincipal().getUsername()},value=topic)}">
                         <p>Posts</p>
-                        <p th:text="${#authentication.getPrincipal().getTopics().size()}"></p>
+                        <p th:text="${userInfo.getUserTopics()}"></p>
                     </a>
                 </div>
             </div>

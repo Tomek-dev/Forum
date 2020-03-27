@@ -28,7 +28,7 @@
                 <div class="user-stats">
                     <div class="stat">
                         <p><span class="topic-icon">T</span><span th:text="${userOutputDto.getTopics()}"></span></p>
-                        <p><span class="vote-icon">V</span>12</p>
+                        <p><span class="vote-icon">V</span><span th:text="${userOutputDto.getVotes()}"></span></p>
                     </div>
                     <div class="stat">
                         <p><span class="comment-icon" id="comment-color"><i class="fa fa-comments-o icon"></i></span><span th:text="${userOutputDto.getComments()}"></span></p>
@@ -58,7 +58,7 @@
             <a th:href="@{/topic/{id}(id = ${topic.getId()})}" class="topic-title" th:text="${topic.getTitle()}"></a>
             <div class="topic-info">
                 <p th:text="${topic.getCreatedAt()}"></p>
-                <p>10 Votes  <span th:text="${topic.getComments()}"></span> Comments</p>
+                <p><span th:text="${topic.getVotes()}"></span> Votes  <span th:text="${topic.getComments()}"></span> Comments</p>
             </div>
         </div>
     </div>

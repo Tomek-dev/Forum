@@ -26,7 +26,7 @@
                     <p>Posted <span th:text="${topic.getCreatedAt()}"></span> ago &middot <a class="topic-type" href="#" th:text="${topic.getType()}"></a></p>
                 </div>
             </div>
-            <form class="vote" action="index.html" method="post">
+            <form class="vote" th:action="@{/vote/{id}(id = ${idVariable})}" method="post">
                 <button type="submit" class="votebtn" id="vote-id" name="button">Vote</button>
             </form>
         </div>

@@ -34,6 +34,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .map(SimpleGrantedAuthority::toString)
                 .collect(Collectors.toSet());
         return UserBuilder.builder()
+                .id(foundUser.getId())
                 .username(foundUser.getUsername())
                 .password(foundUser.getPassword())
                 .email(foundUser.getEmail())

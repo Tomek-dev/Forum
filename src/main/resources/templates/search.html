@@ -30,7 +30,7 @@
                 <div class="search-result-info">
                     <a th:href="@{/topic/{tid}#vote-id(tid=${topic.getId()})}" class="search-result-btn" type="submit" name="button">
                         <p>Vote</p>
-                        <p>45</p>
+                        <p th:text="${topic.getVotes()}"></p>
                     </a>
                     <a th:href="@{/topic/{tid}#comment-id(tid=${topic.getId()})}" class="search-result-btn">
                         <p>Comment</p>

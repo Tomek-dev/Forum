@@ -18,6 +18,9 @@ public class Topic{
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @OneToMany(mappedBy = "topic", orphanRemoval = true)
+    private Set<Vote> votes = new HashSet<>();
+
     private String videoUrl;
 
     @ManyToOne
@@ -107,5 +110,13 @@ public class Topic{
 
     public void setReport(Set<Report> report) {
         this.report = report;
+    }
+
+    public Set<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(Set<Vote> votes) {
+        this.votes = votes;
     }
 }

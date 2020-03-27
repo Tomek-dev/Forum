@@ -5,6 +5,7 @@ import com.forum.forum.dao.TopicDao;
 import com.forum.forum.dao.UserDao;
 import com.forum.forum.dto.MottoDto;
 import com.forum.forum.dto.RegistrationDto;
+import com.forum.forum.dto.UserInfoDto;
 import com.forum.forum.dto.UserOutputDto;
 import com.forum.forum.model.User;
 import com.forum.forum.other.builder.UserBuilder;
@@ -60,5 +61,9 @@ public class UserService {
         User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
         user.setMotto(mottoDto.getMotto());
         userDao.save(user);
+    }
+
+    public UserInfoDto getInfo(String username){
+        return MAPPER.map(userDao.findByUsername(username), UserInfoDto.class);
     }
 }
