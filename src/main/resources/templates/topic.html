@@ -19,7 +19,7 @@
                 <div class="information">
                     <div class="user-info">
                         <a th:href="@{/profile/{username}(username = ${topic.getUserUsername().toLowerCase()})}" th:text="${topic.getUserUsername()}"></a>
-                        <form class="star-form" action="index.html" method="post">
+                        <form class="star-form" th:action="@{/star/{username}(username = ${topic.getUserUsername().toLowerCase()})}" method="post">
                             <button type="submit" name="button">Star</button>
                         </form>
                     </div>
@@ -49,7 +49,7 @@
                     <div class="comment-user-image"></div>
                     <a th:href="@{/profile/{username}(username = ${comment.getUserUsername().toLowerCase()})}" th:text="${comment.getUserUsername()}"></a>
                 </div>
-                <p class="stars">Stars: 13<i class="fa fa-star"></i></p>
+                <p class="stars">Stars: <span th:text="${comment.getStars()}"></span><i class="fa fa-star"></i></p>
                 <form class="comment-likes" action="index.html" method="post">
                     <button class="button-option" type="button" name="like"><i class="fa fa-thumbs-up icon"></i>618</button>
                     <button class="button-option" type="button" name="unlike"><i class="fa fa-thumbs-down icon"></i>8</button>

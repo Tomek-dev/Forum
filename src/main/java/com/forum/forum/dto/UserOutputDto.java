@@ -1,6 +1,7 @@
 package com.forum.forum.dto;
 
 import com.forum.forum.model.Comment;
+import com.forum.forum.model.Star;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.Vote;
 
@@ -16,6 +17,8 @@ public class UserOutputDto {
     private int topics;
     private int comments;
     private int votes;
+    private int stars;
+    private String motto;
 
     public UserOutputDto() {
     }
@@ -58,5 +61,21 @@ public class UserOutputDto {
 
     public void setVotes(Set<Vote> votes) {
         this.votes = votes.size();
+    }
+
+    public int getStars() {
+        return stars;
+    }
+
+    public void setStars(Set<Star> stars) {
+        this.stars = stars.size();
+    }
+
+    public String getMotto() {
+        return motto;
+    }
+
+    public void setMotto(String motto) {
+        this.motto = motto;
     }
 }

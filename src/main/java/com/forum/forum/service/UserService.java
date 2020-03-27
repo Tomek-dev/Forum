@@ -46,7 +46,7 @@ public class UserService {
     }
 
     public UserOutputDto getUserByUsername(String username){
-        Optional<User> userOptional = Optional.ofNullable(userDao.findByUsernameIgnoreCase(username));
+        Optional<User> userOptional = userDao.findByUsernameIgnoreCase(username);
         User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not authorized."));
         return MAPPER.map(user, UserOutputDto.class);
     }
@@ -57,7 +57,7 @@ public class UserService {
     }
 
     public void setMotto(String username, MottoDto mottoDto){
-        Optional<User> userOptional = Optional.ofNullable(userDao.findByUsernameIgnoreCase(username));
+        Optional<User> userOptional = userDao.findByUsernameIgnoreCase(username);
         User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
         user.setMotto(mottoDto.getMotto());
         userDao.save(user);

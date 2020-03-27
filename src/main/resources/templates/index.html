@@ -105,7 +105,7 @@
                         <p>Comments</p>
                         <p th:text="${userInfo.getUserComments()}"></p>
                     </a>
-                    <a th:href="@{/profile/{username}(username = ${#authentication.getPrincipal().getUsername()},value=topic)}">
+                    <a th:href="@{/profile/{username}(username = ${#authentication.getPrincipal().getUsername()})}">
                         <p>Posts</p>
                         <p th:text="${userInfo.getUserTopics()}"></p>
                     </a>

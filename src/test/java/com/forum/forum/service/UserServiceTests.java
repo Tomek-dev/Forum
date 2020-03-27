@@ -73,7 +73,7 @@ public class UserServiceTests {
         //given
         User user = new User();
         user.setUsername("user");
-        given(userDao.findByUsernameIgnoreCase(Mockito.any())).willReturn(user);
+        given(userDao.findByUsernameIgnoreCase(Mockito.any())).willReturn(java.util.Optional.of(user));
 
         //when
         userService.getUserByUsername("user");

@@ -46,7 +46,7 @@ public class ReportService {
     }
 
     public void addReport(Report report, String user){
-        Optional<User> userOptional = Optional.ofNullable(userDao.findByUsernameIgnoreCase(user));
+        Optional<User> userOptional = userDao.findByUsernameIgnoreCase(user);
         User foundUser = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
         report.setUser(foundUser);
         foundUser.getReport().add(report);

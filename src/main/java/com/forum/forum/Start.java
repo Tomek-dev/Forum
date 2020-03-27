@@ -44,6 +44,7 @@ public class Start {
                     .email("email" + i + "@test.test")
                     .password(passwordEncoder.encode("password"))
                     .roles(Collections.singleton("USER"))
+                    .motto("\"coding\" Makes you smartest, because all can't do it all")
                     .createdAt(date)
                     .build();
         }

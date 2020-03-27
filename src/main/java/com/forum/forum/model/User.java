@@ -44,6 +44,12 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private Set<Vote> votes = new HashSet<>();
 
+    @OneToMany(mappedBy = "starUser", orphanRemoval = true)
+    private Set<Star> stars = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private Set<Star> starUsers = new HashSet<>();
+
     private String motto;
 
     public User() {
@@ -146,6 +152,22 @@ public class User implements UserDetails {
 
     public void setVotes(Set<Vote> votes) {
         this.votes = votes;
+    }
+
+    public Set<Star> getStars() {
+        return stars;
+    }
+
+    public void setStars(Set<Star> stars) {
+        this.stars = stars;
+    }
+
+    public Set<Star> getStarUsers() {
+        return starUsers;
+    }
+
+    public void setStarUsers(Set<Star> starUsers) {
+        this.starUsers = starUsers;
     }
 
     @Override

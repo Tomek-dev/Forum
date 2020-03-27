@@ -58,7 +58,7 @@ public class ReportServiceTests {
         //given
         User user = new User();
         Report report = new Report(ReportType.OTHER, "describe");
-        given(userDao.findByUsernameIgnoreCase(Mockito.any())).willReturn(user);
+        given(userDao.findByUsernameIgnoreCase(Mockito.any())).willReturn(java.util.Optional.of(user));
         given(reportDao.save(Mockito.any(Report.class))).willAnswer(invocationOnMock -> invocationOnMock.getArguments()[0]);
         given(userDao.save(Mockito.any(User.class))).willAnswer(invocationOnMock -> invocationOnMock.getArguments()[0]);
 

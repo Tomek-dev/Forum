@@ -20,11 +20,13 @@
                 <div class="user-info">
                     <p class="username" th:text="${userOutputDto.getUsername()}"></p>
                     <p class="createdAt">Account created at <span th:text="${userOutputDto.getCreatedAt()}"></span></p>
-                    <p class="motto">"coding" Makes you smartest, becouse all can't do it all</p>
+                    <p class="motto" th:text="${userOutputDto.getMotto()}"></p>
                 </div>
             </div>
             <div class="user-information">
-                <a href="#" class="star">Star</a>
+                <form th:action="@{/star/{username}(username = ${userOutputDto.getUsername().toLowerCase()})}" method="post">
+                    <button class="star" type="submit" name="button">Star</button>
+                </form>
                 <div class="user-stats">
                     <div class="stat">
                         <p><span class="topic-icon">T</span><span th:text="${userOutputDto.getTopics()}"></span></p>
@@ -32,7 +34,7 @@
                     </div>
                     <div class="stat">
                         <p><span class="comment-icon" id="comment-color"><i class="fa fa-comments-o icon"></i></span><span th:text="${userOutputDto.getComments()}"></span></p>
-                        <p><span class="star-icon"><i class="fa fa-star"></i></span>9</p>
+                        <p><span class="star-icon"><i class="fa fa-star"></i></span><span th:text="${userOutputDto.getStars()}"></span></p>
                     </div>
                 </div>
             </div>
