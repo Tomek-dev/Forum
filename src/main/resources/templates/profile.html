@@ -48,7 +48,7 @@
             <div class="option-element">
             <a th:href="@{/profile/{user}/report(user = ${userVariable})}" class="report"><i class="fa fa-exclamation"></i></a>
                 <a href="#" sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername().equals(userOutputDto.getUsername())}" class="edit"><i class="fa fa-edit"></i></a>
-                <form sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername().equals(userOutputDto.getUsername()) || #authentication.getPrincipal().getRole().equals('ADMIN')}" th:action="@{/profile/{user}/delete(user=${userOutputDto.getUsername().toLowerCase()})}" method="post">
+                <form sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUsername().equals(userOutputDto.getUsername()) || #authentication.getPrincipal().getRoles().equals('ADMIN')}" th:action="@{/profile/{user}/delete(user=${userOutputDto.getUsername().toLowerCase()})}" method="post">
                     <button class="delete"><i class="fa fa-trash-o"></i></button>
                 </form>
             </div>

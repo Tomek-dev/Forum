@@ -1,11 +1,19 @@
 package com.forum.forum.dto;
 
 import com.forum.forum.enums.Type;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class TopicInputDto {
 
     @NotNull
@@ -20,37 +28,4 @@ public class TopicInputDto {
     @NotNull
     @NotEmpty
     private String description;
-
-    public TopicInputDto(Type type, String title, String description) {
-        this.type = type;
-        this.title = title;
-        this.description = description;
-    }
-
-    public TopicInputDto() {
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

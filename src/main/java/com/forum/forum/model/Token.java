@@ -1,6 +1,8 @@
 package com.forum.forum.model;
 
 import com.forum.forum.model.User;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -9,6 +11,8 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
+@Getter
+@Setter
 public class Token {
 
 
@@ -27,47 +31,10 @@ public class Token {
     public Token(UUID token, User user) {
         this.token = token;
         this.user = user;
-        expiryDate = calculateExpiryDate();
+        expiryDate = LocalDateTime.now().plusDays(1);
     }
 
     public Token() {
-        expiryDate = calculateExpiryDate();
-    }
-
-    private LocalDateTime calculateExpiryDate(){
-        LocalDateTime date = LocalDateTime.now().plusDays(1);
-        return date;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public UUID getToken() {
-        return token;
-    }
-
-    public void setToken(UUID token) {
-        this.token = token;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public LocalDateTime getExpiryDate() {
-        return expiryDate;
-    }
-
-    public void setExpiryDate(LocalDateTime expiryDate) {
-        this.expiryDate = expiryDate;
+        expiryDate = LocalDateTime.now().plusDays(1);
     }
 }

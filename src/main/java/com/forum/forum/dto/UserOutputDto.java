@@ -4,12 +4,20 @@ import com.forum.forum.model.Comment;
 import com.forum.forum.model.Star;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.Vote;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserOutputDto {
 
     private String username;
@@ -20,62 +28,24 @@ public class UserOutputDto {
     private int stars;
     private String motto;
 
-    public UserOutputDto() {
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.ENGLISH).format(createdAt);
-    }
-
-    public int getTopics() {
-        return topics;
     }
 
     public void setTopics(Set<Topic> topics) {
         this.topics = topics.size();
     }
 
-    public int getComments() {
-        return comments;
-    }
-
     public void setComments(Set<Comment> comments) {
         this.comments = comments.size();
     }
 
-    public int getVotes() {
-        return votes;
-    }
 
     public void setVotes(Set<Vote> votes) {
         this.votes = votes.size();
     }
 
-    public int getStars() {
-        return stars;
-    }
-
     public void setStars(Set<Star> stars) {
         this.stars = stars.size();
-    }
-
-    public String getMotto() {
-        return motto;
-    }
-
-    public void setMotto(String motto) {
-        this.motto = motto;
     }
 }

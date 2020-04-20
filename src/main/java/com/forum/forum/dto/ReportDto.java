@@ -1,5 +1,14 @@
 package com.forum.forum.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ReportDto {
 
     private String name;
@@ -7,52 +16,4 @@ public class ReportDto {
     private String type;
     private String createdAt;
     private String describe;
-
-    public ReportDto(String name, Long id, String type, String createdAt, String describe) {
-        this.name = name;
-        this.id = id;
-        this.type = type;
-        this.createdAt = createdAt;
-        this.describe = describe;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getDescribe() {
-        return describe;
-    }
-
-    public void setDescribe(String describe) {
-        this.describe = describe;
-    }
 }

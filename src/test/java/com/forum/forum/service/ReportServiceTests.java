@@ -23,6 +23,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -47,7 +48,7 @@ public class ReportServiceTests {
     @Test(expected = UsernameNotFoundException.class)
     public  void shouldThrowUsernameNotFoundException(){
         //given
-        given(userDao.findByUsernameIgnoreCase(Mockito.any())).willReturn(null);
+        given(userDao.findByUsernameIgnoreCase(Mockito.any())).willReturn(Optional.empty());
 
         //when
         reportService.addReport(new Report(), "user");

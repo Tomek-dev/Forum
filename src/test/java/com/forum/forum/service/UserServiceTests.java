@@ -28,6 +28,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.Optional;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTests {
@@ -60,7 +61,7 @@ public class UserServiceTests {
     @Test
     public void shouldThrowUsernameNotFoundException(){
         //given
-        given(userDao.findByUsernameIgnoreCase(Mockito.any())).willReturn(null);
+        given(userDao.findByUsernameIgnoreCase(Mockito.any())).willReturn(Optional.empty());
 
         //then
         //assertThrows(UsernameNotFoundException.class, () -> userService.getUserByUsername("user"));

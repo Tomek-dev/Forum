@@ -1,7 +1,15 @@
 package com.forum.forum.dto;
 
 import com.forum.forum.enums.Type;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class SearchDto {
 
     private String query;
@@ -9,28 +17,4 @@ public class SearchDto {
     private Boolean text;
 
     private Type type;
-
-    public String getQuery() {
-        return query;
-    }
-
-    public void setQuery(String query) {
-        this.query = query;
-    }
-
-    public Boolean getText() {
-        return text;
-    }
-
-    public void setText(Boolean text) {
-        this.text = text;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
-    }
 }

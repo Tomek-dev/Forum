@@ -1,26 +1,20 @@
 package com.forum.forum.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CommentInputDto {
 
     @NotEmpty
     @NotNull
     private String comment;
-
-    public CommentInputDto(@NotEmpty @NotNull String comment) {
-        this.comment = comment;
-    }
-
-    public CommentInputDto() {
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
 }

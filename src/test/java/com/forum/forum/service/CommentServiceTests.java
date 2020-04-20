@@ -18,6 +18,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -52,10 +54,10 @@ public class CommentServiceTests {
     @Test(expected = TopicNotFoundException.class)
     public void shouldThrowException(){
         //given
-        given(topicDao.findById(Mockito.any())).willReturn(null);
+        given(topicDao.findById(Mockito.any())).willReturn(Optional.empty());
 
         //when
-        commentService.addComment(new CommentInputDto(), "username", 4l);
+        commentService.addComment(new CommentInputDto(), "username", 4L);
     }
 
     @Test

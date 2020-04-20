@@ -26,7 +26,7 @@ public class UserBuilder {
     }
 
     public UserBuilder roles(Set<String> roles){
-        user.setRole(roles);
+        user.setRoles(roles);
         return this;
     }
 
