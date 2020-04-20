@@ -7,17 +7,17 @@ import com.forum.forum.dto.ResetDto;
 import com.forum.forum.model.Token;
 import com.forum.forum.model.User;
 import com.forum.forum.other.exceptions.TokenNotFoundException;
-import org.junit.Before;
+import com.forum.forum.other.exceptions.UserNotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,29 +43,30 @@ public class ResetServiceTests {
     @Test(expected = TokenNotFoundException.class)
     public void shouldThrowRuntimeException(){
         //given
-        given(tokenDao.findByToken(Mockito.any())).willReturn(null);
+        given(tokenDao.findByToken(Mockito.any())).willReturn(Optional.empty());
         //when
         resetService.resetPassword(UUID.randomUUID(), new ResetDto());
     }
 
-    @Test(expected = UsernameNotFoundException.class)
+    @Test(expected = UserNotFoundException.class)
     public void shouldThrowUsernameNotFoundExceptionSendEmail(){
         //given
-        given(userDao.findByEmail(Mockito.any())).willReturn(null);
+        given(userDao.findByEmail(Mockito.any())).willReturn(Optional.empty());
         //when
-        resetService.sendToken(new EmailDto("email"));
+        resetService.createToken(new EmailDto("email"));
     }
 
     @Test
     public void shouldResetPassword(){
         //given
-        Token token = new Token();
         User user = new User();
-        token.setUser(user);
+        Token token = new Token.Builder()
+                .user(user)
+                .build();
         user.setToken(token);
-        user.setPassword(passwordEncoder.encode("password"));
+        user.setPassword("password");
         ResetDto resetDto = new ResetDto("resetPassword", "resetPassword");
-        given(tokenDao.findByToken(Mockito.any())).willReturn(token);
+        given(tokenDao.findByToken(Mockito.any())).willReturn(Optional.of(token));
 
         //when
         resetService.resetPassword(UUID.randomUUID(), resetDto);
@@ -78,17 +79,15 @@ public class ResetServiceTests {
     }
 
     @Test
-    public void shouldSendToken(){
+    public void shouldCreateToken(){
         //given
         User user = new User();
-        given(userDao.findByEmail(Mockito.any())).willReturn(user);
+        given(userDao.findByEmail(Mockito.any())).willReturn(Optional.of(user));
 
         //when
-        resetService.sendToken(new EmailDto());
+        resetService.createToken(new EmailDto());
 
         //then
         verify(tokenDao).save(any());
-
-        assertNotNull(user.getToken());
     }
 }

@@ -7,6 +7,7 @@ import com.forum.forum.dto.ResetDto;
 import com.forum.forum.model.Token;
 import com.forum.forum.model.User;
 import com.forum.forum.other.exceptions.TokenNotFoundException;
+import com.forum.forum.other.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,7 +31,7 @@ public class ResetService {
     }
 
     public void resetPassword(UUID token, ResetDto resetDto) {
-        Optional<Token> tokenOptional = Optional.ofNullable(tokenDao.findByToken(token));
+        Optional<Token> tokenOptional = tokenDao.findByToken(token);
         Token resetToken = tokenOptional.orElseThrow(TokenNotFoundException::new);
         User user = resetToken.getUser();
         user.setPassword(passwordEncoder.encode(resetDto.getPassword()));
@@ -39,17 +40,15 @@ public class ResetService {
         userDao.save(user);
     }
 
-    public void sendToken(EmailDto emailDto){
-        Optional<User> userOptional = Optional.ofNullable(userDao.findByEmail(emailDto.getEmail()));
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    public void createToken(EmailDto emailDto){
+        Optional<User> userOptional = userDao.findByEmail(emailDto.getEmail());
+        User user = userOptional.orElseThrow(UserNotFoundException::new);
         if(user.getToken() == null){
-            Token token = new Token(UUID.randomUUID(), user);
-            user.setToken(token);
+            Token token = new Token.Builder()
+                    .token(UUID.randomUUID())
+                    .user(user)
+                    .build();
             tokenDao.save(token);
         }
-    }
-
-    public void sendEmailWithReset(UUID token){
-        //TODO
     }
 }

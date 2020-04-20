@@ -1,11 +1,12 @@
 package com.forum.forum.dto;
 
-import com.forum.forum.validation.PasswordMatch;
+import com.forum.forum.other.validation.PasswordMatch;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -17,13 +18,11 @@ import javax.validation.constraints.Size;
 @PasswordMatch
 public class ResetDto implements Password{
 
-    @NotNull
-    @NotEmpty
+    @NotBlank
     @Size(min = 6, max = 24)
     private String password;
 
-    @NotNull
-    @NotEmpty
+    @NotBlank
     private String confirmpassword;
 
     @Override
@@ -32,17 +31,7 @@ public class ResetDto implements Password{
     }
 
     @Override
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
     public String getConfirmpassword() {
         return confirmpassword;
-    }
-
-    @Override
-    public void setConfirmpassword(String confirmpassword) {
-        this.confirmpassword = confirmpassword;
     }
 }

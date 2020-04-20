@@ -16,6 +16,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import com.forum.forum.other.exceptions.UserNotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -64,9 +65,7 @@ public class UserServiceTests {
         given(userDao.findByUsernameIgnoreCase(Mockito.any())).willReturn(Optional.empty());
 
         //then
-        //assertThrows(UsernameNotFoundException.class, () -> userService.getUserByUsername("user"));
-        //assertThrows(UsernameNotFoundException.class, () -> userService.deleteUser("user"));
-        assertThrows(UsernameNotFoundException.class, () -> userService.setMotto("user", new MottoDto()));
+        assertThrows(UserNotFoundException.class, () -> userService.setMotto("user", new MottoDto()));
     }
 
     @Test

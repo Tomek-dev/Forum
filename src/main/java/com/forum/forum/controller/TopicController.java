@@ -1,6 +1,7 @@
 package com.forum.forum.controller;
 
 import com.forum.forum.dto.CommentInputDto;
+import com.forum.forum.dto.ReportInputDto;
 import com.forum.forum.dto.SearchDto;
 import com.forum.forum.dto.TopicInputDto;
 import com.forum.forum.model.Report;
@@ -10,6 +11,7 @@ import com.forum.forum.service.ReportService;
 import com.forum.forum.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,22 +34,6 @@ public class TopicController {
         this.commentService = commentService;
     }
 
-    @GetMapping("/write")
-    public String getWriteTopic(Model model){
-        model.addAttribute("search", new SearchDto());
-        model.addAttribute("topic", new TopicInputDto());
-        return "write";
-    }
-
-    @PostMapping("/write")
-    public String writeTopic(@Valid TopicInputDto topicInputDto, Authentication authentication, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
-            return "write";
-        }
-        topicService.addTopic(topicInputDto, authentication.getName());
-        return "redirect:/";
-    }
-
     @GetMapping("/topic/{id}")
     public String getTopic(@PathVariable Long id, Model model){
         model.addAttribute("search", new SearchDto());
@@ -59,12 +45,12 @@ public class TopicController {
     }
 
     @PostMapping("/topic/{id}/comment")
-    public String addComment(@PathVariable Long id, @Valid CommentInputDto commentInputDto, Authentication authentication, BindingResult bindingResult){
+    public String addComment(@PathVariable Long id, @Valid CommentInputDto commentInputDto, @AuthenticationPrincipal User user, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             return "redirect:/topic/"+id;
         }
 
-        commentService.addComment(commentInputDto, authentication.getName(), id);
+        commentService.addComment(commentInputDto, user, id);
         return "redirect:/topic/" + id;
     }
 
@@ -80,13 +66,20 @@ public class TopicController {
         return "redirect:/";
     }
 
+    @GetMapping("topic/{id}/report")
+    public String getReportProfile(@PathVariable Long id, Model model){
+        model.addAttribute("report", new ReportInputDto());
+        model.addAttribute("idVariable", id);
+        return "report";
+    }
+
     @PostMapping("/topic/{topicId}/report")
-    public String reportTopic(@PathVariable Long topicId, @Valid Report report, BindingResult bindingResult, Model model){
+    public String reportTopic(@PathVariable Long topicId, @Valid ReportInputDto reportDto, BindingResult bindingResult, Model model){
         if(bindingResult.hasErrors()){
             model.addAttribute("idVariable", topicId);
             return "report";
         }
-        reportService.addReport(report, topicId);
+        reportService.addReport(reportDto, topicId);
         return "redirect:/topic/"+topicId;
     }
 }

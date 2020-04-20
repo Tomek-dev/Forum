@@ -13,22 +13,22 @@
             <h1>Report</h1>
             <p>Do you see not allowed behaviour. Help us and report it.</p>
             <div th:if="${#httpServletRequest.requestURI.toString().contains('/profile/')}" class="tags-list">
-                <input type="checkbox" th:field="*{type}" th:value="${T(com.forum.forum.enums.ReportType).HATE}" class="visually-hidden" onclick="chooseOne(this)">
-                <label th:for="${#ids.prev('type')}" class="tag" th:text="${T(com.forum.forum.enums.ReportType).HATE.getDisplayName()}"></label>
-                <input type="checkbox" th:field="*{type}" th:value="${T(com.forum.forum.enums.ReportType).OFFENSIVE}" class="visually-hidden" onclick="chooseOne(this)">
-                <label th:for="${#ids.prev('type')}" class="tag" th:text="${T(com.forum.forum.enums.ReportType).OFFENSIVE.getDisplayName()}"></label>
-                <input type="checkbox" th:field="*{type}" th:value="${T(com.forum.forum.enums.ReportType).OTHER}" class="visually-hidden" onclick="chooseOne(this)">
-                <label th:for="${#ids.prev('type')}" class="tag" th:text="${T(com.forum.forum.enums.ReportType).OTHER.getDisplayName()}"></label>
+                <input type="checkbox" th:field="*{type}" th:value="${T(com.forum.forum.other.enums.ReportType).HATE}" class="visually-hidden" onclick="chooseOne(this)">
+                <label th:for="${#ids.prev('type')}" class="tag" th:text="${T(com.forum.forum.other.enums.ReportType).HATE.getDisplayName()}"></label>
+                <input type="checkbox" th:field="*{type}" th:value="${T(com.forum.forum.other.enums.ReportType).OFFENSIVE}" class="visually-hidden" onclick="chooseOne(this)">
+                <label th:for="${#ids.prev('type')}" class="tag" th:text="${T(com.forum.forum.other.enums.ReportType).OFFENSIVE.getDisplayName()}"></label>
+                <input type="checkbox" th:field="*{type}" th:value="${T(com.forum.forum.other.enums.ReportType).OTHER}" class="visually-hidden" onclick="chooseOne(this)">
+                <label th:for="${#ids.prev('type')}" class="tag" th:text="${T(com.forum.forum.other.enums.ReportType).OTHER.getDisplayName()}"></label>
             </div>
             <div th:if="${#httpServletRequest.requestURI.toString().contains('/topic/')}" class="tags-list">
-                <input type="checkbox" th:field="*{type}" th:value="${T(com.forum.forum.enums.ReportType).WRONG}" class="visually-hidden" onclick="chooseOne(this)">
-                <label th:for="${#ids.prev('type')}" class="tag" th:text="${T(com.forum.forum.enums.ReportType).WRONG.getDisplayName()}"></label>
-                <input type="checkbox" th:field="*{type}" th:value="${T(com.forum.forum.enums.ReportType).HATE}" class="visually-hidden" onclick="chooseOne(this)">
-                <label th:for="${#ids.prev('type')}" class="tag" th:text="${T(com.forum.forum.enums.ReportType).HATE.getDisplayName()}"></label>
-                <input type="checkbox" th:field="*{type}" th:value="${T(com.forum.forum.enums.ReportType).UNCLEAR}" class="visually-hidden" onclick="chooseOne(this)">
-                <label th:for="${#ids.prev('type')}" class="tag" th:text="${T(com.forum.forum.enums.ReportType).UNCLEAR.getDisplayName()}"></label>
-                <input type="checkbox" th:field="*{type}" th:value="${T(com.forum.forum.enums.ReportType).OTHER}" class="visually-hidden" onclick="chooseOne(this)">
-                <label th:for="${#ids.prev('type')}" class="tag" th:text="${T(com.forum.forum.enums.ReportType).OTHER.getDisplayName()}"></label>
+                <input type="checkbox" th:field="*{type}" th:value="${T(com.forum.forum.other.enums.ReportType).WRONG}" class="visually-hidden" onclick="chooseOne(this)">
+                <label th:for="${#ids.prev('type')}" class="tag" th:text="${T(com.forum.forum.other.enums.ReportType).WRONG.getDisplayName()}"></label>
+                <input type="checkbox" th:field="*{type}" th:value="${T(com.forum.forum.other.enums.ReportType).HATE}" class="visually-hidden" onclick="chooseOne(this)">
+                <label th:for="${#ids.prev('type')}" class="tag" th:text="${T(com.forum.forum.other.enums.ReportType).HATE.getDisplayName()}"></label>
+                <input type="checkbox" th:field="*{type}" th:value="${T(com.forum.forum.other.enums.ReportType).UNCLEAR}" class="visually-hidden" onclick="chooseOne(this)">
+                <label th:for="${#ids.prev('type')}" class="tag" th:text="${T(com.forum.forum.other.enums.ReportType).UNCLEAR.getDisplayName()}"></label>
+                <input type="checkbox" th:field="*{type}" th:value="${T(com.forum.forum.other.enums.ReportType).OTHER}" class="visually-hidden" onclick="chooseOne(this)">
+                <label th:for="${#ids.prev('type')}" class="tag" th:text="${T(com.forum.forum.other.enums.ReportType).OTHER.getDisplayName()}"></label>
             </div>
             <textarea placeholder="Describe it" th:field="*{describe}" name="name" rows="8" cols="80"></textarea>
             <div class="errors" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>

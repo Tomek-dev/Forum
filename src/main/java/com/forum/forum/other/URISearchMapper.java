@@ -19,7 +19,7 @@ public class URISearchMapper {
         if(searchDto.getText() !=null){
             uri += "&text="+searchDto.getText();
         }
-        return "?" + (uri.startsWith("&")? uri.substring(1): uri);
+        return "?" + uri.substring(1);
     }
 
     public static String map(SearchSpecification searchSpecification){
@@ -33,6 +33,6 @@ public class URISearchMapper {
         if(searchSpecification.getText() != null){
             uri += "&text=" + searchSpecification.getText();
         }
-        return  uri;
+        return uri;
     }
 }

@@ -3,26 +3,20 @@ package com.forum.forum.service;
 import com.forum.forum.dao.ReportDao;
 import com.forum.forum.dao.TopicDao;
 import com.forum.forum.dao.UserDao;
-import com.forum.forum.dto.ReportDto;
-import com.forum.forum.enums.ReportType;
-import com.forum.forum.enums.Type;
+import com.forum.forum.dto.ReportInputDto;
+import com.forum.forum.other.enums.ReportType;
 import com.forum.forum.model.Report;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
+import com.forum.forum.other.exceptions.UserNotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,59 +39,46 @@ public class ReportServiceTests {
     @InjectMocks
     private ReportService reportService;
 
-    @Test(expected = UsernameNotFoundException.class)
+    @Test(expected = UserNotFoundException.class)
     public  void shouldThrowUsernameNotFoundException(){
         //given
         given(userDao.findByUsernameIgnoreCase(Mockito.any())).willReturn(Optional.empty());
 
         //when
-        reportService.addReport(new Report(), "user");
+        reportService.addReport(new ReportInputDto(), "user");
     }
 
     @Test
     public void shouldAddUserReport(){
         //given
         User user = new User();
-        Report report = new Report(ReportType.OTHER, "describe");
+        ReportInputDto reportDto = new ReportInputDto("other", "describe");
         given(userDao.findByUsernameIgnoreCase(Mockito.any())).willReturn(java.util.Optional.of(user));
         given(reportDao.save(Mockito.any(Report.class))).willAnswer(invocationOnMock -> invocationOnMock.getArguments()[0]);
         given(userDao.save(Mockito.any(User.class))).willAnswer(invocationOnMock -> invocationOnMock.getArguments()[0]);
 
 
         //when
-        reportService.addReport(report, "user");
+        reportService.addReport(reportDto, "user");
 
         //then
-        verify(userDao).save(user);
-        verify(reportDao).save(report);
+        verify(reportDao).save(any());
 
-        assertEquals("describe", reportDao.save(report).getDescribe());
-        assertEquals(ReportType.OTHER, reportDao.save(report).getType());
-        assertEquals(user, reportDao.save(report).getUser());
-        assertEquals(1, userDao.save(user).getReport().size());
+        assertEquals(1, user.getReport().size());
     }
 
     @Test
     public void shouldAddTopicReport(){
         //given
         Topic topic = new Topic();
-        Report report = new Report(ReportType.OTHER, "describe");
+        ReportInputDto reportDto = new ReportInputDto("other", "describe");
         given(topicDao.findById(Mockito.any())).willReturn(java.util.Optional.of(topic));
-        given(reportDao.save(Mockito.any(Report.class))).willAnswer(invocationOnMock -> invocationOnMock.getArguments()[0]);
-        given(topicDao.save(Mockito.any(Topic.class))).willAnswer(invocationOnMock -> invocationOnMock.getArguments()[0]);
-
 
         //when
-        reportService.addReport(report, 1L);
+        reportService.addReport(reportDto, 1L);
 
         //then
-        verify(topicDao).save(topic);
-        verify(reportDao).save(report);
-
-        assertEquals("describe", reportDao.save(report).getDescribe());
-        assertEquals(ReportType.OTHER, reportDao.save(report).getType());
-        assertEquals(topic, reportDao.save(report).getTopic());
-        assertEquals(1, topicDao.save(topic).getReport().size());
+        verify(reportDao).save(any());
     }
 
     @Test

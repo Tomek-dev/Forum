@@ -34,25 +34,22 @@ public class CommentService {
         this.userDao = userDao;
     }
 
-    public void addComment(CommentInputDto commentInputDto, String username, Long id){
-        User user = userDao.findByUsername(username);
+    public void addComment(CommentInputDto commentInputDto, User user, Long id){
         Optional<Topic> topicOptional = topicDao.findById(id);
         Topic topic = topicOptional.orElseThrow(TopicNotFoundException::new);
-        Comment comment = new Comment(commentInputDto.getComment());
-        comment.setTopic(topic);
-        comment.setUser(user);
-        user.getComments().add(comment);
-        topic.getComments().add(comment);
+        Comment comment = new Comment.Builder()
+                .comment(commentInputDto.getComment())
+                .user(user)
+                .topic(topic)
+                .build();
         commentDao.save(comment);
-        userDao.save(user);
-        topicDao.save(topic);
     }
 
     public List<CommentOutputDto> getComments(Long id){
         Optional<Topic> topicOptional = topicDao.findById(id);
         Topic topic = topicOptional.orElseThrow(TopicNotFoundException::new);
         return topic.getComments().stream()
-                .sorted(Comparator.comparing(Comment::getCreatedAt))//to change
+                .sorted(Comparator.comparing(Comment::getCreatedAt))
                 .map(comment -> MAPPER.map(comment, CommentOutputDto.class))
                 .collect(Collectors.toList());
     }

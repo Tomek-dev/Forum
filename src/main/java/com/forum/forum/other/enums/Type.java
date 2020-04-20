@@ -1,8 +1,13 @@
-package com.forum.forum.enums;
+package com.forum.forum.other.enums;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.Optional;
 
+@AllArgsConstructor
+@Getter
 public enum Type {
     C("C"),
     JAVA("Java"),
@@ -18,14 +23,6 @@ public enum Type {
     OTHER("Other");
 
     private final String displayName;
-
-    Type(String displayName) {
-        this.displayName = displayName;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
 
     public static Optional<Type> fromValue(String value){
         return Arrays.stream(Type.values()).filter(type -> type.toString().equalsIgnoreCase(value)).findFirst();

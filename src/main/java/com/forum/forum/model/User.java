@@ -1,5 +1,6 @@
 package com.forum.forum.model;
 
+import com.forum.forum.other.enums.Role;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GeneratorType;
@@ -29,7 +30,7 @@ public class User implements UserDetails {
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
     @OneToOne(mappedBy = "user", orphanRemoval = true)
     private Token token;
@@ -72,9 +73,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toSet());
+        return roles;
     }
 
     @Override

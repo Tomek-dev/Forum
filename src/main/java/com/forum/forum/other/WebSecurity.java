@@ -5,6 +5,7 @@ import com.forum.forum.dao.TopicDao;
 import com.forum.forum.dao.UserDao;
 import com.forum.forum.model.Comment;
 import com.forum.forum.model.Topic;
+import com.forum.forum.other.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,14 +30,14 @@ public class WebSecurity {
 
     public boolean checkUser(Authentication authentication, String username){
         String authName = authentication.getName();
-        return authName.equalsIgnoreCase(username) || authentication.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"));
+        return authName.equalsIgnoreCase(username) || authentication.getAuthorities().contains(Role.ADMIN);
     }
 
     public boolean checkTopic(Authentication authentication, Long id){
         Optional<Topic> topicOptional = topicDao.findById(id);
         if(topicOptional.isPresent()){
             Topic topic = topicOptional.get();
-            return topic.getUser().getUsername().equals(authentication.getName()) || authentication.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"));
+            return topic.getUser().getUsername().equals(authentication.getName()) || authentication.getAuthorities().contains(Role.ADMIN);
         }
         return false;
     }
@@ -45,7 +46,7 @@ public class WebSecurity {
         Optional<Comment> commentOptional = commentDao.findById(id);
         if(commentOptional.isPresent()){
             Comment comment = commentOptional.get();
-            return comment.getUser().getUsername().equals(authentication.getName()) || authentication.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"));
+            return comment.getUser().getUsername().equals(authentication.getName()) || authentication.getAuthorities().contains(Role.ADMIN);
         }
         return false;
     }

@@ -1,6 +1,6 @@
 package com.forum.forum.other.builder;
 
-import com.forum.forum.enums.Type;
+import com.forum.forum.other.enums.Type;
 import com.forum.forum.model.Comment;
 import com.forum.forum.model.Report;
 import com.forum.forum.model.Topic;

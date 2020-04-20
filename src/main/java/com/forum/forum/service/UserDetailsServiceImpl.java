@@ -27,18 +27,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        Optional<User> userOptional = Optional.ofNullable(userDao.findByUsername(s));
+        Optional<User> userOptional = userDao.findByUsername(s);
         User foundUser = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not authorized."));
-        Set<String> grantedAuthority = foundUser.getRoles().stream()
-                .map(SimpleGrantedAuthority::new)
-                .map(SimpleGrantedAuthority::toString)
-                .collect(Collectors.toSet());
-        return UserBuilder.builder()
-                .id(foundUser.getId())
-                .username(foundUser.getUsername())
-                .password(foundUser.getPassword())
-                .email(foundUser.getEmail())
-                .roles(grantedAuthority)
-                .build();
+        return foundUser;
     }
 }

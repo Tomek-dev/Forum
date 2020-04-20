@@ -1,6 +1,8 @@
 package com.forum.forum.controller;
 
 import com.forum.forum.dto.MottoDto;
+import com.forum.forum.dto.ReportInputDto;
+import com.forum.forum.dto.ReportOutputDto;
 import com.forum.forum.dto.SearchDto;
 import com.forum.forum.model.Report;
 import com.forum.forum.other.specification.ProfileSpecification;
@@ -36,31 +38,32 @@ public class ProfileController {
 
     @GetMapping("/{user}")
     public String getProfile(@PathVariable("user") String user, ProfileSpecification profileSpecification, @PageableDefault(sort = "id", page = 1, direction = Sort.Direction.DESC) Pageable pageable, Model model){
+        PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("id").descending());
+        profileSpecification.setUser(user);
         model.addAttribute("userOutputDto", userService.getUserByUsername(user));
         model.addAttribute("search", new SearchDto());
         model.addAttribute("userVariable", user);
         model.addAttribute("pageId", (pageable == null? 1: pageable.getPageNumber()));
         model.addAttribute("valueParam", profileSpecification.getValue());
-        profileSpecification.setUser(user);
-        model.addAttribute("topics", topicService.getPageOfTopic(profileSpecification, (pageable == null? PageRequest.of(1, 10, Sort.by("id").descending()): pageable)));
-        model.addAttribute("pageListSize", topicService.getProfilePageNumber(profileSpecification, (pageable == null? PageRequest.of(1, 10, Sort.by("id").descending()): pageable)));
+        model.addAttribute("topics", topicService.getPageByProfileSpecification(profileSpecification, (pageable == null? pageRequest: pageable)));
+        model.addAttribute("pageListSize", topicService.getProfilePageNumber(profileSpecification, (pageable == null? pageRequest: pageable)));
         return "profile";
     }
 
     @GetMapping("/{username}/report")
     public String getReportProfile(@PathVariable String username,Model model){
-        model.addAttribute("report", new Report());
+        model.addAttribute("report", new ReportInputDto());
         model.addAttribute("userVariable", username);
         return "report";
     }
 
     @PostMapping("/{username}/report")
-    public String reportProfile(@PathVariable String username, @Valid Report report, BindingResult bindingResult, Model model){
+    public String reportProfile(@PathVariable String username, @Valid ReportInputDto reportDto, BindingResult bindingResult, Model model){
         if(bindingResult.hasErrors()){
             model.addAttribute("userVariable", username);
             return "report";
         }
-        reportService.addReport(report, username);
+        reportService.addReport(reportDto, username);
         return"redirect:/profile/" + username;
     }
 

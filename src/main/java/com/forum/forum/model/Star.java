@@ -1,8 +1,11 @@
 package com.forum.forum.model;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 
 @Entity
+@Getter
 public class Star {
 
     @Id

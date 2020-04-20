@@ -16,7 +16,7 @@
             <input class="search-box" type="text" th:field="*{query}" placeholder="What's are you looking for?">
             <label class="in-text"><input th:field="*{text}" type="checkbox">Search in text</label>
             <div class="search-type">
-                <div th:each="typeelement: ${T(com.forum.forum.enums.Type).values()}" class="type-element" style="margin: 8px 0">
+                <div th:each="typeelement: ${T(com.forum.forum.other.enums.Type).values()}" class="type-element" style="margin: 8px 0">
                     <input type="checkbox" th:field="*{type}" th:value="${typeelement}" class="visually-hidden" onclick="chooseOne(this)">
                     <label th:for="${#ids.prev('type')}" class="search-type-element" ><span class="sharp">#</span><span th:text="${typeelement.displayName}"></span></label>
                 </div>
@@ -58,7 +58,6 @@
             <p th:if="${pageListSize > 5 && pageId < pageListSize-1}">...</p>
             <a th:if="${pageListSize > 5}" th:href="@{/search(query=${currentURI}, page=${pageListSize})}" th:text="${pageListSize}" th:style="${pageListSize == pageId? 'border-color: #999': ''}"></a>
             <a th:if="${pageId < pageListSize}" th:href="@{/search(query=${currentURI},page=${pageId+1})}">next</a>
-            <!--TODO paging not work-->
         </div>
     </div>
 </div>

@@ -111,6 +111,18 @@ body{
   align-items: center;
 }
 
+.popular-ask-about{
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.popular-ask-about span{
+  margin: 0 3px;
+}
+
 .popular-ask-info p{
   margin: 0;
 }
@@ -134,6 +146,8 @@ body{
   font-size: 16px;
   margin: 0;
   padding: 5px 0;
+  color: #666;
+  text-decoration: none;
 }
 
 .topics-list{
@@ -302,4 +316,17 @@ body{
 
 .get-start{
   text-align: center;
+}
+
+.vote-link{
+  border: 1px solid #777;
+  text-decoration: none;
+  color: #777;
+  padding: 1px;
+  border-radius: 4px;
+}
+
+.vote-link:hover{
+  color: #666;
+  border-color: #666;
 }

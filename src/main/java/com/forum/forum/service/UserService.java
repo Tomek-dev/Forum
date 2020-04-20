@@ -1,7 +1,5 @@
 package com.forum.forum.service;
 
-import com.forum.forum.dao.CommentDao;
-import com.forum.forum.dao.TopicDao;
 import com.forum.forum.dao.UserDao;
 import com.forum.forum.dto.MottoDto;
 import com.forum.forum.dto.RegistrationDto;
@@ -9,6 +7,8 @@ import com.forum.forum.dto.UserInfoDto;
 import com.forum.forum.dto.UserOutputDto;
 import com.forum.forum.model.User;
 import com.forum.forum.other.builder.UserBuilder;
+import com.forum.forum.other.enums.Role;
+import com.forum.forum.other.exceptions.UserNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,7 +22,7 @@ import java.util.*;
 @Service
 public class UserService {
 
-    private static final ModelMapper MAPPER = new ModelMapper();
+    private final ModelMapper mapper = new ModelMapper();
 
 
     private UserDao userDao;
@@ -39,7 +39,7 @@ public class UserService {
                 .username(registrationDto.getUsername())
                 .email(registrationDto.getEmail())
                 .password(passwordEncoder.encode(registrationDto.getPassword()))
-                .roles(Collections.singleton("USER"))
+                .roles(Collections.singleton(Role.USER))
                 .createdAt(LocalDateTime.now())
                 .build();
         userDao.save(user);
@@ -47,8 +47,8 @@ public class UserService {
 
     public UserOutputDto getUserByUsername(String username){
         Optional<User> userOptional = userDao.findByUsernameIgnoreCase(username);
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not authorized."));
-        return MAPPER.map(user, UserOutputDto.class);
+        User user = userOptional.orElseThrow(UserNotFoundException::new);
+        return mapper.map(user, UserOutputDto.class);
     }
 
     @Transactional
@@ -58,12 +58,14 @@ public class UserService {
 
     public void setMotto(String username, MottoDto mottoDto){
         Optional<User> userOptional = userDao.findByUsernameIgnoreCase(username);
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = userOptional.orElseThrow(UserNotFoundException::new);
         user.setMotto(mottoDto.getMotto());
         userDao.save(user);
     }
 
-    public UserInfoDto getInfo(String username){
-        return MAPPER.map(userDao.findByUsername(username), UserInfoDto.class);
+    public UserInfoDto getUser(String username){
+        Optional<User> userOptional = userDao.findByUsername(username);
+        User user = userOptional.orElseThrow(UserNotFoundException::new);
+        return mapper.map(user, UserInfoDto.class);
     }
 }

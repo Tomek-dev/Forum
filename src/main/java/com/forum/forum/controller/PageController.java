@@ -1,5 +1,6 @@
 package com.forum.forum.controller;
 
+import com.forum.forum.dto.HelpMessageInputDto;
 import com.forum.forum.dto.SearchDto;
 import com.forum.forum.model.HelpMessage;
 import com.forum.forum.other.specification.TypeSpecification;
@@ -37,9 +38,10 @@ public class PageController {
     public String getHome(Model model, Principal principal){
         Pageable pageable = PageRequest.of(1, 15, Sort.by("id").descending());
         model.addAttribute("search", new SearchDto());
-        model.addAttribute("topics", topicService.getPageOf15Topics(pageable));
+        model.addAttribute("popular", topicService.getPopularTopic());
+        model.addAttribute("topics", topicService.getPage(pageable));
         model.addAttribute("pageListSize", topicService.getPageNumber(pageable));
-        model.addAttribute("userInfo", (principal == null? "null": userService.getInfo(principal.getName())));
+        model.addAttribute("userInfo", (principal == null? "null": userService.getUser(principal.getName())));
         model.addAttribute("pageId", 1);
         return "index";
     }
@@ -48,25 +50,26 @@ public class PageController {
     public String getHomeWithType(TypeSpecification typeSpecification, @PageableDefault(sort = "id", size = 15, page = 1, direction = Sort.Direction.DESC) Pageable pageable, Model model, Principal principal){
         model.addAttribute("search", new SearchDto());
         model.addAttribute("typeEnum", typeSpecification.getType());
-        model.addAttribute("topics", (typeSpecification.getType() == null? topicService.getPageOf15Topics(pageable): topicService.getPageOf15Topics(typeSpecification, pageable)));
+        model.addAttribute("popular", topicService.getPopularTopic());
+        model.addAttribute("topics", (typeSpecification.getType() == null? topicService.getPage(pageable): topicService.getPageByTypeSpecification(typeSpecification, pageable)));
         model.addAttribute("pageListSize", topicService.getPageNumber(typeSpecification, pageable));
         model.addAttribute("pageId", pageable.getPageNumber());
-        model.addAttribute("userInfo", (principal == null? "null": userService.getInfo(principal.getName())));
+        model.addAttribute("userInfo", (principal == null? "null": userService.getUser(principal.getName())));
         return "index";
     }
 
     @GetMapping("/help")
     public String getHelp(Model model){
-        model.addAttribute("helpMessage", new HelpMessage());
+        model.addAttribute("helpMessage", new HelpMessageInputDto());
         return "help";
     }
 
     @PostMapping("/help")
-    public String help(@Valid @ModelAttribute HelpMessage helpMessage, BindingResult bindingResult){
+    public String help(@Valid @ModelAttribute HelpMessageInputDto helpMessageDto, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return "help";
         }
-        helpService.addHelpMessage(helpMessage);
+        helpService.addHelpMessage(helpMessageDto);
         return "redirect:/";
     }
 

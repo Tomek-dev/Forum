@@ -1,4 +1,4 @@
-package com.forum.forum.validation;
+package com.forum.forum.other.validation;
 
 import com.forum.forum.dto.Password;
 

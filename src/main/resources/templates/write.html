@@ -12,7 +12,7 @@
 <body>
 <div th:replace="fragments/elements :: header"></div>
 <div class="container">
-    <form class="write-content" th:action="@{/write/topic}" th:object="${topic}" method="post">
+    <form class="write-content" th:action="@{/write}" th:object="${topic}" method="post">
         <div class="write-option">
             <div class="write-element">
                 <p>Can't solve a problem? Ask for it</p>
@@ -20,7 +20,7 @@
             <div class="write-element">
                 <p class="tag-paragraph">Tags:</p>
                 <div class="tags-list">
-                    <div th:each="typeelement: ${T(com.forum.forum.enums.Type).values()}" class="type-element">
+                    <div th:each="typeelement: ${T(com.forum.forum.other.enums.Type).values()}" class="type-element">
                         <input type="checkbox" th:field="*{type}" th:value="${typeelement}" class="visually-hidden" onclick="chooseOne(this)">
                         <label th:for="${#ids.prev('type')}" class="tag"><span class="sharp">#</span><span th:text="${typeelement.displayName}"></span></label>
                     </div>

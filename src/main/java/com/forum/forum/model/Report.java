@@ -1,27 +1,20 @@
 package com.forum.forum.model;
 
-import com.forum.forum.enums.ReportType;
+import com.forum.forum.other.enums.ReportType;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
 
 @Entity
-@Getter
-@Setter
 public class Report {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     private ReportType type;
 
     @ManyToOne
@@ -34,13 +27,44 @@ public class Report {
 
     private LocalDateTime createdAt;
 
-    public Report() {
-        createdAt = LocalDateTime.now();
+    private Report() {
+
     }
 
-    public Report(@NotNull ReportType type, String describe) {
-        this.type = type;
-        this.describe = describe;
-        createdAt = LocalDateTime.now();
+    public static class Builder{
+        private ReportType type;
+        private User user;
+        private Topic topic;
+        private String describe;
+
+        public Builder type(ReportType type){
+            this.type = type;
+            return this;
+        }
+
+        public Builder user(User user){
+            this.user = user;
+            return this;
+        }
+
+        public Builder topic(Topic topic){
+            this.topic = topic;
+            return this;
+        }
+
+        public Builder describe(String describe){
+            this.describe = describe;
+            return this;
+        }
+
+        public Report build(){
+            Report report = new Report();
+            report.user = this.user;
+            report.topic = this.topic;
+            report.describe = this.describe;
+            report.type = this.type;
+            report.createdAt = LocalDateTime.now();
+            return report;
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.forum.forum.other.builder;
 
 import com.forum.forum.model.*;
+import com.forum.forum.other.enums.Role;
 
 import javax.xml.crypto.Data;
 import java.time.LocalDateTime;
@@ -25,7 +26,7 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder roles(Set<String> roles){
+    public UserBuilder roles(Set<Role> roles){
         user.setRoles(roles);
         return this;
     }

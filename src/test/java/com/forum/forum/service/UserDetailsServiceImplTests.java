@@ -3,6 +3,7 @@ package com.forum.forum.service;
 import com.forum.forum.dao.UserDao;
 import com.forum.forum.model.User;
 import com.forum.forum.other.builder.UserBuilder;
+import com.forum.forum.other.enums.Role;
 import com.forum.forum.service.UserDetailsServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -36,7 +38,7 @@ public class UserDetailsServiceImplTests {
     @Test(expected = UsernameNotFoundException.class)
     public void shouldThrowUsernameNotFoundException(){
         //given
-        given(userDao.findByUsername(Mockito.any())).willReturn(null);
+        given(userDao.findByUsername(Mockito.any())).willReturn(Optional.empty());
 
         //when
         userDetailsService.loadUserByUsername("");
@@ -47,12 +49,12 @@ public class UserDetailsServiceImplTests {
         //given
         User user = UserBuilder.builder()
                 .username("username")
-                .roles(Collections.singleton("USER"))
+                .roles(Collections.singleton(Role.USER))
                 .build();
-        given(userDao.findByUsername(Mockito.any())).willReturn(user);
+        given(userDao.findByUsername(Mockito.any())).willReturn(Optional.of(user));
 
         //then
         assertEquals("username", userDetailsService.loadUserByUsername("").getUsername());
-        assertEquals(Collections.singleton(new SimpleGrantedAuthority("USER")), userDetailsService.loadUserByUsername("").getAuthorities());
+        assertEquals(Collections.singleton(Role.USER), userDetailsService.loadUserByUsername("").getAuthorities());
     }
 }

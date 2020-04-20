@@ -1,11 +1,12 @@
 package com.forum.forum.dto;
 
-import com.forum.forum.enums.Type;
+import com.forum.forum.other.enums.Type;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -16,16 +17,13 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class TopicInputDto {
 
-    @NotNull
-    @NotEmpty
+    @NotBlank
     private Type type;
 
     @Size(max = 96)
-    @NotNull
-    @NotEmpty
+    @NotBlank
     private String title;
 
-    @NotNull
-    @NotEmpty
+    @NotBlank
     private String description;
 }

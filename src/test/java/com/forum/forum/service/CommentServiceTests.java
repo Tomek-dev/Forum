@@ -47,7 +47,7 @@ public class CommentServiceTests {
         user = UserBuilder.builder()
                 .username("user")
                 .build();
-        given(userDao.findByUsername(Mockito.any())).willReturn(user);
+        given(userDao.findByUsername(Mockito.any())).willReturn(Optional.ofNullable(user));
         given(userDao.save(Mockito.any(User.class))).willAnswer(invocationOnMock -> invocationOnMock.getArguments()[0]);
     }
 
@@ -57,7 +57,7 @@ public class CommentServiceTests {
         given(topicDao.findById(Mockito.any())).willReturn(Optional.empty());
 
         //when
-        commentService.addComment(new CommentInputDto(), "username", 4L);
+        commentService.addComment(new CommentInputDto(), new User(), 4L);
     }
 
     @Test
@@ -65,22 +65,15 @@ public class CommentServiceTests {
         //given
         Topic topic = new Topic();
         final Comment[] savedComment = new Comment[1];
-        given(topicDao.findById(Mockito.any())).willReturn(java.util.Optional.of(topic));
-        given(commentDao.save(Mockito.any(Comment.class))).willAnswer(invocationOnMock -> {
-            savedComment[0] = (Comment) invocationOnMock.getArguments()[0];
-            return invocationOnMock.getArguments()[0];
-        });
+        given(topicDao.findById(Mockito.any())).willReturn(Optional.of(topic));
+        given(commentDao.save(Mockito.any())).willAnswer(invocationOnMock -> savedComment[0] = (Comment) invocationOnMock.getArguments()[0]);
 
         //when
-        commentService.addComment(new CommentInputDto("comment"), "user", 1l);
+        commentService.addComment(new CommentInputDto("comment"), user, 1L);
 
         //then
-        verify(topicDao).save(topic);
-        verify(userDao).save(user);
         verify(commentDao).save(any());
 
-        assertTrue(user.getComments().contains(savedComment[0]));
-        assertTrue(topic.getComments().contains(savedComment[0]));
         assertEquals(user.getUsername(), savedComment[0].getUser().getUsername());
         assertEquals(topic, savedComment[0].getTopic());
     }

@@ -2,6 +2,7 @@ package com.forum.forum.config;
 
 import com.forum.forum.dao.UserDao;
 import com.forum.forum.model.User;
+import com.forum.forum.other.enums.Role;
 import com.forum.forum.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -41,12 +42,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/resources/**").permitAll()
-                .antMatchers("/topic/{id}/comment").permitAll()
                 .antMatchers("/profile/{username}/delete").access("@webSecurity.checkUser(authentication,#username)")
                 .antMatchers("/topic/{id}/delete").access("@webSecurity.checkTopic(authentication, #id)")
                 .antMatchers("/topic/{topicId}/comment/{commentId}/delete").access("@webSecurity.checkComment(authentication, #commentId)")
-                .antMatchers("/star/**","/vote/**", "/write", "/topic/{id}/comment").authenticated()
-                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/star/**","/vote/**", "/write", "/topic/{id}/comment").hasAuthority(Role.USER.getAuthority())
+                .antMatchers("/admin/**").hasAuthority(Role.ADMIN.getAuthority())
                 .and()
                 .formLogin()
                 .loginPage("/login")
@@ -55,13 +55,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .permitAll()
-                .and()
-                .csrf().disable();
+                .permitAll();
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-                /*To check what this really do*/
-                //TODO access
     }
 
     @Bean

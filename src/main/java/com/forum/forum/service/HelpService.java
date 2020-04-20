@@ -1,6 +1,7 @@
 package com.forum.forum.service;
 
 import com.forum.forum.dao.HelpMessageDao;
+import com.forum.forum.dto.HelpMessageInputDto;
 import com.forum.forum.model.HelpMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -20,11 +21,15 @@ public class HelpService {
         this.helpMessageDao = helpMessageDao;
     }
 
-    public void addHelpMessage(HelpMessage helpMessage){
+    public void addHelpMessage(HelpMessageInputDto helpMessageDto){
+        HelpMessage helpMessage = new HelpMessage.Builder()
+                .description(helpMessageDto.getDescription())
+                .subject(helpMessageDto.getSubject())
+                .build();
         helpMessageDao.save(helpMessage);
     }
 
-    public void deleteHelpMeassageById(long id){
+    public void deleteHelpMessageById(Long id){
         helpMessageDao.deleteById(id);
     }
 

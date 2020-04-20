@@ -1,4 +1,4 @@
-package com.forum.forum.validation;
+package com.forum.forum.other.validation;
 
 import com.forum.forum.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +21,6 @@ public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, St
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        return userDao.findByEmail(s)==null;
+        return userDao.findByEmail(s).isEmpty();
     }
 }

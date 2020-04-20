@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -17,6 +18,6 @@ public interface TokenDao extends JpaRepository<Token, Long> {
 
     void deleteByExpiryDateLessThanEqual(LocalDateTime now);
 
-    Token findByUser(User user);
-    Token findByToken(UUID token);
+    Optional<Token> findByUser(User user);
+    Optional<Token> findByToken(UUID token);
 }

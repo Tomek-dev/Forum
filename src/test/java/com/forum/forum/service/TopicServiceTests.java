@@ -1,6 +1,6 @@
 package com.forum.forum.service;
 
-import com.forum.forum.enums.Type;
+import com.forum.forum.other.enums.Type;
 import com.forum.forum.dao.CommentDao;
 import com.forum.forum.dao.TopicDao;
 import com.forum.forum.dao.UserDao;
@@ -49,7 +49,7 @@ public class TopicServiceTests {
         user = UserBuilder.builder()
                 .username("username")
                 .build();
-        given(userDao.findByUsername(Mockito.any())).willReturn(user);
+        given(userDao.findByUsername(Mockito.any())).willReturn(Optional.of(user));
         given(userDao.save(Mockito.any(User.class))).willAnswer(invocationOnMock -> invocationOnMock.getArguments()[0]);
     }
 
@@ -67,11 +67,9 @@ public class TopicServiceTests {
         topicService.addTopic(topicInputDto, "user");
 
         //then
-        verify(userDao).save(user);
         verify(topicDao).save(any());
 
         assertEquals(user.getUsername(), savedTopic[0].getUser().getUsername());
-        assertEquals(1, user.getTopics().size());
         assertEquals(Type.JAVA, savedTopic[0].getType());
     }
 
@@ -144,7 +142,7 @@ public class TopicServiceTests {
     @Test
     public void shouldReturnPageNumberByProfileSpecification(){
         //given
-        ProfileSpecification profileSpecification = new ProfileSpecification("comment");
+        ProfileSpecification profileSpecification = new ProfileSpecification("user", "comment");
         given(topicDao.count(Mockito.any(ProfileSpecification.class))).willReturn(34L);
 
         //then

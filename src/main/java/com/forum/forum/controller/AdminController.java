@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/admin")
@@ -29,7 +28,9 @@ public class AdminController {
 
     @GetMapping("/reports")
     public String getReport(@PageableDefault(page = 1, sort = "id", direction = Sort.Direction.DESC) Pageable pageable, Model model){
-        model.addAttribute("report", reportService.getPageOf15Report((pageable == null? PageRequest.of(1, 10, Sort.by("id").descending()) : pageable)));
+        PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("id").descending());
+        model.addAttribute("topic", reportService.getPageOfTopicReport((pageable == null? pageRequest: pageable)));
+        model.addAttribute("user", reportService.getPageOfUserReport((pageable == null? pageRequest: pageable)));
         return "";
     }
 

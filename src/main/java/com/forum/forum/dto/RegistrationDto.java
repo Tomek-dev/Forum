@@ -1,12 +1,14 @@
 package com.forum.forum.dto;
 
-import com.forum.forum.validation.PasswordMatch;
-import com.forum.forum.validation.UniqueEmail;
+import com.forum.forum.other.validation.PasswordMatch;
+import com.forum.forum.other.validation.UniqueEmail;
+import com.forum.forum.other.validation.UniqueUsername;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -19,23 +21,19 @@ import javax.validation.constraints.Size;
 public class RegistrationDto implements Password{
 
 
-    @NotEmpty
-    @NotNull
-    @UniqueEmail
+    @NotBlank
+    @UniqueUsername
     private String username;
 
     @UniqueEmail
-    @NotEmpty
-    @NotNull
+    @NotBlank
     private String email;
 
-    @NotEmpty
-    @NotNull
+    @NotBlank
     @Size(min = 6, max = 24)
     private String password;
 
-    @NotEmpty
-    @NotNull
+    @NotBlank
     private String confirmpassword;
 
     @Override
@@ -44,17 +42,8 @@ public class RegistrationDto implements Password{
     }
 
     @Override
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
     public String getConfirmpassword() {
         return confirmpassword;
     }
 
-    @Override
-    public void setConfirmpassword(String confirmpassword) {
-        this.confirmpassword = confirmpassword;
-    }
 }

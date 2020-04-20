@@ -58,7 +58,7 @@
             <div class="community">
                 <h1>Programming Categories</h1>
                 <div class="community-list">
-                    <a th:each="type : ${T(com.forum.forum.enums.Type).values()}" th:href="@{topic(type=${type.name().toLowerCase()})}"><span class="sharp">#</span><span th:text="${type.getDisplayName()}"></span></a>
+                    <a th:each="type : ${T(com.forum.forum.other.enums.Type).values()}" th:href="@{topic(type=${type.name().toLowerCase()})}"><span class="sharp">#</span><span th:text="${type.getDisplayName()}"></span></a>
                 </div>
             </div>
             <div class="write">
@@ -70,12 +70,12 @@
             <div class="popular">
                 <h1>Getting Popular</h1>
                 <div class="popular-list">
-                    <div class="popular-ask">
-                        <p class="popular-ask-info">Posted by Andrew Know &middot 3 hours ago</p>
-                        <p class="ask-content">How I can read an .arrow file using C++?</p>
+                    <div class="popular-ask" th:each="popular : ${popular}">
+                        <p class="popular-ask-about">Posted by <span th:text="${popular.getUserUsername()}"></span> &middot <span th:text="${popular.getCreatedAt()}"></span> ago</p>
+                        <a th:href="@{/topic/{tid}(tid=${popular.getId()})}" class="ask-content" th:text="${popular.getTitle()}"></a>
                         <div class="popular-ask-info">
-                            <button type="button" class="vote" name="button">Vote</button>
-                            <p>18 votes</p>
+                            <a th:href="@{/topic/{tid}#vote-id(tid=${popular.getId()})}" class="vote-link">Vote</a>
+                            <p><span th:text="${popular.getVotes()}"></span> votes</p>
                         </div>
                     </div>
                 </div>

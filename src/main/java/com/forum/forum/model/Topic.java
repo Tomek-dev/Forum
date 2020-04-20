@@ -1,6 +1,6 @@
 package com.forum.forum.model;
 
-import com.forum.forum.enums.Type;
+import com.forum.forum.other.enums.Type;
 import lombok.Getter;
 import lombok.Setter;
 

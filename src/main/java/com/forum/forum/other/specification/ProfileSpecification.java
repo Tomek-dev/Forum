@@ -1,8 +1,9 @@
 package com.forum.forum.other.specification;
 
-import com.forum.forum.enums.Type;
 import com.forum.forum.model.Topic;
-import com.forum.forum.model.User;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -10,26 +11,14 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+
+@Getter
+@Setter
+@AllArgsConstructor
 public class ProfileSpecification implements Specification<Topic> {
 
     private String value;
     private String user;
-
-    public ProfileSpecification(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
 
     @Override
     public Predicate toPredicate(Root<Topic> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {

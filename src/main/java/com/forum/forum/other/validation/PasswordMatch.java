@@ -1,4 +1,4 @@
-package com.forum.forum.validation;
+package com.forum.forum.other.validation;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -7,11 +7,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.FIELD, ElementType.METHOD})
+@Target({ElementType.ANNOTATION_TYPE, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = UniqueEmailValidator.class)
-public @interface UniqueEmail {
-    String message() default "{com.forum.UniqueEmail.message}";
+@Constraint(validatedBy = PasswordMatchValidator.class)
+public @interface PasswordMatch {
+    String message() default "{com.forum.PasswordMatch.message}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

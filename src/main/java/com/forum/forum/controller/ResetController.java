@@ -35,12 +35,12 @@ public class ResetController {
         if(bindingResult.hasErrors()){
             return "forgot";
         }
-        resetService.sendToken(emailDto);
+        resetService.createToken(emailDto);
         return "redirect:/login";
     }
 
     @GetMapping("/reset")
-    public String getReset(@RequestParam("v") UUID token, Model model){
+    public String getReset(@RequestParam("value") UUID token, Model model){
         if(token==null){
             return "redirect:/forgot";
         }
@@ -50,7 +50,7 @@ public class ResetController {
     }
 
     @PostMapping("/reset")
-    public String reset(@RequestParam("v")UUID token, @Valid ResetDto resetDto, BindingResult bindingResult, Model model){
+    public String reset(@RequestParam("value")UUID token, @Valid ResetDto resetDto, BindingResult bindingResult, Model model){
         if(bindingResult.hasErrors()){
             model.addAttribute("token", token);
             return "reset";

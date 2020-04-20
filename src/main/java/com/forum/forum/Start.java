@@ -2,7 +2,8 @@ package com.forum.forum;
 
 import com.forum.forum.dao.TopicDao;
 import com.forum.forum.dao.UserDao;
-import com.forum.forum.enums.Type;
+import com.forum.forum.other.enums.Role;
+import com.forum.forum.other.enums.Type;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
 import com.forum.forum.other.builder.TopicBuilder;
@@ -43,7 +44,7 @@ public class Start {
                     .username(USERNAME[i])
                     .email("email" + i + "@test.test")
                     .password(passwordEncoder.encode("password"))
-                    .roles(Collections.singleton("USER"))
+                    .roles(Collections.singleton(Role.USER))
                     .motto("\"coding\" Makes you smartest, because all can't do it all")
                     .createdAt(date)
                     .build();
@@ -52,7 +53,7 @@ public class Start {
                 .username("admin")
                 .email("email")
                 .password(passwordEncoder.encode("password"))
-                .roles(Collections.singleton("ADMIN"))
+                .roles(Collections.singleton(Role.ADMIN))
                 .build();
         userDao.save(admin);
         userDao.saveAll(Arrays.asList(user));

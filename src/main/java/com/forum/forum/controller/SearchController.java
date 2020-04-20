@@ -25,10 +25,11 @@ public class SearchController {
     }
 
     @GetMapping
-    public String getSearch(SearchSpecification searchSpecification, Model model,@PageableDefault(sort = "id", size = 10, page = 1, direction = Sort.Direction.DESC) Pageable pageable){
+    public String getSearch(SearchSpecification searchSpecification, Model model, @PageableDefault(sort = "id", page = 1, direction = Sort.Direction.DESC) Pageable pageable){
+        PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("id").descending());
         model.addAttribute("search", new SearchDto());
-        model.addAttribute("topics", searchSerivce.getPageBySearch(searchSpecification, (pageable == null? PageRequest.of(1, 10, Sort.by("id").descending()): pageable)));
-        model.addAttribute("pageListSize", searchSerivce.getPageNumber(searchSpecification, (pageable == null? PageRequest.of(1, 10, Sort.by("id").descending()): pageable)));
+        model.addAttribute("topics", searchSerivce.getPageBySearch(searchSpecification, (pageable == null? pageRequest: pageable)));
+        model.addAttribute("pageListSize", searchSerivce.getPageNumber(searchSpecification, (pageable == null? pageRequest: pageable)));
         model.addAttribute("pageId", (pageable == null? 1 : pageable.getPageNumber()));
         model.addAttribute("currentURI", URISearchMapper.map(searchSpecification));
         model.addAttribute("test", null);

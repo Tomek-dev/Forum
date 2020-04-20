@@ -12,7 +12,6 @@ import java.util.UUID;
 
 @Entity
 @Getter
-@Setter
 public class Token {
 
 
@@ -28,13 +27,29 @@ public class Token {
 
     private LocalDateTime expiryDate;
 
-    public Token(UUID token, User user) {
-        this.token = token;
-        this.user = user;
-        expiryDate = LocalDateTime.now().plusDays(1);
+    private Token() {
     }
 
-    public Token() {
-        expiryDate = LocalDateTime.now().plusDays(1);
+    public static class Builder{
+        private UUID token;
+        private User user;
+
+        public Builder token(UUID token){
+            this.token = token;
+            return this;
+        }
+
+        public Builder user(User user){
+            this.user = user;
+            return this;
+        }
+
+        public Token build(){
+            Token token = new Token();
+            token.token = this.token;
+            token.user = this.user;
+            token.expiryDate = LocalDateTime.now().plusDays(1);
+            return token;
+        }
     }
 }

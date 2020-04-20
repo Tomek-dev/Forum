@@ -3,16 +3,19 @@ package com.forum.forum.service;
 import com.forum.forum.dao.ReportDao;
 import com.forum.forum.dao.TopicDao;
 import com.forum.forum.dao.UserDao;
-import com.forum.forum.dto.ReportDto;
-import com.forum.forum.enums.ReportType;
+import com.forum.forum.dto.ReportInputDto;
+import com.forum.forum.dto.ReportOutputDto;
 import com.forum.forum.model.Report;
 import com.forum.forum.model.Topic;
 import com.forum.forum.model.User;
+import com.forum.forum.other.enums.ReportType;
+import com.forum.forum.other.enums.Type;
+import com.forum.forum.other.exceptions.EnumNotFoundException;
 import com.forum.forum.other.exceptions.TopicNotFoundException;
+import com.forum.forum.other.exceptions.UserNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +28,8 @@ import java.util.stream.Collectors;
 @Service
 public class ReportService {
 
+    private final ModelMapper mapper = new ModelMapper();
+
     private ReportDao reportDao;
     private UserDao userDao;
     private TopicDao topicDao;
@@ -36,36 +41,41 @@ public class ReportService {
         this.topicDao = topicDao;
     }
 
-    public void addReport(Report report, long id){
+    public void addReport(ReportInputDto reportDto, Long id){
         Optional<Topic> topicOptional = topicDao.findById(id);
         Topic foundTopic = topicOptional.orElseThrow(TopicNotFoundException::new);
-        foundTopic.getReport().add(report);
-        report.setTopic(foundTopic);
-        topicDao.save(foundTopic);
+        Report report = new Report.Builder()
+                .describe(reportDto.getDescribe())
+                .type(ReportType.fromValue(reportDto.getType()).orElseThrow(() -> new EnumNotFoundException("This type not exist.")))
+                .topic(foundTopic)
+                .build();
         reportDao.save(report);
     }
 
-    public void addReport(Report report, String user){
+    public void addReport(ReportInputDto reportDto, String user){
         Optional<User> userOptional = userDao.findByUsernameIgnoreCase(user);
-        User foundUser = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        report.setUser(foundUser);
-        foundUser.getReport().add(report);
+        User foundUser = userOptional.orElseThrow(UserNotFoundException::new);
+        Report report = new Report.Builder()
+                .describe(reportDto.getDescribe())
+                .type(ReportType.fromValue(reportDto.getType()).orElseThrow(() -> new EnumNotFoundException("This type not exist.")))
+                .user(foundUser)
+                .build();
         reportDao.save(report);
-        userDao.save(foundUser);
     }
 
-    public List<ReportDto> getPageOf15Report(Pageable pageable){
-        return reportDao.findAll(pageable).stream()
-                .map(report -> {
-                    if(report.getTopic() == null){
-                        return new ReportDto(report.getUser().getUsername(), report.getUser().getId(), report.getType().getDisplayName(), new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(report.getCreatedAt()), report.getDescribe());
-                    }
-                    return new ReportDto(report.getTopic().getTitle(), report.getTopic().getId(), report.getType().getDisplayName(), new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(report.getCreatedAt()), report.getDescribe());
-                })
+    public List<ReportOutputDto> getPageOfUserReport(Pageable pageable){
+        return reportDao.findByUserNotNull(pageable).stream()
+                .map(report -> mapper.map(report, ReportOutputDto.class))
                 .collect(Collectors.toList());
     }
 
-    public void deleteReportById(long id){
+    public List<ReportOutputDto> getPageOfTopicReport(Pageable pageable){
+        return reportDao.findByTopicNotNull(pageable).stream()
+                .map(report -> mapper.map(report, ReportOutputDto.class))
+                .collect(Collectors.toList());
+    }
+
+    public void deleteReportById(Long id){
         reportDao.deleteById(id);
     }
 }
