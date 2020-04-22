@@ -45,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/profile/{username}/delete").access("@webSecurity.checkUser(authentication,#username)")
                 .antMatchers("/topic/{id}/delete").access("@webSecurity.checkTopic(authentication, #id)")
                 .antMatchers("/topic/{topicId}/comment/{commentId}/delete").access("@webSecurity.checkComment(authentication, #commentId)")
-                .antMatchers("/star/**","/vote/**", "/write", "/topic/{id}/comment").hasAuthority(Role.USER.getAuthority())
+                .antMatchers("/star/**","/vote/**", "/write", "/topic/{id}/comment", "/topic/{id}/like/**").hasAuthority(Role.USER.getAuthority())
                 .antMatchers("/admin/**").hasAuthority(Role.ADMIN.getAuthority())
                 .and()
                 .formLogin()

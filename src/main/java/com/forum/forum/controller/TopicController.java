@@ -7,6 +7,7 @@ import com.forum.forum.dto.TopicInputDto;
 import com.forum.forum.model.Report;
 import com.forum.forum.model.User;
 import com.forum.forum.service.CommentService;
+import com.forum.forum.service.LikeService;
 import com.forum.forum.service.ReportService;
 import com.forum.forum.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,15 @@ public class TopicController {
     private ReportService reportService;
     private TopicService topicService;
     private CommentService commentService;
+    private LikeService likeService;
 
     @Autowired
-    public TopicController(ReportService reportService, TopicService topicService, CommentService commentService) {
+    public TopicController(ReportService reportService, TopicService topicService,
+                           CommentService commentService, LikeService likeService) {
         this.reportService = reportService;
         this.topicService = topicService;
         this.commentService = commentService;
+        this.likeService = likeService;
     }
 
     @GetMapping("/topic/{id}")
@@ -57,6 +61,13 @@ public class TopicController {
     @PostMapping("/topic/{topicId}/comment/{commentId}/delete")
     public String deleteComment(@PathVariable Long topicId, @PathVariable Long commentId){
         commentService.deleteComment(commentId);
+        return "redirect:/topic/"+topicId;
+    }
+
+    @PostMapping("/topic/{topicId}/like/{commentId}")
+    public String likeComment(@PathVariable Long topicId, @PathVariable Long commentId,
+                              @RequestParam Boolean type, @AuthenticationPrincipal User user){
+        likeService.like(user, commentId, type);
         return "redirect:/topic/"+topicId;
     }
 

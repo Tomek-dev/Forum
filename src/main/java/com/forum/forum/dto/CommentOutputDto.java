@@ -1,5 +1,6 @@
 package com.forum.forum.dto;
 
+import com.forum.forum.model.Like;
 import com.forum.forum.model.Star;
 import com.forum.forum.other.DateFormater;
 import lombok.Getter;
@@ -17,13 +18,21 @@ public class CommentOutputDto {
     private String userUsername;
     private String createdAt;
     private Long id;
-    private int stars;
+    private int userStars;
+    private Long[] likes;
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = DateFormater.posted(createdAt);
     }
 
-    public void setStars(Set<Star> stars) {
-        this.stars = stars.size();
+    public void setUserStars(Set<Star> stars) {
+        this.userStars = stars.size();
+    }
+
+    public void setLikes(Set<Like> likes) {
+        Long[] count = new Long[2];
+        count[0] = likes.stream().filter(like -> like.getType().equals(true)).count();
+        count[1] = likes.stream().filter(like -> like.getType().equals(false)).count();
+        this.likes = count;
     }
 }

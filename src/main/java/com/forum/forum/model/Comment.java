@@ -8,6 +8,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -26,6 +28,9 @@ public class Comment {
 
     @Column(columnDefinition = "TEXT")
     private String comment;
+
+    @OneToMany(mappedBy = "comment", orphanRemoval = true)
+    Set<Like> likes = new HashSet<>();
 
     private LocalDateTime createdAt;
 

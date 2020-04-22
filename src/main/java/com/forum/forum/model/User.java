@@ -55,6 +55,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private Set<Star> starUsers = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    Set<Like> likes = new HashSet<>();
+
     private String motto;
 
     public User() {

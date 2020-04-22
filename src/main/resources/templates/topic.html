@@ -49,11 +49,15 @@
                     <div class="comment-user-image"></div>
                     <a th:href="@{/profile/{username}(username = ${comment.getUserUsername().toLowerCase()})}" th:text="${comment.getUserUsername()}"></a>
                 </div>
-                <p class="stars">Stars: <span th:text="${comment.getStars()}"></span><i class="fa fa-star"></i></p>
-                <form class="comment-likes" action="index.html" method="post">
-                    <button class="button-option" type="button" name="like"><i class="fa fa-thumbs-up icon"></i>618</button>
-                    <button class="button-option" type="button" name="unlike"><i class="fa fa-thumbs-down icon"></i>8</button>
-                </form>
+                <p class="stars">Stars: <span th:text="${comment.getUserStars()}"></span><i class="fa fa-star"></i></p>
+                <div class="comment-likes">
+                    <form class="comment-likes" th:action="@{/topic/{topicId}/like/{commentId}?type=true(commentId = ${comment.getId()}, topicId = ${idVariable})}" method="post">
+                        <button class="button-option" type="submit" name="like"><i class="fa fa-thumbs-up icon"></i><span th:text="${comment.getLikes()[0]}"></span></button>
+                    </form>
+                    <form class="comment-likes" th:action="@{/topic/{topicId}/like/{commentId}?type=false(commentId = ${comment.getId()}, topicId = ${idVariable})}" method="post">
+                        <button class="button-option" type="submit" name="unlike"><i class="fa fa-thumbs-down icon"></i><span th:text="${comment.getLikes()[1]}"></span></button>
+                    </form>
+                </div>
             </div>
             <div class="comment-content">
                 <div class="option-element" style="justify-content: space-between">
