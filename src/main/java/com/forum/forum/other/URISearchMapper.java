@@ -14,7 +14,7 @@ public class URISearchMapper {
             uri += "&query=" + URLEncoder.encode(searchDto.getQuery(), StandardCharsets.UTF_8);
         }
         if(searchDto.getType() != null){
-            uri += "&type=" + URLEncoder.encode(searchDto.getType().getDisplayName().toLowerCase(), StandardCharsets.UTF_8);
+            uri += "&type=" + URLEncoder.encode(searchDto.getType().name().toLowerCase(), StandardCharsets.UTF_8);
         }
         if(searchDto.getText() !=null){
             uri += "&text="+searchDto.getText();

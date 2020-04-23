@@ -25,7 +25,8 @@
 
             </div>
             <div class="user-option">
-                <a th:href="@{/profile/{username}(username = ${#authentication.getPrincipal().getUsername().toLowerCase()})}" sec:authentication="name" class="user"></a>
+                <a th:if="${#authentication.getPrincipal().getRoles().contains(T(com.forum.forum.other.enums.Role).ADMIN) == false}" th:href="@{/profile/{username}(username = ${#authentication.getPrincipal().getUsername().toLowerCase()})}" sec:authentication="name" class="user"></a>
+                <a th:if="${#authentication.getPrincipal().getRoles().contains(T(com.forum.forum.other.enums.Role).ADMIN) == true}" th:href="@{/admin}" sec:authentication="name" class="user"></a>
                 <a th:href="@{/logout}" class="logout">logout <i class="fa">&#xf08b;</i></a>
             </div>
         </div>

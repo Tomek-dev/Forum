@@ -1,6 +1,8 @@
 package com.forum.forum.controller;
 
 
+import com.forum.forum.dto.SearchDto;
+import com.forum.forum.other.enums.Role;
 import com.forum.forum.service.HelpService;
 import com.forum.forum.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Arrays;
+
 @Controller
-@RequestMapping("/admin")
 public class AdminController {
 
     private ReportService reportService;
@@ -26,17 +29,13 @@ public class AdminController {
         this.helpService = helpService;
     }
 
-    @GetMapping("/reports")
+    @GetMapping("/admin")
     public String getReport(@PageableDefault(page = 1, sort = "id", direction = Sort.Direction.DESC) Pageable pageable, Model model){
         PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("id").descending());
-        model.addAttribute("topic", reportService.getPageOfTopicReport((pageable == null? pageRequest: pageable)));
-        model.addAttribute("user", reportService.getPageOfUserReport((pageable == null? pageRequest: pageable)));
-        return "";
-    }
-
-    @GetMapping("/help-messages")
-    public String getHelpMessages(@PageableDefault(page = 1, sort = "id", direction = Sort.Direction.DESC) Pageable pageable, Model model){
-        model.addAttribute("report", helpService.getPageOfHelpMessage((pageable == null? PageRequest.of(1, 10, Sort.by("id").descending()) : pageable)));
-        return "";
+        model.addAttribute("search", new SearchDto());
+        model.addAttribute("help", helpService.getPageOfHelpMessage((pageable == null? pageRequest: pageable)));
+        model.addAttribute("pageListSize", helpService.getPageNumber(pageable == null? pageRequest: pageable));
+        model.addAttribute("pageId", (pageable == null? 1 : pageable.getPageNumber()));
+        return "admin";
     }
 }

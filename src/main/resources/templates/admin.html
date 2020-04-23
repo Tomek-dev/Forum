@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Topics</title>
+    <link rel="stylesheet" th:href="@{/css/fragments.css}">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div th:replace="fragments/elements :: header"></div>
+<div class="container">
+    <div class="content">
+        <div class="help-list-container">
+            <div class="help-list">
+                <div th:each="help : ${help}" class="help-element">
+                    <p th:text="${help.getSubject()}"></p>
+                    <p th:text="${help.getCreatedAt()}"></p>
+                    <p th:text="${help.getDescription()}"></p>
+                </div>
+            </div>
+        </div>
+        <div th:if="${help.size() == 0}">
+            <p class="blank">Result not found</p>
+        </div>
+        <div class="page">
+            <a th:if="${pageId > 1}" th:href="@{/admin(page=${pageId-1})}">prev</a>
+            <a th:if="${pageId > 1}" th:href="@{/admin(page=1)}">1</a>
+            <p th:if="${pageId > 1}">...</p>
+            <a th:if="${pageListSize > 5 && i < pageListSize}" th:each="i : ${#numbers.sequence(pageId, pageId + 4)}" th:href="@{/admin(page=${i})}" th:text="${i}" th:style="${i == pageId? 'border-color: #999': ''}"></a>
+            <a th:if="${pageListSize <= 5}" th:each="i : ${#numbers.sequence(pageId, pageListSize)}" th:href="@{/admin(page=${i})}" th:text="${i}" th:style="${i == pageId? 'border-color: #999': ''}"></a>
+            <p th:if="${pageListSize > 5 && pageId < pageListSize-1}">...</p>
+            <a th:if="${pageListSize > 5}" th:href="@{/admin(page=${pageListSize})}" th:text="${pageListSize}" th:style="${pageListSize == pageId? 'border-color: #999': ''}"></a>
+            <a th:if="${pageId < pageListSize}" th:href="@{/admin(page=${pageId+1})}">next</a>
+        </div>
+    </div>
+</div>
+<div style="position: absolute" th:replace="fragments/elements :: footer"></div>
+</body>
+</html>

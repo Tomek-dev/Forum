@@ -2,7 +2,9 @@ package com.forum.forum.service;
 
 import com.forum.forum.dao.HelpMessageDao;
 import com.forum.forum.dto.HelpMessageInputDto;
+import com.forum.forum.dto.HelpOutputDto;
 import com.forum.forum.model.HelpMessage;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +16,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class HelpService {
+
+    private final ModelMapper mapper = new ModelMapper();
+
     private HelpMessageDao helpMessageDao;
 
     @Autowired
@@ -33,8 +38,14 @@ public class HelpService {
         helpMessageDao.deleteById(id);
     }
 
-    public List<HelpMessage> getPageOfHelpMessage(Pageable pageable){
-        return helpMessageDao.findAll(pageable).stream()
+    public List<HelpOutputDto> getPageOfHelpMessage(Pageable pageable){
+        Pageable pageableValue = PageRequest.of(pageable.getPageNumber()-1, pageable.getPageSize(), pageable.getSort());
+        return helpMessageDao.findAll(pageableValue).stream()
+                .map(help -> mapper.map(help, HelpOutputDto.class))
                 .collect(Collectors.toList());
+    }
+
+    public long getPageNumber(Pageable pageable){
+        return (long) Math.ceil((double) helpMessageDao.count()/pageable.getPageSize());
     }
 }

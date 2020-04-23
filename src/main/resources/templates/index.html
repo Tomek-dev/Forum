@@ -85,7 +85,7 @@
                 <p>Register and join to our community. Get answer for mind-boggling questions or help somebody</p>
                 <a th:href="@{/get-started}">Get Started</a>
             </div>
-            <div class="authentication" sec:authorize="isAuthenticated()">
+            <div class="authentication" sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getRoles().contains(T(com.forum.forum.other.enums.Role).ADMIN) == false}">
                 <div class="auth-user">
                     <div class="auth-image">
 
@@ -95,7 +95,7 @@
                         <a th:href="@{/logout}">logout <i class="fa">&#xf08b;</i></a>
                     </div>
                 </div>
-                <p class = "user-motto">"coding" Makes you smartest, becouse all can't do it all</p>
+                <p class="user-motto">"coding" Makes you smartest, becouse all can't do it all</p>
                 <div class="auth-info">
                     <a th:href="@{/profile/{username}(username = ${#authentication.getPrincipal().getUsername()},value=vote)}">
                         <p>Votes</p>

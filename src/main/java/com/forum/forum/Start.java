@@ -1,7 +1,9 @@
 package com.forum.forum;
 
+import com.forum.forum.dao.HelpMessageDao;
 import com.forum.forum.dao.TopicDao;
 import com.forum.forum.dao.UserDao;
+import com.forum.forum.model.HelpMessage;
 import com.forum.forum.other.enums.Role;
 import com.forum.forum.other.enums.Type;
 import com.forum.forum.model.Topic;
@@ -24,18 +26,21 @@ public class Start {
     private UserDao userDao;
     private PasswordEncoder passwordEncoder;
     private TopicDao topicDao;
+    private HelpMessageDao helpDao;
     private User[] user = new User[10];
     private LocalDateTime date;
     private List<Topic> topics = new LinkedList<>();
 
     @Autowired
-    public Start(UserDao userDao, PasswordEncoder passwordEncoder, TopicDao topicDao) {
+    public Start(UserDao userDao, PasswordEncoder passwordEncoder, TopicDao topicDao, HelpMessageDao helpDao) {
         this.userDao = userDao;
         this.passwordEncoder = passwordEncoder;
         this.topicDao = topicDao;
+        this.helpDao = helpDao;
         date = LocalDateTime.now();
         loadUser();
         loadTopic();
+        init();
     }
 
     private void loadUser(){
@@ -76,5 +81,13 @@ public class Start {
             }
         }
         topicDao.saveAll(topics);
+    }
+
+    private void init(){
+        HelpMessage helpMessage = new HelpMessage.Builder()
+                .subject("subject")
+                .description("description")
+                .build();
+        helpDao.save(helpMessage);
     }
 }

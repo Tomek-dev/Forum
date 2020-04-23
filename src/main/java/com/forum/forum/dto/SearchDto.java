@@ -15,8 +15,6 @@ import javax.validation.constraints.NotBlank;
 public class SearchDto {
 
     private String query;
-
     private Boolean text;
-
     private Type type;
 }
